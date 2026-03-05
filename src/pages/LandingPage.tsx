@@ -27,11 +27,12 @@ const features = [
   { icon: Zap, title: "Low Bandwidth", desc: "Optimized for school computer labs with offline caching support" },
 ];
 
-const plans = [
-  { name: "Basic", price: "Free", features: ["5 experiments/month", "Up to 50 students", "Basic analytics", "Email support"], popular: false },
-  { name: "Standard", price: "2,500 ETB", features: ["Unlimited experiments", "Up to 500 students", "Advanced analytics", "Priority support", "Lab report exports"], popular: true },
-  { name: "Premium", price: "5,000 ETB", features: ["Everything in Standard", "Unlimited students", "Custom branding", "API access", "Dedicated support", "National insights"], popular: false },
-];
+const plan = {
+  name: "Standard",
+  price: "30 ETB",
+  unit: "per student/month",
+  features: ["Unlimited experiments", "Unlimited students", "Advanced analytics", "Priority support", "Lab report exports", "Custom school branding"],
+};
 
 export default function LandingPage() {
   return (
@@ -85,12 +86,9 @@ export default function LandingPage() {
             </motion.p>
             <motion.div custom={3} variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button variant="hero" size="xl" asChild>
-                <Link to="/dashboard">
+                <Link to="/login">
                   Start Experimenting <ChevronRight className="w-5 h-5" />
                 </Link>
-              </Button>
-              <Button variant="outline-hero" size="xl" asChild>
-                <Link to="/lab">Try a Demo Lab</Link>
               </Button>
             </motion.div>
             <motion.div custom={4} variants={fadeUp} className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground">
@@ -165,44 +163,39 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <motion.div className="text-center mb-14" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Simple, School-Friendly Pricing</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">Start free and scale as your school grows. Per-school monthly pricing.</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">Transparent per-student pricing. No hidden fees.</p>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {plans.map((plan, i) => (
-              <motion.div
-                key={plan.name}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className={`rounded-2xl p-8 border ${plan.popular ? 'border-primary shadow-glow-primary bg-card' : 'border-border bg-card shadow-card'} relative`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-hero text-primary-foreground text-xs font-bold px-4 py-1 rounded-full">
-                    Most Popular
-                  </div>
-                )}
-                <h3 className="font-display font-bold text-xl mb-2">{plan.name}</h3>
-                <div className="mb-6">
-                  <span className="text-3xl font-display font-bold">{plan.price}</span>
-                  {plan.price !== "Free" && <span className="text-sm text-muted-foreground">/month</span>}
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <ChevronRight className="w-3 h-3 text-primary" />
-                      </div>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button variant={plan.popular ? "hero" : "outline-hero"} className="w-full">
-                  Get Started
-                </Button>
-              </motion.div>
-            ))}
+          <div className="max-w-md mx-auto">
+            <motion.div
+              variants={fadeUp}
+              custom={0}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="rounded-2xl p-8 border border-primary shadow-glow-primary bg-card relative"
+            >
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-hero text-primary-foreground text-xs font-bold px-4 py-1 rounded-full">
+                One Simple Plan
+              </div>
+              <h3 className="font-display font-bold text-xl mb-2">{plan.name}</h3>
+              <div className="mb-2">
+                <span className="text-4xl font-display font-bold">{plan.price}</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">{plan.unit}</p>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-center gap-2 text-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <ChevronRight className="w-3 h-3 text-primary" />
+                    </div>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Button variant="hero" className="w-full" asChild>
+                <Link to="/login">Get Started</Link>
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>
