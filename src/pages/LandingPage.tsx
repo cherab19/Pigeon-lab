@@ -109,21 +109,22 @@ export default function LandingPage() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {subjects.map((s, i) => (
-              <motion.div
-                key={s.name}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="group relative rounded-2xl overflow-hidden cursor-pointer"
-              >
-                <div className={`${s.gradient} p-8 h-64 flex flex-col justify-end text-primary-foreground transition-transform duration-300 group-hover:scale-[1.02]`}>
-                  <s.icon className="w-10 h-10 mb-4 opacity-90" />
-                  <h3 className="text-2xl font-display font-bold mb-2">{s.name}</h3>
-                  <p className="text-sm opacity-80">{s.desc}</p>
-                </div>
-              </motion.div>
+              <Link key={s.name} to={`/lab/${s.name.toLowerCase()}`}>
+                <motion.div
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="group relative rounded-2xl overflow-hidden cursor-pointer"
+                >
+                  <div className={`${s.gradient} p-8 h-64 flex flex-col justify-end text-primary-foreground transition-transform duration-300 group-hover:scale-[1.02]`}>
+                    <s.icon className="w-10 h-10 mb-4 opacity-90" />
+                    <h3 className="text-2xl font-display font-bold mb-2">{s.name}</h3>
+                    <p className="text-sm opacity-80">{s.desc}</p>
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>
