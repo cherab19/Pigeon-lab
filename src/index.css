@@ -153,4 +153,7 @@
   .shadow-glow-gold {
     box-shadow: var(--shadow-glow-gold);
   }
+    #lovable-badge {
+  display: none !important;
+}
 }
