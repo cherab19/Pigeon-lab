@@ -7,7 +7,7 @@ import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, Conserva
 import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators } from "./chemistry/Grade10Chemistry";
 import { RutherfordExperiment, PhotoelectricEffect, ReactionRate, LeChatelierPrinciple } from "./chemistry/Grade11Chemistry";
 import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "./chemistry/Grade12Chemistry";
-import { MicroscopeSimulation, CellObservation, FoodTestingLab, EcosystemSimulation } from "./biology/Grade9Biology";
+import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { OsmosisSimulation, TranspirationSimulation, FlowerDissection, HeartPumping } from "./biology/Grade10Biology";
 import { EnzymeActivity, Photosynthesis, HumanTissues, MonohybridCross } from "./biology/Grade11Biology";
 import { BacterialTransformation, NaturalSelection, ReflexArcSynapse, HormoneCycle } from "./biology/Grade12Biology";
@@ -21,7 +21,9 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "c10-1": SingleDisplacement, "c10-2": StandardSolution, "c10-3": AcidBaseTitration, "c10-4": PHIndicators,
   "c11-1": RutherfordExperiment, "c11-2": PhotoelectricEffect, "c11-3": ReactionRate, "c11-4": LeChatelierPrinciple,
   "c12-1": WeakAcidIonization, "c12-2": BufferSolutions, "c12-3": VoltaicCell, "c12-4": HaberProcess,
-  "b9-1": MicroscopeSimulation, "b9-2": CellObservation, "b9-3": FoodTestingLab, "b9-4": EcosystemSimulation,
+  "b9-1": MicroscopeSimulation, "b9-2": SeedGerminationLab, "b9-3": DichotomousKeyLab,
+  "b9-4": OnionCellObservation, "b9-5": OsmosisExperiment,
+  "b9-6": StarchTestLab, "b9-7": ProteinTestLab, "b9-8": FoodChainBuilder,
   "b10-1": OsmosisSimulation, "b10-2": TranspirationSimulation, "b10-3": FlowerDissection, "b10-4": HeartPumping,
   "b11-1": EnzymeActivity, "b11-2": Photosynthesis, "b11-3": HumanTissues, "b11-4": MonohybridCross,
   "b12-1": BacterialTransformation, "b12-2": NaturalSelection, "b12-3": ReflexArcSynapse, "b12-4": HormoneCycle,

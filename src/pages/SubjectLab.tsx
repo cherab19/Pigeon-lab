@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { labData, subjectMeta } from "@/data/labActivities";
+import { labData, subjectMeta, getUnits } from "@/data/labActivities";
 import { simulationRegistry } from "@/components/lab/simulations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ const subjectIcons: Record<string, typeof Beaker> = { physics: Atom, chemistry: 
 export default function SubjectLab() {
   const { subject } = useParams<{ subject: string }>();
   const [grade, setGrade] = useState<string>("");
+  const [unitNum, setUnitNum] = useState<string>("");
   const [labId, setLabId] = useState<string>("");
 
   if (!subject || !labData[subject]) {
@@ -20,20 +21,20 @@ export default function SubjectLab() {
   const meta = subjectMeta[subject];
   const Icon = subjectIcons[subject] || Beaker;
   const grades = Object.keys(labData[subject]).map(Number);
-  const labs = grade ? labData[subject][Number(grade)] || [] : [];
-  const selectedLab = labs.find(l => l.id === labId);
+  const allLabs = grade ? labData[subject][Number(grade)] || [] : [];
+  const units = grade ? getUnits(allLabs) : [];
+  const unitLabs = unitNum ? allLabs.filter(l => l.unit === Number(unitNum)) : [];
+  const selectedLab = unitLabs.find(l => l.id === labId);
   const SimComponent = selectedLab ? simulationRegistry[selectedLab.id] : null;
 
-  const handleGradeChange = (g: string) => {
-    setGrade(g);
-    setLabId("");
-  };
+  const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); };
+  const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="border-b border-border bg-card px-4 py-3">
-        <div className="container mx-auto flex items-center gap-4">
+        <div className="container mx-auto flex items-center gap-4 flex-wrap">
           <Button variant="ghost" size="sm" asChild>
             <Link to="/"><ArrowLeft className="w-4 h-4 mr-1" /> Home</Link>
           </Button>
@@ -41,7 +42,7 @@ export default function SubjectLab() {
             <Icon className="w-5 h-5 text-primary" />
             <h1 className="font-display font-bold text-lg">{meta.name} Laboratory</h1>
           </div>
-          <div className="flex items-center gap-3 ml-auto">
+          <div className="flex items-center gap-3 ml-auto flex-wrap">
             <Select value={grade} onValueChange={handleGradeChange}>
               <SelectTrigger className="w-[140px] h-9">
                 <SelectValue placeholder="Select Grade" />
@@ -53,12 +54,24 @@ export default function SubjectLab() {
               </SelectContent>
             </Select>
             {grade && (
+              <Select value={unitNum} onValueChange={handleUnitChange}>
+                <SelectTrigger className="w-[220px] h-9">
+                  <SelectValue placeholder="Select Unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  {units.map(u => (
+                    <SelectItem key={u.unit} value={String(u.unit)}>Unit {u.unit}: {u.unitName}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+            {unitNum && (
               <Select value={labId} onValueChange={setLabId}>
                 <SelectTrigger className="w-[260px] h-9">
                   <SelectValue placeholder="Select Lab Activity" />
                 </SelectTrigger>
                 <SelectContent>
-                  {labs.map(l => (
+                  {unitLabs.map(l => (
                     <SelectItem key={l.id} value={l.id}>{l.title}</SelectItem>
                   ))}
                 </SelectContent>
@@ -79,11 +92,24 @@ export default function SubjectLab() {
             </div>
           </div>
         )}
-        {grade && !labId && (
+        {grade && !unitNum && (
           <div className="container mx-auto px-4 py-8">
-            <h2 className="text-lg font-display font-bold mb-4">Grade {grade} — {meta.name} Labs</h2>
+            <h2 className="text-lg font-display font-bold mb-4">Grade {grade} — {meta.name} Units</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {labs.map(l => (
+              {units.map(u => (
+                <button key={u.unit} onClick={() => handleUnitChange(String(u.unit))} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
+                  <h3 className="font-display font-semibold text-sm mb-1">Unit {u.unit}: {u.unitName}</h3>
+                  <p className="text-xs text-muted-foreground">{allLabs.filter(l => l.unit === u.unit).length} lab activities</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {unitNum && !labId && (
+          <div className="container mx-auto px-4 py-8">
+            <h2 className="text-lg font-display font-bold mb-4">Unit {unitNum}: {units.find(u => u.unit === Number(unitNum))?.unitName} — Labs</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {unitLabs.map(l => (
                 <button key={l.id} onClick={() => setLabId(l.id)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
                   <h3 className="font-display font-semibold text-sm mb-1">{l.title}</h3>
                   <p className="text-xs text-muted-foreground">{l.objective}</p>
