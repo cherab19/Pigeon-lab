@@ -1,1 +1,7 @@
 project_id = "ujwuiuhxprcxfoxpnnla"
+
+[functions.create-school-member]
+verify_jwt = false
+
+[functions.lab-assistant]
+verify_jwt = false

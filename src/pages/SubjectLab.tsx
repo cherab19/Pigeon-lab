@@ -5,6 +5,7 @@ import { simulationRegistry } from "@/components/lab/simulations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical } from "lucide-react";
+import LabAssistant from "@/components/lab/LabAssistant";
 
 const subjectIcons: Record<string, typeof Beaker> = { physics: Atom, chemistry: FlaskConical, biology: Microscope };
 
@@ -120,6 +121,16 @@ export default function SubjectLab() {
         )}
         {SimComponent && <SimComponent />}
       </div>
+
+      {/* AI Lab Assistant */}
+      <LabAssistant
+        context={{
+          subject: subject,
+          grade: grade ? `Grade ${grade}` : undefined,
+          experiment: selectedLab?.title,
+          step: selectedLab ? `Step in progress` : undefined,
+        }}
+      />
     </div>
   );
 }
