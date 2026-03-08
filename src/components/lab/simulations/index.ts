@@ -5,6 +5,8 @@ import { MeasuringLength3D, BeamBalance3D, TimeMeasurement3D, DistanceDisplaceme
 import { NewtonsSecondLaw3D, WorkEnergy3D, HookesLaw3D, Lever3D, InclinedPlane3D } from "./physics/Grade9Physics3D_Batch2";
 import { WaveSimulation3D, ThermalExpansion3D, TemperatureMeasurement3D } from "./physics/Grade9Physics3D_Batch3";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
+import { VectorAddition3D, VectorResolution3D, DistanceDisplacement10_3D, AccelerationSim3D, StressStrain3D } from "./physics/Grade10Physics3D_Batch1";
+import { TorqueEquilibrium3D, CircuitBuilder3D, MagneticField3D, Reflection3D, ReflectionRefraction3D } from "./physics/Grade10Physics3D_Batch2";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
@@ -23,9 +25,9 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p9-9": Lever3D, "p9-10": InclinedPlane3D,
   "p9-11": SimplePendulum3D, "p9-12": WaveSimulation3D,
   "p9-13": ThermalExpansion3D, "p9-14": TemperatureMeasurement3D,
-  "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
-  "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
-  "p10-8": MagneticFieldLab, "p10-9": ReflectionLab, "p10-10": ReflectionRefraction,
+  "p10-1": VectorAddition3D, "p10-2": VectorResolution3D, "p10-3": DistanceDisplacement10_3D, "p10-4": AccelerationSim3D,
+  "p10-5": StressStrain3D, "p10-6": TorqueEquilibrium3D, "p10-7": CircuitBuilder3D,
+  "p10-8": MagneticField3D, "p10-9": Reflection3D, "p10-10": ReflectionRefraction3D,
   "p11-1": BoilingPointAltitude, "p11-2": VectorAddition11, "p11-3": FieldDisplacement,
   "p11-4": UniformMotion, "p11-5": FreeFall, "p11-6": ProjectileMotion,
   "p11-7": NewtonsSecondLaw11, "p11-8": FrictionExperiment, "p11-9": InclinedPlane,
