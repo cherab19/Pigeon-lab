@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useParams, Link } from "react-router-dom";
 import { labData, subjectMeta, getUnits } from "@/data/labActivities";
 import { simulationRegistry } from "@/components/lab/simulations";
+import { fallback2DRegistry } from "@/components/lab/simulations/fallback2DRegistry";
+import SimulationErrorBoundary from "@/components/lab/SimulationErrorBoundary";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle, Lock } from "lucide-react";
