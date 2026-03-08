@@ -17,6 +17,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "sonner";
 import { labData, LabActivity } from "@/data/labActivities";
 

@@ -4,6 +4,7 @@ import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight, AlertTrian
 import { Link } from "react-router-dom";
 import { totalExperiments, subjectCounts } from "./SharedDashboard";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { Badge } from "@/components/ui/badge";
 import AdminClassroomManager from "./AdminClassroomManager";
 

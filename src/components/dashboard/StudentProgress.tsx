@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { CheckCircle, Clock, Beaker, Trophy, Award, Star, Flame, Target, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";

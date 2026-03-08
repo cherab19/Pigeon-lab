@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 export interface QuizQuestion {
   question: string;

@@ -62,7 +62,7 @@ export default function SuperAdminUserManager() {
   const [removingUser, setRemovingUser] = useState<UserRow | null>(null);
 
   const loadUsers = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (user) setCurrentUserId(user.id);
 
     const { data } = await supabase.rpc("get_super_admin_all_users");

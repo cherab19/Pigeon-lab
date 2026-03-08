@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 interface Classroom {
   id: string;
