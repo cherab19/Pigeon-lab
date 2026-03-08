@@ -31,6 +31,9 @@ import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellO
 import { MicroscopeSimulation3D, SeedGerminationLab3D, DichotomousKeyLab3D, OnionCellObservation3D } from "./biology/Grade9Biology3D_Batch1";
 import { OsmosisExperiment3D, StarchTestLab3D, ProteinTestLab3D, FoodChainBuilder3D } from "./biology/Grade9Biology3D_Batch2";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
+import { ClassificationLab3D, ScientificMethodSim3D, MicroscopePartsLab3D, OnionEpidermisSlideLab3D, DiffusionDemo3D, OsmosisSimulation3D } from "./biology/Grade10Biology3D_Batch1";
+import { StarchTestLab3D as B10StarchTest3D, ProteinTestLab3D as B10ProteinTest3D, LipidTestLab3D, CO2ProductionTest3D, BreathingRateInvestigation3D, TranspirationLab3D } from "./biology/Grade10Biology3D_Batch2";
+import { WaterTransportDye3D, FlowerDissection3D, IdentifyingBones3D, MeasuringPulseRate3D, ReflexActionDemo3D, QuadratSampling3D as B10QuadratSampling3D } from "./biology/Grade10Biology3D_Batch3";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
 import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
 
