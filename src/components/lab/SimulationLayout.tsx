@@ -45,15 +45,15 @@ export default function SimulationLayout({ title, objective, theory, onReset, eq
       </div>
 
       {/* Zones 2-4: Main */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-[200px_1fr_200px] min-h-0">
-        <div className="border-b md:border-b-0 md:border-r border-border p-3 overflow-y-auto bg-muted/20">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-[180px_1fr_180px] lg:grid-cols-[200px_1fr_200px] min-h-0">
+        <div className="border-b md:border-b-0 md:border-r border-border p-3 overflow-y-auto bg-muted/20 max-h-[200px] md:max-h-none">
           <h3 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-wider">Controls</h3>
           {equipment}
         </div>
-        <div className="p-4 overflow-auto flex items-center justify-center">
+        <div className="p-2 md:p-4 overflow-auto flex items-center justify-center min-h-[250px] md:min-h-0">
           {workspace}
         </div>
-        <div className="border-t md:border-t-0 md:border-l border-border p-3 overflow-y-auto bg-muted/20">
+        <div className="border-t md:border-t-0 md:border-l border-border p-3 overflow-y-auto bg-muted/20 max-h-[200px] md:max-h-none">
           <h3 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-wider">Live Data</h3>
           {liveData}
         </div>
