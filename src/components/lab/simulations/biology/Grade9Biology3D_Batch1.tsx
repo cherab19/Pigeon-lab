@@ -72,7 +72,7 @@ function MicroscopeBody({ objective, light, clarity }: { objective: number; ligh
       {/* Focus knobs */}
       {[0.4, 0.55].map((y, i) => (
         <mesh key={i} position={[-0.22, y, 0]} castShadow>
-          <cylinderGeometry args={[0.03, 0.03, 0.04, 12]} rotation={[0, 0, Math.PI / 2]} />
+          <cylinderGeometry args={[0.03, 0.03, 0.04, 12]} />
           <meshStandardMaterial color="#666" metalness={0.8} />
         </mesh>
       ))}
