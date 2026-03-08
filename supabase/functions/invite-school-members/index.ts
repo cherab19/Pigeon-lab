@@ -78,19 +78,8 @@ Deno.serve(async (req) => {
       }
 
       try {
-        // Invite user via magic link - creates user + sends invitation email
-        let appUrl = req.headers.get("origin");
-        if (!appUrl) {
-          const referer = req.headers.get("referer");
-          if (referer) {
-            try {
-              appUrl = new URL(referer).origin;
-            } catch {
-              appUrl = null;
-            }
-          }
-        }
-        appUrl = appUrl || "https://ethiopia-learn-lab.lovable.app";
+        // Always redirect invite links to the production app on Vercel
+        const appBaseUrl = "https://ethiolab.vercel.app";
 
         const { data: invitedUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
           data: {
@@ -98,7 +87,7 @@ Deno.serve(async (req) => {
             invited_school_id: school_id,
             invited_role: role,
           },
-          redirectTo: `${appUrl}/signup`,
+          redirectTo: `${appBaseUrl}/signup`,
         });
 
         if (inviteError) {
