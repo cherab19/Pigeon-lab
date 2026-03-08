@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import { MeasuringLength, BeamBalanceLab, TimeMeasurementLab, DistanceDisplacementLab, GraphicalMotionLab, NewtonsSecondLaw, WorkEnergyLab, HookesLawLab, LeverLab, InclinedPlaneLab, PendulumLab, WaveSimulation, ThermalExpansionLab, TemperatureMeasurementLab } from "./physics/Grade9Physics";
+import { SimplePendulum3D } from "./physics/SimplePendulum3D";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
@@ -17,7 +18,7 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p9-4": DistanceDisplacementLab, "p9-5": GraphicalMotionLab,
   "p9-6": NewtonsSecondLaw, "p9-7": WorkEnergyLab, "p9-8": HookesLawLab,
   "p9-9": LeverLab, "p9-10": InclinedPlaneLab,
-  "p9-11": PendulumLab, "p9-12": WaveSimulation,
+  "p9-11": SimplePendulum3D, "p9-12": WaveSimulation,
   "p9-13": ThermalExpansionLab, "p9-14": TemperatureMeasurementLab,
   "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
   "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
