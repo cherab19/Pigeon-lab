@@ -128,15 +128,10 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
             transition={{ delay: 0.3 }}
             className="mb-8"
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4">
               <h2 className="text-lg font-display font-semibold flex items-center gap-2">
                 <School className="w-5 h-5 text-primary" /> Registered Schools ({schools.length})
               </h2>
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/manage-users">
-                  <Users className="w-4 h-4 mr-1" /> Manage Members
-                </Link>
-              </Button>
             </div>
 
             {schools.length === 0 ? (
