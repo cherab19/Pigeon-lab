@@ -6,7 +6,7 @@ import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
 import { CombinationReaction, DecompositionCuCO3, SingleDisplacement, DoubleDisplacement, StandardSolution, DilutionLab, SolubilityTemp, PHIndicators, AcidMetalReaction, AcidBaseTitration, ExoEndothermic, ElectrochemicalCell, ElectrolysisWater, ReactivitySeries, MetalExtraction, HydrocarbonCombustion, BromineTest } from "./chemistry/Grade10Chemistry";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
-import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "./chemistry/Grade12Chemistry";
+import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
@@ -45,7 +45,8 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "c11-10": ReactionRate, "c11-11": CatalystSimulation,
   "c11-12": ReversibleReaction, "c11-13": LeChatelierPrinciple,
   "c11-14": Esterification, "c11-15": Saponification,
-  "c12-1": WeakAcidIonization, "c12-2": BufferSolutions, "c12-3": VoltaicCell, "c12-4": HaberProcess,
+  "c12-1": IndicatorsLab, "c12-2": PHMeterSim, "c12-3": WeakAcidIonization, "c12-4": BufferSolutions, "c12-5": AcidBaseTitration12,
+  "c12-6": ElectrolysisMetal, "c12-7": VoltaicCell, "c12-8": HaberProcess, "c12-9": AdditionPolymerization, "c12-10": AirPollutionAcidRain,
   "b9-1": MicroscopeSimulation, "b9-2": SeedGerminationLab, "b9-3": DichotomousKeyLab,
   "b9-4": OnionCellObservation, "b9-5": OsmosisExperiment,
   "b9-6": StarchTestLab, "b9-7": ProteinTestLab, "b9-8": FoodChainBuilder,
