@@ -3,7 +3,7 @@ import { MeasuringLength, BeamBalanceLab, TimeMeasurementLab, DistanceDisplaceme
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
-import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, ConservationOfMass } from "./chemistry/Grade9Chemistry";
+import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
 import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators } from "./chemistry/Grade10Chemistry";
 import { RutherfordExperiment, PhotoelectricEffect, ReactionRate, LeChatelierPrinciple } from "./chemistry/Grade11Chemistry";
 import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "./chemistry/Grade12Chemistry";
@@ -32,7 +32,7 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p12-4": FluidPressureLab, "p12-5": ArchimedesPrinciple,
   "p12-6": MagneticFieldWire, "p12-7": ElectromagneticInduction,
   "p12-8": PNJunctionDiode, "p12-9": HalfWaveRectifier,
-  "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalReactions, "c9-5": ConservationOfMass,
+  "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalBonding, "c9-5": ChemicalReactions, "c9-6": ConservationOfMass, "c9-7": SolutionsLab, "c9-8": AcidsBasesLab, "c9-9": MetalsNonMetals,
   "c10-1": SingleDisplacement, "c10-2": StandardSolution, "c10-3": AcidBaseTitration, "c10-4": PHIndicators,
   "c11-1": RutherfordExperiment, "c11-2": PhotoelectricEffect, "c11-3": ReactionRate, "c11-4": LeChatelierPrinciple,
   "c12-1": WeakAcidIonization, "c12-2": BufferSolutions, "c12-3": VoltaicCell, "c12-4": HaberProcess,
