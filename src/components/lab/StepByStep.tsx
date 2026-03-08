@@ -1,12 +1,12 @@
 import { CheckCircle, Circle } from "lucide-react";
 
-interface StepByStepProps {
+export interface StepByStepProps {
   steps: string[];
-  currentStep: number;
+  currentStep?: number;
   onStepClick?: (step: number) => void;
 }
 
-export default function StepByStep({ steps, currentStep, onStepClick }: StepByStepProps) {
+export default function StepByStep({ steps, currentStep = 0, onStepClick }: StepByStepProps) {
   return (
     <div className="space-y-1">
       <h4 className="font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-2">Procedure</h4>
