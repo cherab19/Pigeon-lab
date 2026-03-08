@@ -38,6 +38,31 @@ const plan = {
 };
 
 export default function LandingPage() {
+  const [stats, setStats] = useState({ schools: 0, students: 0, experiments: 0 });
+
+  useEffect(() => {
+    // Count experiments from frontend lab data
+    let expCount = 0;
+    Object.values(labData).forEach(grades => {
+      Object.values(grades).forEach(labs => {
+        expCount += labs.length;
+      });
+    });
+
+    // Fetch school & student counts from DB
+    supabase.rpc("get_public_stats").then(({ data }) => {
+      if (data) {
+        setStats({
+          schools: (data as any).schools || 0,
+          students: (data as any).students || 0,
+          experiments: expCount,
+        });
+      } else {
+        setStats(prev => ({ ...prev, experiments: expCount }));
+      }
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
