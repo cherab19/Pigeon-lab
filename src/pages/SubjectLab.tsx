@@ -27,6 +27,9 @@ export default function SubjectLab() {
   const [preQuizDone, setPreQuizDone] = useState(false);
   const [use2D, setUse2D] = useState(false);
 
+  const trackerSubject = subject && labData[subject] ? subject : undefined;
+  const { markComplete } = useProgressTracker(labId || undefined, trackerSubject, grade || undefined);
+
   if (accessLoading) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
   }
