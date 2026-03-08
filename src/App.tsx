@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import ManageUsers from "./pages/ManageUsers";
 import VirtualLab from "./pages/VirtualLab";
 import SubjectLab from "./pages/SubjectLab";
 import NotFound from "./pages/NotFound";
