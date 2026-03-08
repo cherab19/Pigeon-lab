@@ -62,6 +62,7 @@ export default function SubjectLab() {
   const SimComponent3D = selectedLab ? simulationRegistry[selectedLab.id] : null;
   const SimComponent2D = selectedLab ? fallback2DRegistry[selectedLab.id] : null;
   const SimComponent = use2D ? SimComponent2D : SimComponent3D;
+  const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
   const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
 
