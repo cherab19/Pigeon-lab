@@ -14,6 +14,8 @@ import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab
 import { MRISimulation3D, HorizontalProjectile3D, AngledProjectile3D, FluidPressureLab3D, ArchimedesPrinciple3D } from "./physics/Grade12Physics3D_Batch1";
 import { MagneticFieldWire3D, ElectromagneticInduction3D, PNJunctionDiode3D, HalfWaveRectifier3D } from "./physics/Grade12Physics3D_Batch2";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
+import { LabSafety3D, StatesOfMatter3D, AtomicStructure3D, ChemicalBonding3D, ChemicalReactions3D } from "./chemistry/Grade9Chemistry3D_Batch1";
+import { ConservationOfMass3D, SolutionsLab3D, AcidsBasesLab3D, MetalsNonMetals3D } from "./chemistry/Grade9Chemistry3D_Batch2";
 import { CombinationReaction, DecompositionCuCO3, SingleDisplacement, DoubleDisplacement, StandardSolution, DilutionLab, SolubilityTemp, PHIndicators, AcidMetalReaction, AcidBaseTitration, ExoEndothermic, ElectrochemicalCell, ElectrolysisWater, ReactivitySeries, MetalExtraction, HydrocarbonCombustion, BromineTest } from "./chemistry/Grade10Chemistry";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
 import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
@@ -42,7 +44,7 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p12-4": FluidPressureLab3D, "p12-5": ArchimedesPrinciple3D,
   "p12-6": MagneticFieldWire3D, "p12-7": ElectromagneticInduction3D,
   "p12-8": PNJunctionDiode3D, "p12-9": HalfWaveRectifier3D,
-  "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalBonding, "c9-5": ChemicalReactions, "c9-6": ConservationOfMass, "c9-7": SolutionsLab, "c9-8": AcidsBasesLab, "c9-9": MetalsNonMetals,
+  "c9-1": LabSafety3D, "c9-2": StatesOfMatter3D, "c9-3": AtomicStructure3D, "c9-4": ChemicalBonding3D, "c9-5": ChemicalReactions3D, "c9-6": ConservationOfMass3D, "c9-7": SolutionsLab3D, "c9-8": AcidsBasesLab3D, "c9-9": MetalsNonMetals3D,
   "c10-1": CombinationReaction, "c10-2": DecompositionCuCO3, "c10-3": SingleDisplacement, "c10-4": DoubleDisplacement,
   "c10-5": StandardSolution, "c10-6": DilutionLab, "c10-7": SolubilityTemp,
   "c10-8": PHIndicators, "c10-9": AcidMetalReaction, "c10-10": AcidBaseTitration,
