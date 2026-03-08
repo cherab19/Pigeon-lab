@@ -243,6 +243,7 @@ export type Database = {
         Args: { _user_id: string }
         Returns: boolean
       }
+      get_my_school_id: { Args: never; Returns: string }
       get_public_stats: { Args: never; Returns: Json }
       get_subscription_stats: { Args: never; Returns: Json }
       get_super_admin_stats: { Args: never; Returns: Json }
