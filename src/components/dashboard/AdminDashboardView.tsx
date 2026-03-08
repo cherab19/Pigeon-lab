@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { totalExperiments, subjectCounts } from "./SharedDashboard";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import AdminClassroomManager from "./AdminClassroomManager";
 
 interface Props {
   fullName: string;
