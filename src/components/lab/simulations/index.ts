@@ -39,6 +39,8 @@ import { CellStructureMicroscope3D, OsmosisDiffusion3D, FoodTests3D, EnzymeActiv
 import { Photosynthesis3D, Respiration3D, PlantTissues3D, Transpiration3D } from "./biology/Grade11Biology3D_Batch2";
 import { HumanTissues3D, BloodCells3D, MonohybridCross3D, QuadratSampling3D as B11QuadratSampling3D } from "./biology/Grade11Biology3D_Batch3";
 import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
+import { RecombinantDNA3D, MicroorganismObservation3D, EcosystemSimulation3D, NaturalSelection3D } from "./biology/Grade12Biology3D_Batch1";
+import { PupilReflexExperiment3D, ReflexArcSynapse3D, HormoneCycle3D, PunnettSquareSimulation3D } from "./biology/Grade12Biology3D_Batch2";
 
 export const simulationRegistry: Record<string, ComponentType> = {
   "p9-1": MeasuringLength3D, "p9-2": BeamBalance3D, "p9-3": TimeMeasurement3D,
