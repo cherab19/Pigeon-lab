@@ -15,8 +15,8 @@ import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity,
 import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
 
 export const simulationRegistry: Record<string, ComponentType> = {
-  "p9-1": MeasuringLength, "p9-2": BeamBalanceLab, "p9-3": TimeMeasurementLab,
-  "p9-4": DistanceDisplacementLab, "p9-5": GraphicalMotionLab,
+  "p9-1": MeasuringLength3D, "p9-2": BeamBalance3D, "p9-3": TimeMeasurement3D,
+  "p9-4": DistanceDisplacement3D, "p9-5": GraphicalMotion3D,
   "p9-6": NewtonsSecondLaw, "p9-7": WorkEnergyLab, "p9-8": HookesLawLab,
   "p9-9": LeverLab, "p9-10": InclinedPlaneLab,
   "p9-11": SimplePendulum3D, "p9-12": WaveSimulation,
