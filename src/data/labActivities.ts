@@ -57,10 +57,20 @@ export const labData: Record<string, Record<number, LabActivity[]>> = {
       { id: "p11-14", unit: 7, unitName: "Nuclear Physics", title: "Radioactive Decay", objective: "Observe random decay and determine half-life from decay curve", theory: "Radioactive decay is random. On average, half the atoms decay each half-life. N = N₀(½)^(t/t½)." },
     ],
     12: [
-      { id: "p12-1", unit: 1, unitName: "Advanced Mechanics", title: "Horizontal & Inclined Projectile", objective: "Compare horizontal and angled projectile motion with optional air resistance", theory: "Horizontal projectiles have zero initial vertical velocity. Time to ground depends only on height: t = √(2h/g). Range = v₀ × t." },
-      { id: "p12-2", unit: 2, unitName: "Fluid Mechanics", title: "Fluid Pressure Lab", objective: "Measure pressure at different depths in a fluid column", theory: "Fluid pressure increases with depth: P = P₀ + ρgh, where ρ is fluid density, g is gravitational acceleration, and h is depth." },
-      { id: "p12-3", unit: 3, unitName: "Electromagnetism", title: "Magnetic Field Visualization", objective: "Visualize magnetic field lines around a bar magnet and current-carrying conductor", theory: "Magnetic field lines emerge from the north pole and enter the south pole. Field strength decreases with distance from the source." },
-      { id: "p12-4", unit: 4, unitName: "Electronics", title: "Diode & Rectifier Lab", objective: "Study the I-V characteristics of a diode and half-wave rectification", theory: "A diode allows current in one direction only. In forward bias above ~0.7V (silicon), current increases exponentially. Rectifiers convert AC to DC." },
+      // UNIT 1: Medical Physics
+      { id: "p12-1", unit: 1, unitName: "Medical Physics", title: "MRI Simulation", objective: "Understand MRI by manipulating magnetic field strength and pulse parameters", theory: "MRI uses strong magnetic fields to align proton spins. An RF pulse tips protons; signal during relaxation (T1/T2) creates tissue contrast." },
+      // UNIT 2: Projectile Motion
+      { id: "p12-2", unit: 2, unitName: "Projectile Motion", title: "Horizontal Projectile", objective: "Investigate range and time of flight of a horizontally projected object", theory: "In horizontal projection, vy₀ = 0. Time: t = √(2h/g). Range R = v₀ × t. Horizontal and vertical motions are independent." },
+      { id: "p12-3", unit: 2, unitName: "Projectile Motion", title: "Projectile at an Angle", objective: "Investigate how angle of projection affects the range", theory: "R = v₀²sin(2θ)/g. Maximum range at 45°. Complementary angles yield the same range." },
+      // UNIT 3: Fluid Mechanics
+      { id: "p12-4", unit: 3, unitName: "Fluid Mechanics", title: "Pressure vs Depth", objective: "Investigate how pressure varies with depth in a fluid", theory: "P = P₀ + ρgh. Pressure increases linearly with depth." },
+      { id: "p12-5", unit: 3, unitName: "Fluid Mechanics", title: "Archimedes' Principle", objective: "Verify Archimedes' Principle by comparing buoyant force with weight of displaced fluid", theory: "Buoyant force = weight of displaced fluid = ρVg. Apparent weight = actual weight − buoyant force." },
+      // UNIT 4: Electromagnetism
+      { id: "p12-6", unit: 4, unitName: "Electromagnetism", title: "Magnetic Field — Current Wire", objective: "Observe magnetic field patterns around a current-carrying conductor", theory: "A current-carrying wire produces concentric circular magnetic field lines. B = μ₀I/(2πr). Use the Right-Hand Rule." },
+      { id: "p12-7", unit: 4, unitName: "Electromagnetism", title: "Electromagnetic Induction", objective: "Observe induced EMF due to changing magnetic flux", theory: "Faraday's Law: EMF = −N(dΦ/dt). Moving a magnet near a coil changes flux and induces voltage." },
+      // UNIT 5: Electronics
+      { id: "p12-8", unit: 5, unitName: "Electronics", title: "PN Junction Diode", objective: "Study I-V characteristics of a diode in forward and reverse bias", theory: "Silicon diode threshold ~0.7V. In forward bias, current rises exponentially. In reverse bias, only leakage current flows." },
+      { id: "p12-9", unit: 5, unitName: "Electronics", title: "Half-Wave Rectifier", objective: "Study half-wave rectification using a diode", theory: "Half-wave rectification passes only positive half-cycles. Avg DC = V_peak/π." },
     ],
   },
   chemistry: {

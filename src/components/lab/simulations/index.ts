@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 import { MeasuringLength, NewtonsSecondLaw, PendulumLab, WaveSimulation } from "./physics/Grade9Physics";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
-import { AdvancedProjectile, FluidPressure, MagneticField, DiodeRectifier } from "./physics/Grade12Physics";
+import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, ConservationOfMass } from "./chemistry/Grade9Chemistry";
 import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators } from "./chemistry/Grade10Chemistry";
 import { RutherfordExperiment, PhotoelectricEffect, ReactionRate, LeChatelierPrinciple } from "./chemistry/Grade11Chemistry";
@@ -23,7 +23,10 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p11-10": HeatConduction, "p11-11": Calorimetry,
   "p11-12": CoulombsLaw, "p11-13": ElectricCircuit,
   "p11-14": RadioactiveDecay,
-  "p12-1": AdvancedProjectile, "p12-2": FluidPressure, "p12-3": MagneticField, "p12-4": DiodeRectifier,
+  "p12-1": MRISimulation, "p12-2": HorizontalProjectile, "p12-3": AngledProjectile,
+  "p12-4": FluidPressureLab, "p12-5": ArchimedesPrinciple,
+  "p12-6": MagneticFieldWire, "p12-7": ElectromagneticInduction,
+  "p12-8": PNJunctionDiode, "p12-9": HalfWaveRectifier,
   "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalReactions, "c9-5": ConservationOfMass,
   "c10-1": SingleDisplacement, "c10-2": StandardSolution, "c10-3": AcidBaseTitration, "c10-4": PHIndicators,
   "c11-1": RutherfordExperiment, "c11-2": PhotoelectricEffect, "c11-3": ReactionRate, "c11-4": LeChatelierPrinciple,
