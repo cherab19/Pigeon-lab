@@ -124,10 +124,21 @@ export const labData: Record<string, Record<number, LabActivity[]>> = {
       { id: "b11-12", unit: 7, unitName: "Ecology", title: "Quadrat Sampling", objective: "Estimate population density using quadrat sampling", theory: "Quadrat sampling places a frame at random positions to count organisms. Population density = total count / (number of quadrats × quadrat area)." },
     ],
     12: [
-      { id: "b12-1", unit: 1, unitName: "Molecular Biology", title: "Bacterial Transformation", objective: "Simulate gene insertion into bacteria using plasmid vectors", theory: "Bacterial transformation inserts foreign DNA via plasmids. Steps: cut plasmid with restriction enzyme, insert gene, ligate, transform bacteria, select." },
-      { id: "b12-2", unit: 2, unitName: "Evolution", title: "Natural Selection Simulator", objective: "Observe how environmental pressures drive evolution over generations", theory: "Natural selection favors organisms with traits suited to their environment. Over generations, allele frequencies shift, driving evolution." },
-      { id: "b12-3", unit: 3, unitName: "Nervous System", title: "Reflex Arc & Synapse", objective: "Trace a nerve impulse along a reflex arc and across a synapse", theory: "A reflex arc: stimulus → receptor → sensory neuron → interneuron → motor neuron → effector. Synapses transmit signals via neurotransmitters." },
-      { id: "b12-4", unit: 4, unitName: "Reproductive System", title: "Hormone Cycle (Menstrual Cycle)", objective: "Track hormone levels and ovarian changes through the 28-day cycle", theory: "FSH stimulates follicle growth, estrogen thickens the uterine lining, LH triggers ovulation, progesterone maintains the lining. Day 14 = ovulation." },
+      // UNIT 1: Biotechnology
+      { id: "b12-1", unit: 1, unitName: "Biotechnology", title: "Recombinant DNA Simulation", objective: "Create recombinant DNA by inserting a gene into a bacterial plasmid", theory: "Restriction enzymes cut DNA at recognition sites. DNA ligase joins fragments. Transformed bacteria express the foreign gene." },
+      // UNIT 2: Microbiology
+      { id: "b12-2", unit: 2, unitName: "Microbiology", title: "Microorganism Observation", objective: "Observe and compare bacteria, fungi, and viruses under a virtual microscope", theory: "Microorganisms differ in size, structure, and staining properties. Gram staining differentiates bacteria by cell wall composition." },
+      // UNIT 3: Ecology
+      { id: "b12-3", unit: 3, unitName: "Ecology", title: "Ecosystem Simulation", objective: "Build an ecosystem and observe population dynamics and predator-prey interactions", theory: "Producers form the base of food chains. Predator-prey interactions create cyclic population patterns. Environmental factors affect all trophic levels." },
+      // UNIT 4: Evolution
+      { id: "b12-4", unit: 4, unitName: "Evolution", title: "Natural Selection Simulator", objective: "Observe how environmental pressures drive allele frequency changes over generations", theory: "Natural selection favors organisms with traits better suited to their environment. Over generations, allele frequencies shift, driving evolution." },
+      // UNIT 5: Nervous System
+      { id: "b12-5", unit: 5, unitName: "Coordination & Response", title: "Pupil Reflex Experiment", objective: "Observe how pupil size changes in response to light intensity", theory: "The pupil reflex is an involuntary response. In bright light, circular muscles contract (constriction). In dim light, radial muscles contract (dilation)." },
+      { id: "b12-6", unit: 5, unitName: "Coordination & Response", title: "Light Refraction Experiment", objective: "Observe how light refracts when passing through water", theory: "Light bends (refracts) when passing from one medium to another due to change in speed. Objects in water appear shifted or bent." },
+      // UNIT 6: Reproduction
+      { id: "b12-7", unit: 6, unitName: "Reproduction", title: "Hormone Cycle (Menstrual Cycle)", objective: "Track hormone levels and ovarian changes through the 28-day cycle", theory: "FSH stimulates follicle growth, estrogen thickens the uterine lining, LH triggers ovulation, progesterone maintains the lining." },
+      // UNIT 7: Genetics
+      { id: "b12-8", unit: 7, unitName: "Genetics", title: "Punnett Square Simulation", objective: "Predict offspring ratios using a Punnett Square for monohybrid crosses", theory: "A monohybrid cross examines one gene. Heterozygous cross (Aa × Aa) yields 1:2:1 genotypic ratio and 3:1 phenotypic ratio." },
     ],
   },
 };
