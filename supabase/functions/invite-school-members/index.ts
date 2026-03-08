@@ -79,13 +79,16 @@ Deno.serve(async (req) => {
 
       try {
         // Invite user via magic link - creates user + sends invitation email
+        const siteUrl = Deno.env.get("SUPABASE_URL")!.replace(".supabase.co", "").replace("https://", "");
+        const appUrl = req.headers.get("origin") || `https://${siteUrl}.lovableproject.com`;
+        
         const { data: invitedUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
           data: {
             full_name,
             invited_school_id: school_id,
             invited_role: role,
           },
-          redirectTo: `${req.headers.get("origin") || supabaseUrl}/login`,
+          redirectTo: `${appUrl}/login`,
         });
 
         if (inviteError) {
