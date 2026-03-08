@@ -103,7 +103,7 @@ export default function LandingPage() {
           >
             <motion.div custom={0} variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-border mb-8">
               <GraduationCap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Grades 7–12 · Ethiopian Curriculum</span>
+              <span className="text-sm font-medium text-muted-foreground">Grades 9–12 · Ethiopian Curriculum</span>
             </motion.div>
             <motion.h1 custom={1} variants={fadeUp} className="text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
               <span className="text-foreground">Ethiopia's </span>
