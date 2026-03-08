@@ -2,7 +2,16 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Send, X, Minimize2, Maximize2, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ReactMarkdown from "react-markdown";
+
+function SimpleMarkdown({ content }: { content: string }) {
+  const html = content
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code class="bg-muted-foreground/20 px-1 rounded text-xs">$1</code>')
+    .replace(/^\* /gm, '• ')
+    .replace(/\n/g, '<br/>');
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -194,7 +203,7 @@ export default function LabAssistant({ context }: LabAssistantProps) {
               >
                 {msg.role === "assistant" ? (
                   <div className="prose prose-sm dark:prose-invert max-w-none [&>p]:mb-2 [&>p:last-child]:mb-0">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <SimpleMarkdown content={msg.content} />
                   </div>
                 ) : (
                   msg.content
