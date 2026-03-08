@@ -205,7 +205,20 @@ export default function SubjectLab() {
         )}
 
         {/* Simulation */}
-        {labId && !showPreQuiz && !showPostQuiz && SimComponent && <SimComponent />}
+        {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
+          <SimulationErrorBoundary
+            onFallback={() => setUse2D(true)}
+            fallback={
+              use2D && SimComponent2D ? (
+                <Suspense fallback={<div className="flex items-center justify-center min-h-[300px]"><p className="text-muted-foreground">Loading 2D simulation...</p></div>}>
+                  <SimComponent2D />
+                </Suspense>
+              ) : undefined
+            }
+          >
+            <SimComponent />
+          </SimulationErrorBoundary>
+        )}
 
         {/* Mark complete + post quiz trigger */}
         {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
