@@ -71,6 +71,7 @@ export default function SubjectLab() {
   const handleLabSelect = (id: string) => {
     setLabId(id);
     resetQuiz();
+    setUse2D(false);
     setShowPreQuiz(true);
   };
 
