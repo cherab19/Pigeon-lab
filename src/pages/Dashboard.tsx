@@ -89,9 +89,11 @@ export default function Dashboard() {
             {userRole !== "super_admin" && (
               <div className="hidden md:flex items-center gap-1 ml-6">
                 <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
-                <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                  <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Lab</Link>
-                </Button>
+                {(userRole === "teacher" || userRole === "student") && (
+                  <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                    <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Lab</Link>
+                  </Button>
+                )}
                 {isAdmin && (
                   <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
                     <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>

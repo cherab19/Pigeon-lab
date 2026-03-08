@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { SubjectCards, ExperimentGrid, totalExperiments, subjectCounts } from "./SharedDashboard";
+import { totalExperiments, subjectCounts } from "./SharedDashboard";
 
 interface Props {
   fullName: string;
@@ -47,44 +47,22 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
         ))}
       </div>
 
-      {/* Quick admin actions */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mb-8">
+      {/* Quick admin action — Manage Members only */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
         <h2 className="text-lg font-display font-semibold mb-4">Quick Actions</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <Link to="/manage-users" className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-5 group">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-display font-semibold group-hover:text-primary transition-colors">Manage Members</h3>
-                <p className="text-xs text-muted-foreground">Add or view teachers and students</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        <Link to="/manage-users" className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-6 group">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Users className="w-6 h-6 text-primary" />
             </div>
-          </Link>
-          <Link to="/lab" className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-5 group">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
-                <Beaker className="w-5 h-5 text-secondary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-display font-semibold group-hover:text-primary transition-colors">Virtual Lab</h3>
-                <p className="text-xs text-muted-foreground">Browse all experiments</p>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <div className="flex-1">
+              <h3 className="font-display font-semibold text-lg group-hover:text-primary transition-colors">Manage Members</h3>
+              <p className="text-sm text-muted-foreground">Add teachers & students individually or import in bulk via CSV, then send magic link invitations</p>
             </div>
-          </Link>
-        </div>
+            <ChevronRight className="w-5 h-5 text-muted-foreground" />
+          </div>
+        </Link>
       </motion.div>
-
-      {/* Subjects */}
-      <div className="mb-4">
-        <h2 className="text-lg font-display font-semibold mb-4">Explore Subjects</h2>
-      </div>
-      <SubjectCards />
-
-      <ExperimentGrid count={6} />
     </>
   );
 }
