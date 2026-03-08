@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Beaker, Atom, FlaskConical, Microscope, BookOpen, Clock, ChevronRight, Search, Bell, User, LogOut } from "lucide-react";
+import { Beaker, Atom, FlaskConical, Microscope, BookOpen, Clock, ChevronRight, Search, Bell, User, LogOut, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { labData } from "@/data/labActivities";
