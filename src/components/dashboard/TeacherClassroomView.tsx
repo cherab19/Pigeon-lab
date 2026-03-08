@@ -100,7 +100,7 @@ export default function TeacherClassroomView() {
     if (!selectedClassroom) return;
 
     const loadClassroomData = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       // Assignments
