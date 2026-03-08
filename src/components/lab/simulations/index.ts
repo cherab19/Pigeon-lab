@@ -17,6 +17,9 @@ import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalRe
 import { LabSafety3D, StatesOfMatter3D, AtomicStructure3D, ChemicalBonding3D, ChemicalReactions3D } from "./chemistry/Grade9Chemistry3D_Batch1";
 import { ConservationOfMass3D, SolutionsLab3D, AcidsBasesLab3D, MetalsNonMetals3D } from "./chemistry/Grade9Chemistry3D_Batch2";
 import { CombinationReaction, DecompositionCuCO3, SingleDisplacement, DoubleDisplacement, StandardSolution, DilutionLab, SolubilityTemp, PHIndicators, AcidMetalReaction, AcidBaseTitration, ExoEndothermic, ElectrochemicalCell, ElectrolysisWater, ReactivitySeries, MetalExtraction, HydrocarbonCombustion, BromineTest } from "./chemistry/Grade10Chemistry";
+import { CombinationReaction3D, DecompositionCuCO3_3D, SingleDisplacement3D, DoubleDisplacement3D, StandardSolution3D, DilutionLab3D } from "./chemistry/Grade10Chemistry3D_Batch1";
+import { SolubilityTemp3D, PHIndicators3D, AcidMetalReaction3D, AcidBaseTitration3D, ExoEndothermic3D } from "./chemistry/Grade10Chemistry3D_Batch2";
+import { ElectrochemicalCell3D, ElectrolysisWater3D, ReactivitySeries3D, MetalExtraction3D, HydrocarbonCombustion3D, BromineTest3D } from "./chemistry/Grade10Chemistry3D_Batch3";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
 import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
@@ -45,12 +48,12 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p12-6": MagneticFieldWire3D, "p12-7": ElectromagneticInduction3D,
   "p12-8": PNJunctionDiode3D, "p12-9": HalfWaveRectifier3D,
   "c9-1": LabSafety3D, "c9-2": StatesOfMatter3D, "c9-3": AtomicStructure3D, "c9-4": ChemicalBonding3D, "c9-5": ChemicalReactions3D, "c9-6": ConservationOfMass3D, "c9-7": SolutionsLab3D, "c9-8": AcidsBasesLab3D, "c9-9": MetalsNonMetals3D,
-  "c10-1": CombinationReaction, "c10-2": DecompositionCuCO3, "c10-3": SingleDisplacement, "c10-4": DoubleDisplacement,
-  "c10-5": StandardSolution, "c10-6": DilutionLab, "c10-7": SolubilityTemp,
-  "c10-8": PHIndicators, "c10-9": AcidMetalReaction, "c10-10": AcidBaseTitration,
-  "c10-11": ExoEndothermic, "c10-12": ElectrochemicalCell, "c10-13": ElectrolysisWater,
-  "c10-14": ReactivitySeries, "c10-15": MetalExtraction,
-  "c10-16": HydrocarbonCombustion, "c10-17": BromineTest,
+  "c10-1": CombinationReaction3D, "c10-2": DecompositionCuCO3_3D, "c10-3": SingleDisplacement3D, "c10-4": DoubleDisplacement3D,
+  "c10-5": StandardSolution3D, "c10-6": DilutionLab3D, "c10-7": SolubilityTemp3D,
+  "c10-8": PHIndicators3D, "c10-9": AcidMetalReaction3D, "c10-10": AcidBaseTitration3D,
+  "c10-11": ExoEndothermic3D, "c10-12": ElectrochemicalCell3D, "c10-13": ElectrolysisWater3D,
+  "c10-14": ReactivitySeries3D, "c10-15": MetalExtraction3D,
+  "c10-16": HydrocarbonCombustion3D, "c10-17": BromineTest3D,
   "c11-1": CathodeRayTube, "c11-2": RutherfordExperiment, "c11-3": PhotoelectricEffect,
   "c11-4": IonicBondFormation, "c11-5": VSEPRGeometry, "c11-6": MetallicBonding,
   "c11-7": KineticMolecularTheory, "c11-8": BoylesLaw, "c11-9": HeatingCurve,
