@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Beaker, Atom, FlaskConical, Microscope, BookOpen, Clock, ChevronRight, Search, Bell, User, LogOut } from "lucide-react";
+import { Beaker, Atom, FlaskConical, Microscope, BookOpen, Clock, ChevronRight, Search, Bell, User, LogOut, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { labData } from "@/data/labActivities";
@@ -23,6 +27,7 @@ const gradientMap: Record<string, string> = {
 export default function Dashboard() {
   const [profile, setProfile] = useState<{ full_name: string; school_id: string | null } | null>(null);
   const [schoolName, setSchoolName] = useState("");
+  const [isSchoolAdmin, setIsSchoolAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -51,6 +56,15 @@ export default function Dashboard() {
           if (school) setSchoolName(school.name);
         }
       }
+
+      // Check if school admin
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "school_admin" as any);
+      if (roleData && roleData.length > 0) setIsSchoolAdmin(true);
+
       setLoading(false);
     };
     load();
@@ -104,12 +118,31 @@ export default function Dashboard() {
             <div className="hidden md:flex items-center gap-1 ml-6">
               <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
               <Button variant="ghost" size="sm" className="text-muted-foreground" asChild><Link to="/lab">Lab</Link></Button>
+              {isSchoolAdmin && (
+                <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                  <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>
+                </Button>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
-              <LogOut className="w-4 h-4 mr-1" /> Sign Out
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-muted-foreground">
+                  <LogOut className="w-4 h-4 mr-1" /> Sign Out
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Sign out?</AlertDialogTitle>
+                  <AlertDialogDescription>Are you sure you want to sign out of your account?</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>Sign Out</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
               <User className="w-4 h-4 text-primary-foreground" />
             </div>

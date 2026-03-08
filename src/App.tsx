@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import ManageUsers from "./pages/ManageUsers";
 import VirtualLab from "./pages/VirtualLab";
 import SubjectLab from "./pages/SubjectLab";
 import NotFound from "./pages/NotFound";
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/lab" element={<VirtualLab />} />
           <Route path="/lab/:subject" element={<SubjectLab />} />
           <Route path="*" element={<NotFound />} />
