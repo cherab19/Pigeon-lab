@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 import { MeasuringLength, NewtonsSecondLaw, PendulumLab, WaveSimulation } from "./physics/Grade9Physics";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
-import { ProjectileMotion, InclinedPlane, CoulombsLaw, HeatConduction } from "./physics/Grade11Physics";
+import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { AdvancedProjectile, FluidPressure, MagneticField, DiodeRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, ConservationOfMass } from "./chemistry/Grade9Chemistry";
 import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators } from "./chemistry/Grade10Chemistry";
