@@ -14,6 +14,8 @@ import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab
 import { MRISimulation3D, HorizontalProjectile3D, AngledProjectile3D, FluidPressureLab3D, ArchimedesPrinciple3D } from "./physics/Grade12Physics3D_Batch1";
 import { MagneticFieldWire3D, ElectromagneticInduction3D, PNJunctionDiode3D, HalfWaveRectifier3D } from "./physics/Grade12Physics3D_Batch2";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
+import { LabSafety3D, StatesOfMatter3D, AtomicStructure3D, ChemicalBonding3D, ChemicalReactions3D } from "./chemistry/Grade9Chemistry3D_Batch1";
+import { ConservationOfMass3D, SolutionsLab3D, AcidsBasesLab3D, MetalsNonMetals3D } from "./chemistry/Grade9Chemistry3D_Batch2";
 import { CombinationReaction, DecompositionCuCO3, SingleDisplacement, DoubleDisplacement, StandardSolution, DilutionLab, SolubilityTemp, PHIndicators, AcidMetalReaction, AcidBaseTitration, ExoEndothermic, ElectrochemicalCell, ElectrolysisWater, ReactivitySeries, MetalExtraction, HydrocarbonCombustion, BromineTest } from "./chemistry/Grade10Chemistry";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
 import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
