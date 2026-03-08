@@ -8,8 +8,8 @@ import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators }
 import { RutherfordExperiment, PhotoelectricEffect, ReactionRate, LeChatelierPrinciple } from "./chemistry/Grade11Chemistry";
 import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "./chemistry/Grade12Chemistry";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
-import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling } from "./biology/Grade10Biology";
-import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling } from "./biology/Grade11Biology";
+import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
+import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
 import { BacterialTransformation, NaturalSelection, ReflexArcSynapse, HormoneCycle } from "./biology/Grade12Biology";
 
 export const simulationRegistry: Record<string, ComponentType> = {
@@ -33,7 +33,9 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "b10-15": IdentifyingBones,
   "b10-16": MeasuringPulseRate,
   "b10-17": ReflexActionDemo,
-  "b10-18": QuadratSampling,
-  "b11-1": EnzymeActivity, "b11-2": Photosynthesis, "b11-3": HumanTissues, "b11-4": MonohybridCross,
+  "b10-18": B10QuadratSampling,
+  "b11-1": CellStructureMicroscope, "b11-2": OsmosisDiffusion, "b11-3": FoodTests11, "b11-4": EnzymeActivity,
+  "b11-5": Photosynthesis, "b11-6": Respiration, "b11-7": PlantTissues, "b11-8": Transpiration,
+  "b11-9": HumanTissues, "b11-10": BloodCells, "b11-11": MonohybridCross, "b11-12": B11QuadratSampling,
   "b12-1": BacterialTransformation, "b12-2": NaturalSelection, "b12-3": ReflexArcSynapse, "b12-4": HormoneCycle,
 };
