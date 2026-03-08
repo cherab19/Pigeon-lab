@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 export function useSubscriptionAccess() {
   const [hasAccess, setHasAccess] = useState<boolean | null>(null);
@@ -7,7 +8,7 @@ export function useSubscriptionAccess() {
 
   useEffect(() => {
     const check = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) {
         setHasAccess(false);
         setLoading(false);

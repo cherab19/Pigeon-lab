@@ -129,9 +129,7 @@ export default function Signup() {
     });
 
     if (!error) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const user = await getSafeUser();
 
       if (user) {
         await supabase.from("profiles").update({ full_name: inviteForm.fullName }).eq("user_id", user.id);

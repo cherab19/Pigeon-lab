@@ -11,6 +11,7 @@ import SuperAdminDashboardView from "@/components/dashboard/SuperAdminDashboardV
 import AdminDashboardView from "@/components/dashboard/AdminDashboardView";
 import TeacherDashboardView from "@/components/dashboard/TeacherDashboardView";
 import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
+import { getSafeUser } from "@/lib/safeAuth";
 
 type AppRole = "super_admin" | "school_admin" | "teacher" | "student";
 
@@ -23,39 +24,44 @@ export default function Dashboard() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate("/login"); return; }
-
-      const { data: prof } = await supabase
-        .from("profiles")
-        .select("full_name, school_id")
-        .eq("user_id", user.id)
-        .single();
-
-      if (prof) {
-        setProfile(prof);
-        if (prof.school_id) {
-          const { data: school } = await supabase
-            .from("schools")
-            .select("name")
-            .eq("id", prof.school_id)
-            .single();
-          if (school) setSchoolName(school.name);
+      try {
+        const user = await getSafeUser();
+        if (!user) {
+          navigate("/login");
+          return;
         }
+
+        const { data: prof } = await supabase
+          .from("profiles")
+          .select("full_name, school_id")
+          .eq("user_id", user.id)
+          .single();
+
+        if (prof) {
+          setProfile(prof);
+          if (prof.school_id) {
+            const { data: school } = await supabase
+              .from("schools")
+              .select("name")
+              .eq("id", prof.school_id)
+              .single();
+            if (school) setSchoolName(school.name);
+          }
+        }
+
+        const { data: roles } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id);
+
+        if (roles && roles.length > 0) {
+          const priority: AppRole[] = ["super_admin", "school_admin", "teacher", "student"];
+          const found = priority.find(r => roles.some(rd => rd.role === r));
+          if (found) setUserRole(found);
+        }
+      } finally {
+        setLoading(false);
       }
-
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id);
-
-      if (roles && roles.length > 0) {
-        const priority: AppRole[] = ["super_admin", "school_admin", "teacher", "student"];
-        const found = priority.find(r => roles.some(rd => rd.role === r));
-        if (found) setUserRole(found);
-      }
-
-      setLoading(false);
     };
     load();
   }, [navigate]);

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 export function useProgressTracker(experimentId: string | undefined, subject: string | undefined, grade: string | undefined) {
   const startTime = useRef<number>(Date.now());
@@ -12,7 +13,7 @@ export function useProgressTracker(experimentId: string | undefined, subject: st
     startTime.current = Date.now();
 
     const trackStart = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       await supabase
@@ -31,7 +32,7 @@ export function useProgressTracker(experimentId: string | undefined, subject: st
 
   const markComplete = useCallback(async () => {
     if (!experimentId) return;
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) return;
 
     const elapsed = Math.floor((Date.now() - startTime.current) / 1000);

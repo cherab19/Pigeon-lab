@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Beaker, LogIn, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getSafeSession } from "@/lib/safeAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,13 +26,15 @@ export default function Login() {
     });
 
     // Also check existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkSession = async () => {
+      const session = await getSafeSession();
       if (session) {
         navigate("/dashboard", { replace: true });
       } else {
         setCheckingSession(false);
       }
-    });
+    };
+    checkSession();
 
     return () => subscription.unsubscribe();
   }, [navigate]);
