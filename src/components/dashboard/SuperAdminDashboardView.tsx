@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   School, Users, GraduationCap, BookOpen, Activity, Shield,
   MapPin, Mail, Phone, CreditCard, DollarSign, AlertTriangle,
-  CheckCircle, Clock, Pause, Edit2, ChevronDown, ChevronUp
+  CheckCircle, Clock, Pause, Edit2, ChevronDown, ChevronUp, BarChart3
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { totalExperiments } from "./SharedDashboard";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -18,6 +19,9 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import SuperAdminSchoolManager from "./SuperAdminSchoolManager";
+import SuperAdminUserManager from "./SuperAdminUserManager";
+import SuperAdminAnalyticsCharts from "./SuperAdminAnalyticsCharts";
 
 interface SubscriptionData {
   id: string;
@@ -76,7 +80,6 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
   const [editStudentCount, setEditStudentCount] = useState("");
   const [editNotes, setEditNotes] = useState("");
   const [saving, setSaving] = useState(false);
-  const [expandedSchool, setExpandedSchool] = useState<string | null>(null);
 
   const loadData = async () => {
     const [statsRes, subRes] = await Promise.all([
@@ -143,10 +146,7 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
         <>
           {/* Platform KPIs */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-              <Activity className="w-5 h-5 text-primary" /> Platform Overview
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {[
                 { label: "Schools", value: platformStats?.total_schools ?? 0, icon: School, color: "text-primary" },
                 { label: "Total Users", value: platformStats?.total_users ?? 0, icon: Users, color: "text-secondary" },
@@ -170,12 +170,9 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
             </div>
           </motion.div>
 
-          {/* Revenue & Subscription KPIs */}
+          {/* Revenue mini KPIs */}
           {subStats && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-              <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-primary" /> Revenue & Subscriptions
-              </h2>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                 {[
                   { label: "Monthly Revenue", value: `${subStats.total_revenue} ETB`, icon: DollarSign, color: "text-primary" },
@@ -189,7 +186,7 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
                     key={c.label}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * 0.04 }}
+                    transition={{ delay: 0.25 + i * 0.04 }}
                     className="bg-card rounded-xl p-4 border border-border shadow-card"
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -203,123 +200,50 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
             </motion.div>
           )}
 
-          {/* School Management */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mb-8"
-          >
-            <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-              <School className="w-5 h-5 text-primary" /> School Management ({subStats?.subscriptions.length ?? 0})
-            </h2>
+          {/* Tabbed Management Section */}
+          <Tabs defaultValue="schools" className="mb-8">
+            <TabsList className="mb-6">
+              <TabsTrigger value="schools" className="gap-1.5">
+                <School className="w-4 h-4" /> Schools
+              </TabsTrigger>
+              <TabsTrigger value="subscriptions" className="gap-1.5">
+                <DollarSign className="w-4 h-4" /> Subscriptions
+              </TabsTrigger>
+              <TabsTrigger value="users" className="gap-1.5">
+                <Users className="w-4 h-4" /> Users
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="gap-1.5">
+                <BarChart3 className="w-4 h-4" /> Analytics
+              </TabsTrigger>
+            </TabsList>
 
-            {!subStats?.subscriptions.length ? (
-              <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
-                <School className="w-10 h-10 mx-auto mb-3 opacity-40" />
-                <p className="font-medium">No schools registered yet</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {subStats.subscriptions.map((school, i) => {
-                  const cfg = statusConfig[school.status] || statusConfig.trial;
-                  const StatusIcon = cfg.icon;
-                  const isExpanded = expandedSchool === school.school_id;
+            <TabsContent value="schools">
+              <SuperAdminSchoolManager
+                subscriptions={subStats?.subscriptions || []}
+                onRefresh={async () => { setLoading(true); await loadData(); }}
+              />
+            </TabsContent>
 
-                  return (
-                    <motion.div
-                      key={school.school_id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.45 + i * 0.03 }}
-                      className="bg-card rounded-xl border border-border shadow-card overflow-hidden"
-                    >
-                      {/* Main Row */}
-                      <div
-                        className="p-4 flex items-center gap-4 cursor-pointer hover:bg-muted/30 transition-colors"
-                        onClick={() => setExpandedSchool(isExpanded ? null : school.school_id)}
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                          <School className="w-5 h-5 text-primary" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-display font-semibold truncate">{school.school_name}</h3>
-                          <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
-                            <span>{school.total_members} members</span>
-                            <span>·</span>
-                            <span>{school.student_count} paying students</span>
-                          </div>
-                        </div>
-                        <Badge variant="outline" className={`${cfg.color} border shrink-0`}>
-                          <StatusIcon className="w-3 h-3 mr-1" />
-                          {cfg.label}
-                        </Badge>
-                        <div className="text-right shrink-0 hidden sm:block">
-                          <span className="font-display font-bold">{school.monthly_revenue} ETB</span>
-                          <p className="text-xs text-muted-foreground">/month</p>
-                        </div>
-                        <Button variant="ghost" size="icon" className="shrink-0">
-                          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                        </Button>
-                      </div>
+            <TabsContent value="subscriptions">
+              <SubscriptionManager
+                subStats={subStats}
+                statusConfig={statusConfig}
+                onEdit={openEdit}
+              />
+            </TabsContent>
 
-                      {/* Expanded Details */}
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          className="border-t border-border px-4 pb-4 pt-3"
-                        >
-                          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
-                            {school.school_location && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <MapPin className="w-3.5 h-3.5" /> {school.school_location}
-                              </div>
-                            )}
-                            {school.school_email && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Mail className="w-3.5 h-3.5" /> {school.school_email}
-                              </div>
-                            )}
-                            {school.school_phone && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Phone className="w-3.5 h-3.5" /> {school.school_phone}
-                              </div>
-                            )}
-                            <div className="flex items-center gap-2 text-muted-foreground">
-                              <CreditCard className="w-3.5 h-3.5" />
-                              {school.price_per_student} ETB × {school.student_count} students
-                            </div>
-                          </div>
-                          <div className="grid sm:grid-cols-2 gap-4 text-sm mb-4">
-                            <div>
-                              <span className="text-xs text-muted-foreground">Billing Period</span>
-                              <p className="font-mono text-xs mt-0.5">
-                                {new Date(school.current_period_start).toLocaleDateString()} — {new Date(school.current_period_end).toLocaleDateString()}
-                              </p>
-                            </div>
-                            {school.notes && (
-                              <div>
-                                <span className="text-xs text-muted-foreground">Notes</span>
-                                <p className="text-xs mt-0.5">{school.notes}</p>
-                              </div>
-                            )}
-                          </div>
-                          <Button size="sm" variant="outline" onClick={() => openEdit(school)}>
-                            <Edit2 className="w-3.5 h-3.5 mr-1" /> Edit Subscription
-                          </Button>
-                        </motion.div>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            )}
-          </motion.div>
+            <TabsContent value="users">
+              <SuperAdminUserManager />
+            </TabsContent>
+
+            <TabsContent value="analytics">
+              <SuperAdminAnalyticsCharts />
+            </TabsContent>
+          </Tabs>
         </>
       )}
 
-      {/* Edit Dialog */}
+      {/* Edit Subscription Dialog */}
       <Dialog open={!!editingSchool} onOpenChange={() => setEditingSchool(null)}>
         <DialogContent>
           <DialogHeader>
@@ -369,5 +293,122 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+// Extracted subscription list component
+function SubscriptionManager({
+  subStats,
+  statusConfig,
+  onEdit,
+}: {
+  subStats: SubStats | null;
+  statusConfig: Record<string, { label: string; color: string; icon: typeof CheckCircle }>;
+  onEdit: (s: SubscriptionData) => void;
+}) {
+  const [expandedSchool, setExpandedSchool] = useState<string | null>(null);
+
+  if (!subStats?.subscriptions.length) {
+    return (
+      <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
+        <School className="w-10 h-10 mx-auto mb-3 opacity-40" />
+        <p className="font-medium">No subscriptions yet</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {subStats.subscriptions.map((school, i) => {
+        const cfg = statusConfig[school.status] || statusConfig.trial;
+        const StatusIcon = cfg.icon;
+        const isExpanded = expandedSchool === school.school_id;
+
+        return (
+          <motion.div
+            key={school.school_id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.03 }}
+            className="bg-card rounded-xl border border-border shadow-card overflow-hidden"
+          >
+            <div
+              className="p-4 flex items-center gap-4 cursor-pointer hover:bg-muted/30 transition-colors"
+              onClick={() => setExpandedSchool(isExpanded ? null : school.school_id)}
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <School className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-display font-semibold truncate">{school.school_name}</h3>
+                <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
+                  <span>{school.total_members} members</span>
+                  <span>·</span>
+                  <span>{school.student_count} paying students</span>
+                </div>
+              </div>
+              <Badge variant="outline" className={`${cfg.color} border shrink-0`}>
+                <StatusIcon className="w-3 h-3 mr-1" />
+                {cfg.label}
+              </Badge>
+              <div className="text-right shrink-0 hidden sm:block">
+                <span className="font-display font-bold">{school.monthly_revenue} ETB</span>
+                <p className="text-xs text-muted-foreground">/month</p>
+              </div>
+              <Button variant="ghost" size="icon" className="shrink-0">
+                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </Button>
+            </div>
+
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                className="border-t border-border px-4 pb-4 pt-3"
+              >
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
+                  {school.school_location && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <MapPin className="w-3.5 h-3.5" /> {school.school_location}
+                    </div>
+                  )}
+                  {school.school_email && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Mail className="w-3.5 h-3.5" /> {school.school_email}
+                    </div>
+                  )}
+                  {school.school_phone && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Phone className="w-3.5 h-3.5" /> {school.school_phone}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <CreditCard className="w-3.5 h-3.5" />
+                    {school.price_per_student} ETB × {school.student_count} students
+                  </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4 text-sm mb-4">
+                  <div>
+                    <span className="text-xs text-muted-foreground">Billing Period</span>
+                    <p className="font-mono text-xs mt-0.5">
+                      {new Date(school.current_period_start).toLocaleDateString()} — {new Date(school.current_period_end).toLocaleDateString()}
+                    </p>
+                  </div>
+                  {school.notes && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">Notes</span>
+                      <p className="text-xs mt-0.5">{school.notes}</p>
+                    </div>
+                  )}
+                </div>
+                <Button size="sm" variant="outline" onClick={() => onEdit(school)}>
+                  <Edit2 className="w-3.5 h-3.5 mr-1" /> Edit Subscription
+                </Button>
+              </motion.div>
+            )}
+          </motion.div>
+        );
+      })}
+    </div>
   );
 }
