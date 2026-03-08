@@ -67,7 +67,7 @@ export default function SubjectLab() {
   const SimComponent = use2D ? SimComponent2D : SimComponent3D;
   const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
-  const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
+  
 
   const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); resetQuiz(); };
   const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); resetQuiz(); };
