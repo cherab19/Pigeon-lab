@@ -243,6 +243,50 @@ export default function ManageUsers() {
     }
   };
 
+  // Update member role
+  const handleUpdateRole = async () => {
+    if (!editingMember) return;
+    setSavingRole(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("manage-school-member", {
+        body: { action: "update_role", member_user_id: editingMember.user_id, new_role: editRole },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || error?.message || "Failed to update role");
+      } else {
+        toast.success(`${editingMember.full_name}'s role updated to ${editRole}`);
+        setEditingMember(null);
+        loadMembers();
+      }
+    } catch (e: any) {
+      toast.error(e.message || "An error occurred");
+    } finally {
+      setSavingRole(false);
+    }
+  };
+
+  // Remove member from school
+  const handleRemoveMember = async () => {
+    if (!removingMember) return;
+    setRemoving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("manage-school-member", {
+        body: { action: "remove", member_user_id: removingMember.user_id },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || error?.message || "Failed to remove member");
+      } else {
+        toast.success(`${removingMember.full_name} removed from school`);
+        setRemovingMember(null);
+        loadMembers();
+      }
+    } catch (e: any) {
+      toast.error(e.message || "An error occurred");
+    } finally {
+      setRemoving(false);
+    }
+  };
+
   const roleBadgeVariant = (role: string) => {
     if (role === "school_admin") return "default";
     if (role === "teacher") return "secondary";
