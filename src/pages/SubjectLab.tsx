@@ -121,6 +121,16 @@ export default function SubjectLab() {
         )}
         {SimComponent && <SimComponent />}
       </div>
+
+      {/* AI Lab Assistant */}
+      <LabAssistant
+        context={{
+          subject: subject,
+          grade: grade ? `Grade ${grade}` : undefined,
+          experiment: selectedLab?.title,
+          step: selectedLab ? `Step in progress` : undefined,
+        }}
+      />
     </div>
   );
 }
