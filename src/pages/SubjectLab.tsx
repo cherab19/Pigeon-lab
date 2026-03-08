@@ -25,6 +25,7 @@ export default function SubjectLab() {
   const [showPreQuiz, setShowPreQuiz] = useState(false);
   const [showPostQuiz, setShowPostQuiz] = useState(false);
   const [preQuizDone, setPreQuizDone] = useState(false);
+  const [use2D, setUse2D] = useState(false);
 
   if (accessLoading) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
