@@ -5,6 +5,8 @@ import { MeasuringLength3D, BeamBalance3D, TimeMeasurement3D, DistanceDisplaceme
 import { NewtonsSecondLaw3D, WorkEnergy3D, HookesLaw3D, Lever3D, InclinedPlane3D } from "./physics/Grade9Physics3D_Batch2";
 import { WaveSimulation3D, ThermalExpansion3D, TemperatureMeasurement3D } from "./physics/Grade9Physics3D_Batch3";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
+import { VectorAddition3D, VectorResolution3D, DistanceDisplacement10_3D, AccelerationSim3D, StressStrain3D } from "./physics/Grade10Physics3D_Batch1";
+import { TorqueEquilibrium3D, CircuitBuilder3D, MagneticField3D, Reflection3D, ReflectionRefraction3D } from "./physics/Grade10Physics3D_Batch2";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
