@@ -35,6 +35,9 @@ import { ClassificationLab3D, ScientificMethodSim3D, MicroscopePartsLab3D, Onion
 import { StarchTestLab3D as B10StarchTest3D, ProteinTestLab3D as B10ProteinTest3D, LipidTestLab3D, CO2ProductionTest3D, BreathingRateInvestigation3D, TranspirationLab3D } from "./biology/Grade10Biology3D_Batch2";
 import { WaterTransportDye3D, FlowerDissection3D, IdentifyingBones3D, MeasuringPulseRate3D, ReflexActionDemo3D, QuadratSampling3D as B10QuadratSampling3D } from "./biology/Grade10Biology3D_Batch3";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
+import { CellStructureMicroscope3D, OsmosisDiffusion3D, FoodTests3D, EnzymeActivity3D } from "./biology/Grade11Biology3D_Batch1";
+import { Photosynthesis3D, Respiration3D, PlantTissues3D, Transpiration3D } from "./biology/Grade11Biology3D_Batch2";
+import { HumanTissues3D, BloodCells3D, MonohybridCross3D, QuadratSampling3D as B11QuadratSampling3D } from "./biology/Grade11Biology3D_Batch3";
 import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
 
 export const simulationRegistry: Record<string, ComponentType> = {
