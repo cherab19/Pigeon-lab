@@ -67,6 +67,14 @@ export default function ManageUsers() {
   const [inviteResults, setInviteResults] = useState<InviteResult[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Edit/Delete state
+  const [editingMember, setEditingMember] = useState<MemberRow | null>(null);
+  const [editRole, setEditRole] = useState<"teacher" | "student">("student");
+  const [savingRole, setSavingRole] = useState(false);
+  const [removingMember, setRemovingMember] = useState<MemberRow | null>(null);
+  const [removing, setRemoving] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
+
   const loadMembers = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { navigate("/login"); return; }
