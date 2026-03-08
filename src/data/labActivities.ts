@@ -150,10 +150,21 @@ export const labData: Record<string, Record<number, LabActivity[]>> = {
       { id: "c11-15", unit: 6, unitName: "Organic Chemistry", title: "Saponification (Soap Making)", objective: "Produce soap by reacting oil with NaOH", theory: "Saponification: Fat/Oil + NaOH → Soap + Glycerol. The process breaks ester bonds in triglycerides." },
     ],
     12: [
-      { id: "c12-1", unit: 1, unitName: "Acid-Base Equilibria", title: "Weak Acid Ionization (Ka)", objective: "Calculate the ionization constant Ka for a weak acid", theory: "Weak acids partially ionize: HA ⇌ H⁺ + A⁻. Ka = [H⁺][A⁻]/[HA]. The ICE table method tracks concentration changes." },
-      { id: "c12-2", unit: 1, unitName: "Acid-Base Equilibria", title: "Buffer Solutions", objective: "Observe how buffer solutions resist pH changes", theory: "Buffers contain a weak acid and its conjugate base. They neutralize added H⁺ or OH⁻, maintaining nearly constant pH within the buffer region." },
-      { id: "c12-3", unit: 2, unitName: "Electrochemistry", title: "Voltaic (Galvanic) Cell", objective: "Build a voltaic cell and observe electron flow and voltage generation", theory: "A voltaic cell converts chemical energy to electrical energy. Zn is oxidized (anode), Cu²⁺ is reduced (cathode). Standard cell potential ≈ 1.10V." },
-      { id: "c12-4", unit: 3, unitName: "Industrial Chemistry", title: "Haber Process", objective: "Simulate industrial ammonia production and optimize conditions", theory: "N₂ + 3H₂ ⇌ 2NH₃. High pressure and moderate temperature with iron catalyst maximize yield. This is a key industrial equilibrium process." },
+      // UNIT 1: Acid-Base Equilibria
+      { id: "c12-1", unit: 1, unitName: "Acid-Base Equilibria", title: "Indicators & Acid-Base Properties", objective: "Identify acids, bases, and neutral solutions using indicators", theory: "Indicators change color at specific pH ranges. Litmus, phenolphthalein, and methyl orange respond differently to acidic, neutral, and basic solutions." },
+      { id: "c12-2", unit: 1, unitName: "Acid-Base Equilibria", title: "pH Meter Simulation", objective: "Measure pH of solutions and observe changes when acids/bases are added", theory: "pH = -log[H⁺]. pH < 7 is acidic, pH = 7 is neutral, pH > 7 is basic. Adding acid lowers pH; adding base raises it." },
+      { id: "c12-3", unit: 1, unitName: "Acid-Base Equilibria", title: "Weak Acid Ionization (Ka)", objective: "Calculate Ka and % ionization using the ICE table method", theory: "Weak acids partially ionize: HA ⇌ H⁺ + A⁻. Ka = [H⁺][A⁻]/[HA]. Dilute solutions show higher % ionization." },
+      { id: "c12-4", unit: 1, unitName: "Acid-Base Equilibria", title: "Buffer Solutions", objective: "Observe how buffer solutions resist pH changes compared to water", theory: "Buffers contain a weak acid and its conjugate base. They neutralize added H⁺ or OH⁻, maintaining nearly constant pH." },
+      { id: "c12-5", unit: 1, unitName: "Acid-Base Equilibria", title: "Acid-Base Titration", objective: "Determine the normality of HCl using standard NaOH", theory: "At the equivalence point, moles of acid = moles of base. N₁V₁ = N₂V₂. Phenolphthalein turns pink at pH ~8.2." },
+      // UNIT 2: Electrochemistry
+      { id: "c12-6", unit: 2, unitName: "Electrochemistry", title: "Electrolysis & Metal Deposition", objective: "Determine mass of copper deposited using Faraday's law", theory: "Cu²⁺ + 2e⁻ → Cu at cathode. Mass = (Q × M) / (n × F). Faraday's constant F = 96485 C/mol." },
+      { id: "c12-7", unit: 2, unitName: "Electrochemistry", title: "Voltaic (Galvanic) Cell", objective: "Build a Zn-Cu cell and observe electron flow and voltage", theory: "Zn oxidized at anode, Cu²⁺ reduced at cathode. E°cell = 1.10V. Nernst equation adjusts for concentration." },
+      // UNIT 3: Industrial Chemistry
+      { id: "c12-8", unit: 3, unitName: "Industrial Chemistry", title: "Haber Process", objective: "Optimize industrial NH₃ production conditions", theory: "N₂ + 3H₂ ⇌ 2NH₃. High pressure, moderate temperature, Fe catalyst. Balance between yield and rate." },
+      // UNIT 4: Polymers
+      { id: "c12-9", unit: 4, unitName: "Polymers", title: "Addition Polymerization", objective: "Observe polymer chain formation from ethene monomers", theory: "Unsaturated monomers join by breaking C=C double bonds. n(CH₂=CH₂) → −(CH₂−CH₂)ₙ− (polyethylene)." },
+      // UNIT 5: Environmental Chemistry
+      { id: "c12-10", unit: 5, unitName: "Environmental Chemistry", title: "Air Pollution & Acid Rain", objective: "Investigate how factory emissions cause acid rain", theory: "SO₂ + H₂O → H₂SO₃. NO₂ + H₂O → HNO₃. Acid rain (pH < 5.6) damages ecosystems and infrastructure." },
     ],
   },
   biology: {
