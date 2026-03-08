@@ -56,6 +56,15 @@ export default function Dashboard() {
           if (school) setSchoolName(school.name);
         }
       }
+
+      // Check if school admin
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "school_admin" as any);
+      if (roleData && roleData.length > 0) setIsSchoolAdmin(true);
+
       setLoading(false);
     };
     load();
