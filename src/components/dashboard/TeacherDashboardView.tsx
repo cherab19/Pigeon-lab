@@ -46,6 +46,9 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
         </Button>
       </motion.div>
 
+      {/* Classroom Management */}
+      <TeacherClassroomView />
+
       {/* Student Analytics — the core of teacher dashboard */}
       <TeacherAnalytics />
 

@@ -109,6 +109,9 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
         </motion.div>
       )}
 
+      {/* My Classes - Assignments & Announcements */}
+      <StudentClassroomView />
+
       {/* Progress & Achievements */}
       <StudentProgress />
 
