@@ -7,6 +7,7 @@ import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboar
 import StudentProgress from "./StudentProgress";
 import StudentClassroomView from "./StudentClassroomView";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 interface Props {
   fullName: string;
