@@ -19,8 +19,10 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "robots.txt"],
+      devOptions: { enabled: false },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,webp,woff2}"],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
