@@ -77,7 +77,7 @@ export default function ManageUsers() {
   const [currentUserId, setCurrentUserId] = useState<string>("");
 
   const loadMembers = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) { navigate("/login"); return; }
     setCurrentUserId(user.id);
 
