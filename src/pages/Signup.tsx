@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Beaker, Loader2, School, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getSafeSession, getSafeUser } from "@/lib/safeAuth";
 
 type InviteMeta = {
   full_name?: string;
@@ -42,7 +43,7 @@ export default function Signup() {
   useEffect(() => {
     let mounted = true;
 
-    const hydrateInviteState = (session: Awaited<ReturnType<typeof supabase.auth.getSession>>["data"]["session"]) => {
+    const hydrateInviteState = (session: Awaited<ReturnType<typeof getSafeSession>>) => {
       if (!mounted) return;
       const metadata = (session?.user?.user_metadata || {}) as InviteMeta;
       if (session && metadata.invited_school_id) {
@@ -57,7 +58,7 @@ export default function Signup() {
       setCheckingInviteSession(false);
     };
 
-    supabase.auth.getSession().then(({ data }) => hydrateInviteState(data.session));
+    getSafeSession().then(hydrateInviteState);
 
     const {
       data: { subscription },
