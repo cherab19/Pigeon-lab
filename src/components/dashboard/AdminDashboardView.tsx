@@ -3,13 +3,15 @@ import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight } from "luc
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, ExperimentGrid, totalExperiments, subjectCounts } from "./SharedDashboard";
+import SuperAdminAnalytics from "./SuperAdminAnalytics";
 
 interface Props {
   fullName: string;
   schoolName: string;
+  isSuperAdmin?: boolean;
 }
 
-export default function AdminDashboardView({ fullName, schoolName }: Props) {
+export default function AdminDashboardView({ fullName, schoolName, isSuperAdmin }: Props) {
   return (
     <>
       {/* Welcome */}
