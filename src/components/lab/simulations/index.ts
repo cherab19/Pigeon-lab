@@ -32,7 +32,7 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p12-4": FluidPressureLab, "p12-5": ArchimedesPrinciple,
   "p12-6": MagneticFieldWire, "p12-7": ElectromagneticInduction,
   "p12-8": PNJunctionDiode, "p12-9": HalfWaveRectifier,
-  "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalReactions, "c9-5": ConservationOfMass,
+  "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalBonding, "c9-5": ChemicalReactions, "c9-6": ConservationOfMass, "c9-7": SolutionsLab, "c9-8": AcidsBasesLab, "c9-9": MetalsNonMetals,
   "c10-1": SingleDisplacement, "c10-2": StandardSolution, "c10-3": AcidBaseTitration, "c10-4": PHIndicators,
   "c11-1": RutherfordExperiment, "c11-2": PhotoelectricEffect, "c11-3": ReactionRate, "c11-4": LeChatelierPrinciple,
   "c12-1": WeakAcidIonization, "c12-2": BufferSolutions, "c12-3": VoltaicCell, "c12-4": HaberProcess,
