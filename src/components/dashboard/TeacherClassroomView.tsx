@@ -78,7 +78,7 @@ export default function TeacherClassroomView() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       const { data: cls } = await supabase.from("classrooms")
