@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 import { MeasuringLength, NewtonsSecondLaw, PendulumLab, WaveSimulation } from "./physics/Grade9Physics";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
-import { ProjectileMotion, InclinedPlane, CoulombsLaw, HeatConduction } from "./physics/Grade11Physics";
+import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { AdvancedProjectile, FluidPressure, MagneticField, DiodeRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, ConservationOfMass } from "./chemistry/Grade9Chemistry";
 import { SingleDisplacement, StandardSolution, AcidBaseTitration, PHIndicators } from "./chemistry/Grade10Chemistry";
@@ -17,7 +17,12 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
   "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
   "p10-8": MagneticFieldLab, "p10-9": ReflectionLab, "p10-10": ReflectionRefraction,
-  "p11-1": ProjectileMotion, "p11-2": InclinedPlane, "p11-3": CoulombsLaw, "p11-4": HeatConduction,
+  "p11-1": BoilingPointAltitude, "p11-2": VectorAddition11, "p11-3": FieldDisplacement,
+  "p11-4": UniformMotion, "p11-5": FreeFall, "p11-6": ProjectileMotion,
+  "p11-7": NewtonsSecondLaw11, "p11-8": FrictionExperiment, "p11-9": InclinedPlane,
+  "p11-10": HeatConduction, "p11-11": Calorimetry,
+  "p11-12": CoulombsLaw, "p11-13": ElectricCircuit,
+  "p11-14": RadioactiveDecay,
   "p12-1": AdvancedProjectile, "p12-2": FluidPressure, "p12-3": MagneticField, "p12-4": DiodeRectifier,
   "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalReactions, "c9-5": ConservationOfMass,
   "c10-1": SingleDisplacement, "c10-2": StandardSolution, "c10-3": AcidBaseTitration, "c10-4": PHIndicators,

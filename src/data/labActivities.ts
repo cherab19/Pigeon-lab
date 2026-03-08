@@ -34,10 +34,27 @@ export const labData: Record<string, Record<number, LabActivity[]>> = {
       { id: "p10-10", unit: 6, unitName: "Optics", title: "Refraction – Snell's Law", objective: "Investigate Snell's law of refraction (n₁sinθ₁ = n₂sinθ₂)", theory: "Light bends when passing between media of different refractive indices. At the critical angle, total internal reflection occurs." },
     ],
     11: [
-      { id: "p11-1", unit: 1, unitName: "Projectile Motion", title: "Projectile Motion", objective: "Analyze projectile trajectories and calculate range and maximum height", theory: "A projectile follows a parabolic path. Range R = v²sin(2θ)/g, Maximum height H = v²sin²(θ)/(2g), Time of flight T = 2vsinθ/g." },
-      { id: "p11-2", unit: 1, unitName: "Projectile Motion", title: "Inclined Plane", objective: "Analyze forces on an object on an inclined plane", theory: "On an incline at angle θ, gravity decomposes into: parallel component mgsinθ (along slope) and normal component mgcosθ (perpendicular to slope)." },
-      { id: "p11-3", unit: 2, unitName: "Electrostatics", title: "Coulomb's Law", objective: "Explore the electrostatic force between two charged objects", theory: "Coulomb's Law: F = kq₁q₂/r², where k = 8.99 × 10⁹ N·m²/C². Like charges repel, opposite charges attract." },
-      { id: "p11-4", unit: 3, unitName: "Heat Transfer", title: "Heat Conduction", objective: "Observe heat transfer through a metal rod by conduction", theory: "Heat conducts through solids by molecular vibration transfer. The rate depends on thermal conductivity, cross-section area, length, and temperature difference." },
+      // UNIT 1: Scientific Investigation
+      { id: "p11-1", unit: 1, unitName: "Scientific Investigation", title: "Boiling Point vs Altitude", objective: "Investigate how altitude affects the boiling point of water", theory: "At higher altitudes atmospheric pressure is lower, reducing the boiling point. Approximately −0.34°C per 100 m increase." },
+      // UNIT 2: Vectors
+      { id: "p11-2", unit: 2, unitName: "Vectors", title: "Vector Addition", objective: "Determine the resultant of two vectors using the triangle/parallelogram method", theory: "Vectors add by components: Rx = Ax+Bx, Ry = Ay+By. The triangle method places vectors head-to-tail to find the resultant." },
+      { id: "p11-3", unit: 2, unitName: "Vectors", title: "Field Displacement", objective: "Distinguish between distance traveled and displacement vector", theory: "Distance is total path length (scalar). Displacement is the straight-line vector from start to end." },
+      // UNIT 3: Motion
+      { id: "p11-4", unit: 3, unitName: "Motion", title: "Uniform Motion", objective: "Observe motion with constant velocity and plot distance-time graph", theory: "For uniform motion, distance = velocity × time. The distance-time graph is a straight line through the origin." },
+      { id: "p11-5", unit: 3, unitName: "Motion", title: "Free Fall", objective: "Observe free fall and determine acceleration due to gravity", theory: "In free fall: v = gt, h = ½gt², v² = 2gh. Acceleration is constant at g = 9.8 m/s²." },
+      { id: "p11-6", unit: 3, unitName: "Motion", title: "Projectile Motion", objective: "Analyze projectile trajectories and calculate range and maximum height", theory: "Range R = v²sin(2θ)/g, Max Height H = v²sin²(θ)/(2g), Time of flight T = 2vsinθ/g." },
+      // UNIT 4: Dynamics
+      { id: "p11-7", unit: 4, unitName: "Dynamics", title: "Newton's Second Law", objective: "Verify F = ma by varying force and mass", theory: "Newton's Second Law: F_net = ma. Net force equals mass times acceleration." },
+      { id: "p11-8", unit: 4, unitName: "Dynamics", title: "Friction Experiment", objective: "Compare static and kinetic friction on different surfaces", theory: "Friction force = μN. Static friction > kinetic friction. μ depends on surface properties." },
+      { id: "p11-9", unit: 4, unitName: "Dynamics", title: "Inclined Plane", objective: "Analyze forces on a block on an inclined surface", theory: "Parallel force = mgsinθ, Normal force = mgcosθ, Friction = μN." },
+      // UNIT 5: Heat
+      { id: "p11-10", unit: 5, unitName: "Heat & Calorimetry", title: "Heat Conduction", objective: "Observe heat transfer through a rod and compare materials", theory: "Heat conducts by molecular vibration. Rate depends on conductivity k, ΔT, area, and length." },
+      { id: "p11-11", unit: 5, unitName: "Heat & Calorimetry", title: "Calorimetry (Mixing Water)", objective: "Verify conservation of energy when mixing hot and cold water", theory: "Q_lost = Q_gained. mcΔT (hot) = mcΔT (cold). The final temperature depends on masses and initial temperatures." },
+      // UNIT 6: Electricity
+      { id: "p11-12", unit: 6, unitName: "Electrostatics & Circuits", title: "Coulomb's Law", objective: "Explore the electrostatic force between two charged objects", theory: "Coulomb's Law: F = kq₁q₂/r². Like charges repel, opposite charges attract. Force follows inverse square law." },
+      { id: "p11-13", unit: 6, unitName: "Electrostatics & Circuits", title: "Electric Circuit (Ohm's Law)", objective: "Build a circuit and verify Ohm's Law (V = IR)", theory: "Ohm's Law: V = IR. Current is proportional to voltage and inversely proportional to resistance." },
+      // UNIT 7: Nuclear Physics
+      { id: "p11-14", unit: 7, unitName: "Nuclear Physics", title: "Radioactive Decay", objective: "Observe random decay and determine half-life from decay curve", theory: "Radioactive decay is random. On average, half the atoms decay each half-life. N = N₀(½)^(t/t½)." },
     ],
     12: [
       { id: "p12-1", unit: 1, unitName: "Advanced Mechanics", title: "Horizontal & Inclined Projectile", objective: "Compare horizontal and angled projectile motion with optional air resistance", theory: "Horizontal projectiles have zero initial vertical velocity. Time to ground depends only on height: t = √(2h/g). Range = v₀ × t." },
