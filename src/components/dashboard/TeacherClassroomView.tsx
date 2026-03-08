@@ -166,7 +166,7 @@ export default function TeacherClassroomView() {
   const handleCreateAssignment = async () => {
     if (!assignExpId || !assignTitle) { toast.error("Select experiment and add title"); return; }
     setSaving(true);
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) return;
 
     const { error } = await supabase.from("assignments").insert({
