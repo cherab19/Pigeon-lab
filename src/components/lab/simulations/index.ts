@@ -21,6 +21,9 @@ import { CombinationReaction3D, DecompositionCuCO3_3D, SingleDisplacement3D, Dou
 import { SolubilityTemp3D, PHIndicators3D, AcidMetalReaction3D, AcidBaseTitration3D, ExoEndothermic3D } from "./chemistry/Grade10Chemistry3D_Batch2";
 import { ElectrochemicalCell3D, ElectrolysisWater3D, ReactivitySeries3D, MetalExtraction3D, HydrocarbonCombustion3D, BromineTest3D } from "./chemistry/Grade10Chemistry3D_Batch3";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
+import { CathodeRayTube3D, RutherfordExperiment3D, PhotoelectricEffect3D, IonicBondFormation3D, VSEPRGeometry3D } from "./chemistry/Grade11Chemistry3D_Batch1";
+import { MetallicBonding3D, KineticMolecularTheory3D, BoylesLaw3D, HeatingCurve3D, ReactionRate3D } from "./chemistry/Grade11Chemistry3D_Batch2";
+import { CatalystSimulation3D, ReversibleReaction3D, LeChatelierPrinciple3D, Esterification3D, Saponification3D } from "./chemistry/Grade11Chemistry3D_Batch3";
 import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
@@ -54,12 +57,12 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "c10-11": ExoEndothermic3D, "c10-12": ElectrochemicalCell3D, "c10-13": ElectrolysisWater3D,
   "c10-14": ReactivitySeries3D, "c10-15": MetalExtraction3D,
   "c10-16": HydrocarbonCombustion3D, "c10-17": BromineTest3D,
-  "c11-1": CathodeRayTube, "c11-2": RutherfordExperiment, "c11-3": PhotoelectricEffect,
-  "c11-4": IonicBondFormation, "c11-5": VSEPRGeometry, "c11-6": MetallicBonding,
-  "c11-7": KineticMolecularTheory, "c11-8": BoylesLaw, "c11-9": HeatingCurve,
-  "c11-10": ReactionRate, "c11-11": CatalystSimulation,
-  "c11-12": ReversibleReaction, "c11-13": LeChatelierPrinciple,
-  "c11-14": Esterification, "c11-15": Saponification,
+  "c11-1": CathodeRayTube3D, "c11-2": RutherfordExperiment3D, "c11-3": PhotoelectricEffect3D,
+  "c11-4": IonicBondFormation3D, "c11-5": VSEPRGeometry3D, "c11-6": MetallicBonding3D,
+  "c11-7": KineticMolecularTheory3D, "c11-8": BoylesLaw3D, "c11-9": HeatingCurve3D,
+  "c11-10": ReactionRate3D, "c11-11": CatalystSimulation3D,
+  "c11-12": ReversibleReaction3D, "c11-13": LeChatelierPrinciple3D,
+  "c11-14": Esterification3D, "c11-15": Saponification3D,
   "c12-1": IndicatorsLab, "c12-2": PHMeterSim, "c12-3": WeakAcidIonization, "c12-4": BufferSolutions, "c12-5": AcidBaseTitration12,
   "c12-6": ElectrolysisMetal, "c12-7": VoltaicCell, "c12-8": HaberProcess, "c12-9": AdditionPolymerization, "c12-10": AirPollutionAcidRain,
   "b9-1": MicroscopeSimulation, "b9-2": SeedGerminationLab, "b9-3": DichotomousKeyLab,
