@@ -11,6 +11,8 @@ import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotio
 import { BoilingPointAltitude3D, VectorAddition11_3D, FieldDisplacement3D, UniformMotion3D, FreeFall3D, ProjectileMotion3D, NewtonsSecondLaw11_3D } from "./physics/Grade11Physics3D_Batch1";
 import { FrictionExperiment3D, InclinedPlane11_3D, HeatConduction3D, Calorimetry3D, CoulombsLaw3D, ElectricCircuit3D, RadioactiveDecay3D } from "./physics/Grade11Physics3D_Batch2";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
+import { MRISimulation3D, HorizontalProjectile3D, AngledProjectile3D, FluidPressureLab3D, ArchimedesPrinciple3D } from "./physics/Grade12Physics3D_Batch1";
+import { MagneticFieldWire3D, ElectromagneticInduction3D, PNJunctionDiode3D, HalfWaveRectifier3D } from "./physics/Grade12Physics3D_Batch2";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalBonding, ChemicalReactions, ConservationOfMass, SolutionsLab, AcidsBasesLab, MetalsNonMetals } from "./chemistry/Grade9Chemistry";
 import { CombinationReaction, DecompositionCuCO3, SingleDisplacement, DoubleDisplacement, StandardSolution, DilutionLab, SolubilityTemp, PHIndicators, AcidMetalReaction, AcidBaseTitration, ExoEndothermic, ElectrochemicalCell, ElectrolysisWater, ReactivitySeries, MetalExtraction, HydrocarbonCombustion, BromineTest } from "./chemistry/Grade10Chemistry";
 import { CathodeRayTube, RutherfordExperiment, PhotoelectricEffect, IonicBondFormation, VSEPRGeometry, MetallicBonding, KineticMolecularTheory, BoylesLaw, HeatingCurve, ReactionRate, CatalystSimulation, ReversibleReaction, LeChatelierPrinciple, Esterification, Saponification } from "./chemistry/Grade11Chemistry";
@@ -36,10 +38,10 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p11-10": HeatConduction3D, "p11-11": Calorimetry3D,
   "p11-12": CoulombsLaw3D, "p11-13": ElectricCircuit3D,
   "p11-14": RadioactiveDecay3D,
-  "p12-1": MRISimulation, "p12-2": HorizontalProjectile, "p12-3": AngledProjectile,
-  "p12-4": FluidPressureLab, "p12-5": ArchimedesPrinciple,
-  "p12-6": MagneticFieldWire, "p12-7": ElectromagneticInduction,
-  "p12-8": PNJunctionDiode, "p12-9": HalfWaveRectifier,
+  "p12-1": MRISimulation3D, "p12-2": HorizontalProjectile3D, "p12-3": AngledProjectile3D,
+  "p12-4": FluidPressureLab3D, "p12-5": ArchimedesPrinciple3D,
+  "p12-6": MagneticFieldWire3D, "p12-7": ElectromagneticInduction3D,
+  "p12-8": PNJunctionDiode3D, "p12-9": HalfWaveRectifier3D,
   "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalBonding, "c9-5": ChemicalReactions, "c9-6": ConservationOfMass, "c9-7": SolutionsLab, "c9-8": AcidsBasesLab, "c9-9": MetalsNonMetals,
   "c10-1": CombinationReaction, "c10-2": DecompositionCuCO3, "c10-3": SingleDisplacement, "c10-4": DoubleDisplacement,
   "c10-5": StandardSolution, "c10-6": DilutionLab, "c10-7": SolubilityTemp,
