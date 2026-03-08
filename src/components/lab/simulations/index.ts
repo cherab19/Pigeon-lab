@@ -10,7 +10,7 @@ import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
-import { BacterialTransformation, NaturalSelection, ReflexArcSynapse, HormoneCycle } from "./biology/Grade12Biology";
+import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
 
 export const simulationRegistry: Record<string, ComponentType> = {
   "p9-1": MeasuringLength, "p9-2": NewtonsSecondLaw, "p9-3": PendulumLab, "p9-4": WaveSimulation,
@@ -37,5 +37,6 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "b11-1": CellStructureMicroscope, "b11-2": OsmosisDiffusion, "b11-3": FoodTests11, "b11-4": EnzymeActivity,
   "b11-5": Photosynthesis, "b11-6": Respiration, "b11-7": PlantTissues, "b11-8": Transpiration,
   "b11-9": HumanTissues, "b11-10": BloodCells, "b11-11": MonohybridCross, "b11-12": B11QuadratSampling,
-  "b12-1": BacterialTransformation, "b12-2": NaturalSelection, "b12-3": ReflexArcSynapse, "b12-4": HormoneCycle,
+  "b12-1": RecombinantDNA, "b12-2": MicroorganismObservation, "b12-3": EcosystemSimulation, "b12-4": NaturalSelection,
+  "b12-5": PupilReflexExperiment, "b12-6": ReflexArcSynapse, "b12-7": HormoneCycle, "b12-8": PunnettSquareSimulation,
 };
