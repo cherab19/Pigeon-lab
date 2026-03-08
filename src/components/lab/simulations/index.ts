@@ -28,6 +28,8 @@ import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBas
 import { IndicatorsLab3D, PHMeterSim3D, WeakAcidIonization3D, BufferSolutions3D, AcidBaseTitration3D as AcidBaseTitration12_3D } from "./chemistry/Grade12Chemistry3D_Batch1";
 import { ElectrolysisMetal3D, VoltaicCell3D, HaberProcess3D, AdditionPolymerization3D, AirPollutionAcidRain3D } from "./chemistry/Grade12Chemistry3D_Batch2";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
+import { MicroscopeSimulation3D, SeedGerminationLab3D, DichotomousKeyLab3D, OnionCellObservation3D } from "./biology/Grade9Biology3D_Batch1";
+import { OsmosisExperiment3D, StarchTestLab3D, ProteinTestLab3D, FoodChainBuilder3D } from "./biology/Grade9Biology3D_Batch2";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
 import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
