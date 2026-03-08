@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import SuperAdminDashboardView from "@/components/dashboard/SuperAdminDashboardView";
 import AdminDashboardView from "@/components/dashboard/AdminDashboardView";
 import TeacherDashboardView from "@/components/dashboard/TeacherDashboardView";
 import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
@@ -49,7 +50,6 @@ export default function Dashboard() {
         .eq("user_id", user.id);
 
       if (roles && roles.length > 0) {
-        // Priority: super_admin > school_admin > teacher > student
         const priority: AppRole[] = ["super_admin", "school_admin", "teacher", "student"];
         const found = priority.find(r => roles.some(rd => rd.role === r));
         if (found) setUserRole(found);
@@ -124,8 +124,11 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {isAdmin && (
-          <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} isSuperAdmin={userRole === "super_admin"} />
+        {userRole === "super_admin" && (
+          <SuperAdminDashboardView fullName={profile?.full_name || ""} />
+        )}
+        {userRole === "school_admin" && (
+          <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
         )}
         {userRole === "teacher" && (
           <TeacherDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
