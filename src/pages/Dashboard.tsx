@@ -125,7 +125,7 @@ export default function Dashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         {isAdmin && (
-          <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
+          <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} isSuperAdmin={userRole === "super_admin"} />
         )}
         {userRole === "teacher" && (
           <TeacherDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />

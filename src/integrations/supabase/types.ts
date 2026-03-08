@@ -184,6 +184,7 @@ export type Database = {
     }
     Functions: {
       get_public_stats: { Args: never; Returns: Json }
+      get_super_admin_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
