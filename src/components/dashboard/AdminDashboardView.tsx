@@ -19,8 +19,11 @@ export default function AdminDashboardView({ fullName, schoolName, isSuperAdmin 
         <h1 className="text-3xl font-display font-bold mb-1">
           Welcome{fullName ? `, ${fullName}` : ""} 👋
         </h1>
-        {schoolName && <p className="text-muted-foreground">{schoolName} · School Admin</p>}
+        {schoolName && <p className="text-muted-foreground">{schoolName} · {isSuperAdmin ? "Super Admin" : "School Admin"}</p>}
       </motion.div>
+
+      {/* Super Admin cross-school analytics */}
+      {isSuperAdmin && <SuperAdminAnalytics />}
 
       {/* Admin stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
