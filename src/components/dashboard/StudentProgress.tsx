@@ -38,7 +38,7 @@ export default function StudentProgress() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) { setLoading(false); return; }
 
       const [{ data: prog }, { data: quiz }] = await Promise.all([

@@ -64,7 +64,7 @@ export default function AdminClassroomManager() {
   const students = members.filter(m => m.role === "student");
 
   const loadData = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) return;
 
     // Load classrooms

@@ -26,7 +26,7 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       const { data } = await supabase

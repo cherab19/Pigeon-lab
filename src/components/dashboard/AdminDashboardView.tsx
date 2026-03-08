@@ -27,7 +27,7 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
       const { data: profile } = await supabase.from("profiles").select("school_id").eq("user_id", user.id).single();
       if (!profile?.school_id) return;

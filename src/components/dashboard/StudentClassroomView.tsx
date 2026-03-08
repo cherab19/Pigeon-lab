@@ -46,7 +46,7 @@ export default function StudentClassroomView() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       // Get classrooms via classroom_students

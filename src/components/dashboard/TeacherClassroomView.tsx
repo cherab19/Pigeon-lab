@@ -197,7 +197,7 @@ export default function TeacherClassroomView() {
   const handleCreateAnnouncement = async () => {
     if (!annTitle || !annContent) { toast.error("Fill title and content"); return; }
     setSaving(true);
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) return;
 
     const { error } = await supabase.from("announcements").insert({

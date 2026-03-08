@@ -32,7 +32,7 @@ export default function TeacherAnalytics() {
 
   useEffect(() => {
     const loadAnalytics = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       const [{ data: progress }, { data: quizzes }, { data: profiles }] = await Promise.all([
