@@ -17,6 +17,12 @@ const subjectIcons: Record<string, typeof Beaker> = { physics: Atom, chemistry: 
 export default function SubjectLab() {
   const { hasAccess, loading: accessLoading } = useSubscriptionAccess();
   const { subject } = useParams<{ subject: string }>();
+  const [grade, setGrade] = useState<string>("");
+  const [unitNum, setUnitNum] = useState<string>("");
+  const [labId, setLabId] = useState<string>("");
+  const [showPreQuiz, setShowPreQuiz] = useState(false);
+  const [showPostQuiz, setShowPostQuiz] = useState(false);
+  const [preQuizDone, setPreQuizDone] = useState(false);
 
   if (accessLoading) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
@@ -38,13 +44,6 @@ export default function SubjectLab() {
       </div>
     );
   }
-  const { subject } = useParams<{ subject: string }>();
-  const [grade, setGrade] = useState<string>("");
-  const [unitNum, setUnitNum] = useState<string>("");
-  const [labId, setLabId] = useState<string>("");
-  const [showPreQuiz, setShowPreQuiz] = useState(false);
-  const [showPostQuiz, setShowPostQuiz] = useState(false);
-  const [preQuizDone, setPreQuizDone] = useState(false);
 
   if (!subject || !labData[subject]) {
     return <div className="min-h-screen flex items-center justify-center"><p>Subject not found. <Link to="/" className="text-primary underline">Go back</Link></p></div>;
