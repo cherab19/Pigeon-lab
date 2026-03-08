@@ -59,8 +59,9 @@ export default function SubjectLab() {
   const units = grade ? getUnits(allLabs) : [];
   const unitLabs = unitNum ? allLabs.filter(l => l.unit === Number(unitNum)) : [];
   const selectedLab = unitLabs.find(l => l.id === labId);
-  const SimComponent = selectedLab ? simulationRegistry[selectedLab.id] : null;
-  const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
+  const SimComponent3D = selectedLab ? simulationRegistry[selectedLab.id] : null;
+  const SimComponent2D = selectedLab ? fallback2DRegistry[selectedLab.id] : null;
+  const SimComponent = use2D ? SimComponent2D : SimComponent3D;
 
   const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
 
