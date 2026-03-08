@@ -14,7 +14,9 @@ import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalS
 
 export const simulationRegistry: Record<string, ComponentType> = {
   "p9-1": MeasuringLength, "p9-2": NewtonsSecondLaw, "p9-3": PendulumLab, "p9-4": WaveSimulation,
-  "p10-1": VectorAddition, "p10-2": AccelerationSim, "p10-3": CircuitBuilder, "p10-4": ReflectionRefraction,
+  "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
+  "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
+  "p10-8": MagneticFieldLab, "p10-9": ReflectionLab, "p10-10": ReflectionRefraction,
   "p11-1": ProjectileMotion, "p11-2": InclinedPlane, "p11-3": CoulombsLaw, "p11-4": HeatConduction,
   "p12-1": AdvancedProjectile, "p12-2": FluidPressure, "p12-3": MagneticField, "p12-4": DiodeRectifier,
   "c9-1": LabSafety, "c9-2": StatesOfMatter, "c9-3": AtomicStructure, "c9-4": ChemicalReactions, "c9-5": ConservationOfMass,
