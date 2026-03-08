@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useParams, Link } from "react-router-dom";
 import { labData, subjectMeta, getUnits } from "@/data/labActivities";
 import { simulationRegistry } from "@/components/lab/simulations";
+import { fallback2DRegistry } from "@/components/lab/simulations/fallback2DRegistry";
+import SimulationErrorBoundary from "@/components/lab/SimulationErrorBoundary";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle, Lock } from "lucide-react";
@@ -23,6 +25,7 @@ export default function SubjectLab() {
   const [showPreQuiz, setShowPreQuiz] = useState(false);
   const [showPostQuiz, setShowPostQuiz] = useState(false);
   const [preQuizDone, setPreQuizDone] = useState(false);
+  const [use2D, setUse2D] = useState(false);
 
   if (accessLoading) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
@@ -56,7 +59,9 @@ export default function SubjectLab() {
   const units = grade ? getUnits(allLabs) : [];
   const unitLabs = unitNum ? allLabs.filter(l => l.unit === Number(unitNum)) : [];
   const selectedLab = unitLabs.find(l => l.id === labId);
-  const SimComponent = selectedLab ? simulationRegistry[selectedLab.id] : null;
+  const SimComponent3D = selectedLab ? simulationRegistry[selectedLab.id] : null;
+  const SimComponent2D = selectedLab ? fallback2DRegistry[selectedLab.id] : null;
+  const SimComponent = use2D ? SimComponent2D : SimComponent3D;
   const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
   const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
@@ -66,6 +71,7 @@ export default function SubjectLab() {
   const handleLabSelect = (id: string) => {
     setLabId(id);
     resetQuiz();
+    setUse2D(false);
     setShowPreQuiz(true);
   };
 
@@ -199,7 +205,20 @@ export default function SubjectLab() {
         )}
 
         {/* Simulation */}
-        {labId && !showPreQuiz && !showPostQuiz && SimComponent && <SimComponent />}
+        {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
+          <SimulationErrorBoundary
+            onFallback={() => setUse2D(true)}
+            fallback={
+              use2D && SimComponent2D ? (
+                <Suspense fallback={<div className="flex items-center justify-center min-h-[300px]"><p className="text-muted-foreground">Loading 2D simulation...</p></div>}>
+                  <SimComponent2D />
+                </Suspense>
+              ) : undefined
+            }
+          >
+            <SimComponent />
+          </SimulationErrorBoundary>
+        )}
 
         {/* Mark complete + post quiz trigger */}
         {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
