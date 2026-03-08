@@ -10,10 +10,26 @@ export interface LabActivity {
 export const labData: Record<string, Record<number, LabActivity[]>> = {
   physics: {
     9: [
-      { id: "p9-1", unit: 1, unitName: "Measurement", title: "Measuring Length", objective: "Learn to measure length accurately using rulers and vernier calipers", theory: "Measurement is fundamental to physics. A vernier caliper allows reading to 0.01 cm precision by using a sliding scale alongside the main scale." },
-      { id: "p9-2", unit: 2, unitName: "Forces & Motion", title: "Newton's Second Law", objective: "Explore the relationship between force, mass, and acceleration (F = ma)", theory: "Newton's Second Law states that the acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass: F = ma." },
-      { id: "p9-3", unit: 2, unitName: "Forces & Motion", title: "Pendulum Lab", objective: "Investigate factors affecting the period of a simple pendulum", theory: "The period of a simple pendulum is T = 2π√(L/g), depending on length L and gravitational acceleration g, but independent of mass." },
-      { id: "p9-4", unit: 3, unitName: "Waves", title: "Wave Simulation", objective: "Explore properties of transverse waves including frequency, amplitude, and wavelength", theory: "A wave transports energy without transporting matter. The wave equation relates speed, frequency, and wavelength: v = fλ." },
+      // UNIT 2: Physical Quantities (Measurement)
+      { id: "p9-1", unit: 2, unitName: "Physical Quantities", title: "Measuring Length & Area", objective: "Measure the length and width of an object and calculate its area", theory: "Measurement precision depends on the instrument. Rulers: 0.1 cm, Vernier: 0.01 cm, Micrometer: 0.001 cm. Area = Length × Width." },
+      { id: "p9-2", unit: 2, unitName: "Physical Quantities", title: "Beam Balance (Mass)", objective: "Measure the mass of objects using a beam balance", theory: "A beam balance compares an unknown mass with standard masses. When balanced, the unknown mass equals the sum of standard masses." },
+      { id: "p9-3", unit: 2, unitName: "Physical Quantities", title: "Time Measurement", objective: "Measure time using a stopwatch and calculate average from multiple trials", theory: "Time = Distance / Speed. Repeated trials reduce random error. The average of multiple readings is more reliable." },
+      // UNIT 3: Motion in Straight Line
+      { id: "p9-4", unit: 3, unitName: "Motion", title: "Distance vs Displacement", objective: "Distinguish between distance (scalar) and displacement (vector)", theory: "Distance is the total path length traveled (scalar). Displacement is the straight-line vector from start to finish." },
+      { id: "p9-5", unit: 3, unitName: "Motion", title: "Graphical Motion Analysis", objective: "Plot and interpret position-time and velocity-time graphs", theory: "Slope of x-t graph = velocity. Slope of v-t graph = acceleration. Area under v-t graph = displacement." },
+      // UNIT 4: Force, Work & Energy
+      { id: "p9-6", unit: 4, unitName: "Force & Energy", title: "Newton's Second Law (F = ma)", objective: "Observe how force affects motion and verify F = ma", theory: "Newton's Second Law: F_net = ma. Acceleration is proportional to net force and inversely proportional to mass." },
+      { id: "p9-7", unit: 4, unitName: "Force & Energy", title: "Work & Energy Transformation", objective: "Observe conversion between potential and kinetic energy", theory: "PE = mgh. When an object falls, PE converts to KE. Work done = Force × Distance = mgh. Total energy is conserved." },
+      { id: "p9-8", unit: 4, unitName: "Force & Energy", title: "Hooke's Law (Spring)", objective: "Verify Hooke's Law by measuring spring extension vs applied force", theory: "Hooke's Law: F = kx. The extension is proportional to force in the elastic region. k is the spring constant." },
+      // UNIT 5: Simple Machines
+      { id: "p9-9", unit: 5, unitName: "Simple Machines", title: "Lever Lab", objective: "Explore mechanical advantage of a lever and verify the principle of moments", theory: "For a balanced lever: Effort × Effort Arm = Load × Load Arm. MA = Load / Effort." },
+      { id: "p9-10", unit: 5, unitName: "Simple Machines", title: "Inclined Plane", objective: "Analyze forces on an inclined plane and calculate efficiency", theory: "On a ramp: Parallel force = mgsinθ, Normal = mgcosθ. The inclined plane reduces effort at the cost of distance." },
+      // UNIT 6: Oscillation & Waves
+      { id: "p9-11", unit: 6, unitName: "Oscillation & Waves", title: "Simple Pendulum", objective: "Determine acceleration due to gravity using T = 2π√(L/g)", theory: "Period depends on length and gravity, not mass. T = 2π√(L/g)." },
+      { id: "p9-12", unit: 6, unitName: "Oscillation & Waves", title: "Wave Simulation", objective: "Explore transverse wave properties: v = fλ", theory: "A wave transports energy without transporting matter. Speed = frequency × wavelength." },
+      // UNIT 7: Temperature & Thermometry
+      { id: "p9-13", unit: 7, unitName: "Temperature", title: "Thermal Expansion", objective: "Observe how temperature affects the length of a metal rod", theory: "Linear expansion: ΔL = L₀αΔT. Different materials expand at different rates due to varying coefficients of linear expansion." },
+      { id: "p9-14", unit: 7, unitName: "Temperature", title: "Measuring Temperature", objective: "Measure temperature of water samples using a thermometer", theory: "Temperature measures average kinetic energy of molecules. Celsius scale: 0°C (freezing) and 100°C (boiling) for water." },
     ],
     10: [
       // UNIT 1: Vector Quantities
