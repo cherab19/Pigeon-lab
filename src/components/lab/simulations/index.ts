@@ -18,7 +18,7 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "p9-4": DistanceDisplacementLab, "p9-5": GraphicalMotionLab,
   "p9-6": NewtonsSecondLaw, "p9-7": WorkEnergyLab, "p9-8": HookesLawLab,
   "p9-9": LeverLab, "p9-10": InclinedPlaneLab,
-  "p9-11": PendulumLab, "p9-12": WaveSimulation,
+  "p9-11": SimplePendulum3D, "p9-12": WaveSimulation,
   "p9-13": ThermalExpansionLab, "p9-14": TemperatureMeasurementLab,
   "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
   "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
