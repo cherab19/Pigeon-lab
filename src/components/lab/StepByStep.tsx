@@ -1,8 +1,8 @@
 import { CheckCircle, Circle } from "lucide-react";
 
-interface StepByStepProps {
+export interface StepByStepProps {
   steps: string[];
-  currentStep: number;
+  currentStep?: number;
   onStepClick?: (step: number) => void;
 }
 
