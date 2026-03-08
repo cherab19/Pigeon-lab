@@ -4,8 +4,12 @@ import { labData, subjectMeta, getUnits } from "@/data/labActivities";
 import { simulationRegistry } from "@/components/lab/simulations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical } from "lucide-react";
+import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle } from "lucide-react";
 import LabAssistant from "@/components/lab/LabAssistant";
+import LabQuiz from "@/components/lab/LabQuiz";
+import { getQuiz } from "@/data/quizData";
+import { useProgressTracker } from "@/hooks/useProgressTracker";
+import { toast } from "@/hooks/use-toast";
 
 const subjectIcons: Record<string, typeof Beaker> = { physics: Atom, chemistry: FlaskConical, biology: Microscope };
 
@@ -14,6 +18,9 @@ export default function SubjectLab() {
   const [grade, setGrade] = useState<string>("");
   const [unitNum, setUnitNum] = useState<string>("");
   const [labId, setLabId] = useState<string>("");
+  const [showPreQuiz, setShowPreQuiz] = useState(false);
+  const [showPostQuiz, setShowPostQuiz] = useState(false);
+  const [preQuizDone, setPreQuizDone] = useState(false);
 
   if (!subject || !labData[subject]) {
     return <div className="min-h-screen flex items-center justify-center"><p>Subject not found. <Link to="/" className="text-primary underline">Go back</Link></p></div>;
@@ -27,9 +34,42 @@ export default function SubjectLab() {
   const unitLabs = unitNum ? allLabs.filter(l => l.unit === Number(unitNum)) : [];
   const selectedLab = unitLabs.find(l => l.id === labId);
   const SimComponent = selectedLab ? simulationRegistry[selectedLab.id] : null;
+  const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
-  const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); };
-  const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); };
+  const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
+
+  const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); resetQuiz(); };
+  const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); resetQuiz(); };
+  const handleLabSelect = (id: string) => {
+    setLabId(id);
+    resetQuiz();
+    setShowPreQuiz(true);
+  };
+
+  const resetQuiz = () => {
+    setShowPreQuiz(false);
+    setShowPostQuiz(false);
+    setPreQuizDone(false);
+  };
+
+  const handlePreQuizComplete = (score: number, total: number) => {
+    setPreQuizDone(true);
+    setShowPreQuiz(false);
+    toast({ title: `Pre-Lab Quiz: ${score}/${total}`, description: "Now explore the simulation!" });
+  };
+
+  const handlePostQuizComplete = async (score: number, total: number) => {
+    await markComplete();
+    setShowPostQuiz(false);
+    toast({
+      title: `Post-Lab Quiz: ${score}/${total}`,
+      description: (
+        <span className="flex items-center gap-1">
+          <CheckCircle className="w-4 h-4 text-primary" /> Experiment marked complete!
+        </span>
+      ),
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -67,7 +107,7 @@ export default function SubjectLab() {
               </Select>
             )}
             {unitNum && (
-              <Select value={labId} onValueChange={setLabId}>
+              <Select value={labId} onValueChange={handleLabSelect}>
                 <SelectTrigger className="w-[260px] h-9">
                   <SelectValue placeholder="Select Lab Activity" />
                 </SelectTrigger>
@@ -111,7 +151,7 @@ export default function SubjectLab() {
             <h2 className="text-lg font-display font-bold mb-4">Unit {unitNum}: {units.find(u => u.unit === Number(unitNum))?.unitName} — Labs</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {unitLabs.map(l => (
-                <button key={l.id} onClick={() => setLabId(l.id)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
+                <button key={l.id} onClick={() => handleLabSelect(l.id)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
                   <h3 className="font-display font-semibold text-sm mb-1">{l.title}</h3>
                   <p className="text-xs text-muted-foreground">{l.objective}</p>
                 </button>
@@ -119,7 +159,48 @@ export default function SubjectLab() {
             </div>
           </div>
         )}
-        {SimComponent && <SimComponent />}
+
+        {/* Pre-Lab Quiz */}
+        {showPreQuiz && quiz && (
+          <div className="container mx-auto px-4 py-8 max-w-lg">
+            <LabQuiz
+              experimentId={selectedLab!.id}
+              quizType="pre"
+              questions={quiz.pre}
+              onComplete={handlePreQuizComplete}
+            />
+            <button onClick={() => { setShowPreQuiz(false); setPreQuizDone(true); }} className="text-xs text-muted-foreground underline mt-3 block mx-auto">
+              Skip quiz →
+            </button>
+          </div>
+        )}
+
+        {/* Simulation */}
+        {labId && !showPreQuiz && !showPostQuiz && SimComponent && <SimComponent />}
+
+        {/* Mark complete + post quiz trigger */}
+        {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
+          <div className="container mx-auto px-4 py-4 flex justify-center gap-3">
+            <Button variant="outline" size="sm" onClick={() => setShowPostQuiz(true)}>
+              Take Post-Lab Quiz
+            </Button>
+            <Button size="sm" onClick={async () => { await markComplete(); toast({ title: "Experiment completed! ✅" }); }}>
+              <CheckCircle className="w-4 h-4 mr-1" /> Mark Complete
+            </Button>
+          </div>
+        )}
+
+        {/* Post-Lab Quiz */}
+        {showPostQuiz && quiz && (
+          <div className="container mx-auto px-4 py-8 max-w-lg">
+            <LabQuiz
+              experimentId={selectedLab!.id}
+              quizType="post"
+              questions={quiz.post}
+              onComplete={handlePostQuizComplete}
+            />
+          </div>
+        )}
       </div>
 
       {/* AI Lab Assistant */}

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Beaker, Atom, FlaskConical, Microscope, GraduationCap } from "lucide-react";
+import { Atom, FlaskConical, Microscope, GraduationCap } from "lucide-react";
 import { SubjectCards, ExperimentGrid, totalExperiments, subjectCounts } from "./SharedDashboard";
+import TeacherAnalytics from "./TeacherAnalytics";
 
 interface Props {
   fullName: string;
@@ -33,6 +34,9 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
           Assign simulations to your students and guide them through hands-on learning.
         </p>
       </motion.div>
+
+      {/* Real analytics */}
+      <TeacherAnalytics />
 
       {/* Compact stats */}
       <div className="grid grid-cols-3 gap-4 mb-8">

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Beaker, Atom, FlaskConical, Microscope, Sparkles } from "lucide-react";
-import { SubjectCards, ExperimentGrid, totalExperiments, subjectCounts } from "./SharedDashboard";
+import { Sparkles } from "lucide-react";
+import { SubjectCards, ExperimentGrid, totalExperiments } from "./SharedDashboard";
+import StudentProgress from "./StudentProgress";
 
 interface Props {
   fullName: string;
@@ -34,7 +35,10 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
         </p>
       </motion.div>
 
-      {/* Subjects first for students */}
+      {/* Progress tracking */}
+      <StudentProgress />
+
+      {/* Subjects */}
       <div className="mb-6">
         <h2 className="text-xl font-display font-semibold mb-4">Choose a Subject</h2>
       </div>
