@@ -222,7 +222,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Button variant="hero" className="w-full" asChild>
-                <Link to="/login">Get Started</Link>
+                <Link to="/signup">Get Started</Link>
               </Button>
             </motion.div>
           </div>
