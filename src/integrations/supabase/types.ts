@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      experiment_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          experiment_id: string
+          grade: number
+          id: string
+          started_at: string
+          status: string
+          subject: string
+          time_spent_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          experiment_id: string
+          grade: number
+          id?: string
+          started_at?: string
+          status?: string
+          subject: string
+          time_spent_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          experiment_id?: string
+          grade?: number
+          id?: string
+          started_at?: string
+          status?: string
+          subject?: string
+          time_spent_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -51,6 +90,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quiz_results: {
+        Row: {
+          answers: Json
+          completed_at: string
+          created_at: string
+          experiment_id: string
+          id: string
+          quiz_type: string
+          score: number
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string
+          created_at?: string
+          experiment_id: string
+          id?: string
+          quiz_type: string
+          score: number
+          total_questions: number
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string
+          created_at?: string
+          experiment_id?: string
+          id?: string
+          quiz_type?: string
+          score?: number
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: []
       }
       schools: {
         Row: {
