@@ -86,17 +86,19 @@ export default function Dashboard() {
               </div>
               <span className="font-display font-bold text-lg">EthioLab</span>
             </Link>
-            <div className="hidden md:flex items-center gap-1 ml-6">
-              <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
-              <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Lab</Link>
-              </Button>
-              {isAdmin && (
+            {userRole !== "super_admin" && (
+              <div className="hidden md:flex items-center gap-1 ml-6">
+                <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
                 <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                  <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>
+                  <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Lab</Link>
                 </Button>
-              )}
-            </div>
+                {isAdmin && (
+                  <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                    <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <AlertDialog>
