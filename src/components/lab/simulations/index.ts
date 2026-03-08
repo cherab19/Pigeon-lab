@@ -25,6 +25,8 @@ import { CathodeRayTube3D, RutherfordExperiment3D, PhotoelectricEffect3D, IonicB
 import { MetallicBonding3D, KineticMolecularTheory3D, BoylesLaw3D, HeatingCurve3D, ReactionRate3D } from "./chemistry/Grade11Chemistry3D_Batch2";
 import { CatalystSimulation3D, ReversibleReaction3D, LeChatelierPrinciple3D, Esterification3D, Saponification3D } from "./chemistry/Grade11Chemistry3D_Batch3";
 import { IndicatorsLab, PHMeterSim, WeakAcidIonization, BufferSolutions, AcidBaseTitration as AcidBaseTitration12, ElectrolysisMetal, VoltaicCell, HaberProcess, AdditionPolymerization, AirPollutionAcidRain } from "./chemistry/Grade12Chemistry";
+import { IndicatorsLab3D, PHMeterSim3D, WeakAcidIonization3D, BufferSolutions3D, AcidBaseTitration3D as AcidBaseTitration12_3D } from "./chemistry/Grade12Chemistry3D_Batch1";
+import { ElectrolysisMetal3D, VoltaicCell3D, HaberProcess3D, AdditionPolymerization3D, AirPollutionAcidRain3D } from "./chemistry/Grade12Chemistry3D_Batch2";
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
@@ -63,8 +65,8 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "c11-10": ReactionRate3D, "c11-11": CatalystSimulation3D,
   "c11-12": ReversibleReaction3D, "c11-13": LeChatelierPrinciple3D,
   "c11-14": Esterification3D, "c11-15": Saponification3D,
-  "c12-1": IndicatorsLab, "c12-2": PHMeterSim, "c12-3": WeakAcidIonization, "c12-4": BufferSolutions, "c12-5": AcidBaseTitration12,
-  "c12-6": ElectrolysisMetal, "c12-7": VoltaicCell, "c12-8": HaberProcess, "c12-9": AdditionPolymerization, "c12-10": AirPollutionAcidRain,
+  "c12-1": IndicatorsLab3D, "c12-2": PHMeterSim3D, "c12-3": WeakAcidIonization3D, "c12-4": BufferSolutions3D, "c12-5": AcidBaseTitration12_3D,
+  "c12-6": ElectrolysisMetal3D, "c12-7": VoltaicCell3D, "c12-8": HaberProcess3D, "c12-9": AdditionPolymerization3D, "c12-10": AirPollutionAcidRain3D,
   "b9-1": MicroscopeSimulation, "b9-2": SeedGerminationLab, "b9-3": DichotomousKeyLab,
   "b9-4": OnionCellObservation, "b9-5": OsmosisExperiment,
   "b9-6": StarchTestLab, "b9-7": ProteinTestLab, "b9-8": FoodChainBuilder,
