@@ -88,9 +88,9 @@ export const simulationRegistry: Record<string, ComponentType> = {
   "b10-16": MeasuringPulseRate3D,
   "b10-17": ReflexActionDemo3D,
   "b10-18": B10QuadratSampling3D,
-  "b11-1": CellStructureMicroscope, "b11-2": OsmosisDiffusion, "b11-3": FoodTests11, "b11-4": EnzymeActivity,
-  "b11-5": Photosynthesis, "b11-6": Respiration, "b11-7": PlantTissues, "b11-8": Transpiration,
-  "b11-9": HumanTissues, "b11-10": BloodCells, "b11-11": MonohybridCross, "b11-12": B11QuadratSampling,
+  "b11-1": CellStructureMicroscope3D, "b11-2": OsmosisDiffusion3D, "b11-3": FoodTests3D, "b11-4": EnzymeActivity3D,
+  "b11-5": Photosynthesis3D, "b11-6": Respiration3D, "b11-7": PlantTissues3D, "b11-8": Transpiration3D,
+  "b11-9": HumanTissues3D, "b11-10": BloodCells3D, "b11-11": MonohybridCross3D, "b11-12": B11QuadratSampling3D,
   "b12-1": RecombinantDNA, "b12-2": MicroorganismObservation, "b12-3": EcosystemSimulation, "b12-4": NaturalSelection,
   "b12-5": PupilReflexExperiment, "b12-6": ReflexArcSynapse, "b12-7": HormoneCycle, "b12-8": PunnettSquareSimulation,
 };
