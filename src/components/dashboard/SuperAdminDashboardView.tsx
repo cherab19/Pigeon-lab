@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { School, Users, GraduationCap, BookOpen, Activity, Shield, MapPin, Mail, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { totalExperiments } from "./SharedDashboard";
 import { totalExperiments } from "./SharedDashboard";
 
 interface SchoolDetail {
