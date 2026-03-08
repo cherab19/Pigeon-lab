@@ -1,8 +1,11 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Beaker, Atom, Microscope, FlaskConical, BookOpen, Users, BarChart3, Shield, Zap, Globe, GraduationCap, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-lab.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { labData } from "@/data/labActivities";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
