@@ -16,10 +16,22 @@ export const labData: Record<string, Record<number, LabActivity[]>> = {
       { id: "p9-4", unit: 3, unitName: "Waves", title: "Wave Simulation", objective: "Explore properties of transverse waves including frequency, amplitude, and wavelength", theory: "A wave transports energy without transporting matter. The wave equation relates speed, frequency, and wavelength: v = fλ." },
     ],
     10: [
-      { id: "p10-1", unit: 1, unitName: "Vectors", title: "Vector Addition Lab", objective: "Learn to add vectors graphically and calculate the resultant vector", theory: "Vectors have both magnitude and direction. The resultant of two vectors can be found using the parallelogram law or component method." },
-      { id: "p10-2", unit: 2, unitName: "Kinematics", title: "Acceleration Simulation", objective: "Study uniformly accelerated motion and kinematic equations", theory: "For constant acceleration: v = u + at, s = ut + ½at², v² = u² + 2as. These equations describe motion along a straight line." },
-      { id: "p10-3", unit: 3, unitName: "Electricity", title: "Circuit Builder Lab", objective: "Build simple circuits and verify Ohm's Law (V = IR)", theory: "Ohm's Law states that voltage across a conductor is proportional to current through it: V = IR. Resistance is measured in Ohms (Ω)." },
-      { id: "p10-4", unit: 4, unitName: "Optics", title: "Reflection & Refraction Lab", objective: "Investigate the laws of reflection and Snell's law of refraction", theory: "The angle of incidence equals the angle of reflection. Snell's Law: n₁sinθ₁ = n₂sinθ₂ governs refraction at interfaces between media." },
+      // UNIT 1: Vector Quantities
+      { id: "p10-1", unit: 1, unitName: "Vector Quantities", title: "Vector Addition (Triangle Method)", objective: "Determine the resultant of two vectors using the triangle and parallelogram methods", theory: "Vectors add by components: Rx = Ax+Bx, Ry = Ay+By. The triangle method places vectors head-to-tail to find the resultant." },
+      { id: "p10-2", unit: 1, unitName: "Vector Quantities", title: "Vector Resolution", objective: "Resolve a vector into its horizontal and vertical components", theory: "Any vector can be resolved into components: Ax = A cosθ (horizontal), Ay = A sinθ (vertical). The original vector is the hypotenuse." },
+      // UNIT 2: Uniformly Accelerated Motion
+      { id: "p10-3", unit: 2, unitName: "Uniformly Accelerated Motion", title: "Distance vs Displacement", objective: "Distinguish between distance and displacement", theory: "Distance is the total path length traveled (scalar). Displacement is the shortest straight-line distance from start to finish (vector)." },
+      { id: "p10-4", unit: 2, unitName: "Uniformly Accelerated Motion", title: "Uniform Acceleration", objective: "Observe motion with constant acceleration and verify kinematic equations", theory: "For constant acceleration: v = u + at, s = ut + ½at², v² = u² + 2as. Position–time graphs are parabolic; velocity–time graphs are linear." },
+      // UNIT 3: Elasticity & Equilibrium
+      { id: "p10-5", unit: 3, unitName: "Elasticity & Equilibrium", title: "Stress–Strain Experiment", objective: "Determine the relationship between stress and strain for different materials", theory: "Stress = Force/Area, Strain = Extension/Length. In the elastic region, Stress = E × Strain (Hooke's Law). Young's modulus E characterizes material stiffness." },
+      { id: "p10-6", unit: 3, unitName: "Elasticity & Equilibrium", title: "Torque & Equilibrium", objective: "Verify the principle of moments", theory: "For rotational equilibrium: ΣClockwise Torques = ΣAnticlockwise Torques. Torque (moment) = Force × perpendicular distance from pivot." },
+      // UNIT 4: Electricity
+      { id: "p10-7", unit: 4, unitName: "Current Electricity", title: "Ohm's Law – Circuit Builder", objective: "Build a circuit and verify Ohm's Law (V = IR)", theory: "Ohm's Law: V = IR. A V–I graph for an ohmic conductor is a straight line through the origin. Ammeter in series, voltmeter in parallel." },
+      // UNIT 5: Magnetism
+      { id: "p10-8", unit: 5, unitName: "Magnetism", title: "Magnetic Field Visualization", objective: "Visualize magnetic field lines around a bar magnet", theory: "Magnetic field lines emerge from the North pole and enter the South pole. Iron filings reveal the pattern; a compass shows field direction." },
+      // UNIT 6: Optics
+      { id: "p10-9", unit: 6, unitName: "Optics", title: "Reflection of Light", objective: "Verify the law of reflection", theory: "Law of Reflection: angle of incidence = angle of reflection. Both angles are measured from the normal to the reflecting surface." },
+      { id: "p10-10", unit: 6, unitName: "Optics", title: "Refraction – Snell's Law", objective: "Investigate Snell's law of refraction (n₁sinθ₁ = n₂sinθ₂)", theory: "Light bends when passing between media of different refractive indices. At the critical angle, total internal reflection occurs." },
     ],
     11: [
       { id: "p11-1", unit: 1, unitName: "Projectile Motion", title: "Projectile Motion", objective: "Analyze projectile trajectories and calculate range and maximum height", theory: "A projectile follows a parabolic path. Range R = v²sin(2θ)/g, Maximum height H = v²sin²(θ)/(2g), Time of flight T = 2vsinθ/g." },
