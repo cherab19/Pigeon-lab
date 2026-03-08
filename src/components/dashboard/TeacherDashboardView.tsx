@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments } from "./SharedDashboard";
 import TeacherAnalytics from "./TeacherAnalytics";
+import TeacherClassroomView from "./TeacherClassroomView";
 
 interface Props {
   fullName: string;
