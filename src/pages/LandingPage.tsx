@@ -1,8 +1,11 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Beaker, Atom, Microscope, FlaskConical, BookOpen, Users, BarChart3, Shield, Zap, Globe, GraduationCap, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-lab.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { labData } from "@/data/labActivities";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -35,6 +38,31 @@ const plan = {
 };
 
 export default function LandingPage() {
+  const [stats, setStats] = useState({ schools: 0, students: 0, experiments: 0 });
+
+  useEffect(() => {
+    // Count experiments from frontend lab data
+    let expCount = 0;
+    Object.values(labData).forEach(grades => {
+      Object.values(grades).forEach(labs => {
+        expCount += labs.length;
+      });
+    });
+
+    // Fetch school & student counts from DB
+    supabase.rpc("get_public_stats").then(({ data }) => {
+      if (data) {
+        setStats({
+          schools: (data as any).schools || 0,
+          students: (data as any).students || 0,
+          experiments: expCount,
+        });
+      } else {
+        setStats(prev => ({ ...prev, experiments: expCount }));
+      }
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -75,7 +103,7 @@ export default function LandingPage() {
           >
             <motion.div custom={0} variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-border mb-8">
               <GraduationCap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Grades 7–12 · Ethiopian Curriculum</span>
+              <span className="text-sm font-medium text-muted-foreground">Grades 9–12 · Ethiopian Curriculum</span>
             </motion.div>
             <motion.h1 custom={1} variants={fadeUp} className="text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
               <span className="text-foreground">Ethiopia's </span>
@@ -92,9 +120,9 @@ export default function LandingPage() {
               </Button>
             </motion.div>
             <motion.div custom={4} variants={fadeUp} className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> 500+ Schools</div>
-              <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> 50K+ Students</div>
-              <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> 200+ Experiments</div>
+              <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> {stats.schools} Schools</div>
+              <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> {stats.students} Students</div>
+              <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> {stats.experiments} Experiments</div>
             </motion.div>
           </motion.div>
         </div>
