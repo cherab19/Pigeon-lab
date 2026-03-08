@@ -27,6 +27,7 @@ const gradientMap: Record<string, string> = {
 export default function Dashboard() {
   const [profile, setProfile] = useState<{ full_name: string; school_id: string | null } | null>(null);
   const [schoolName, setSchoolName] = useState("");
+  const [isSchoolAdmin, setIsSchoolAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
