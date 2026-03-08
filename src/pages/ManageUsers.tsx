@@ -539,6 +539,7 @@ export default function ManageUsers() {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
+                      <TableHead className="w-12"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -550,6 +551,31 @@ export default function ManageUsers() {
                             {m.role === "school_admin" ? "Admin" : m.role.charAt(0).toUpperCase() + m.role.slice(1)}
                           </Badge>
                         </TableCell>
+                        <TableCell>
+                          {m.role !== "school_admin" && m.user_id !== currentUserId && (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <MoreHorizontal className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => {
+                                  setEditingMember(m);
+                                  setEditRole(m.role as "teacher" | "student");
+                                }}>
+                                  <Pencil className="w-4 h-4 mr-2" /> Change Role
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={() => setRemovingMember(m)}
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" /> Remove Member
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -559,6 +585,53 @@ export default function ManageUsers() {
           </Card>
         </motion.div>
       </main>
+
+      {/* Edit Role Dialog */}
+      <Dialog open={!!editingMember} onOpenChange={() => setEditingMember(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Role — {editingMember?.full_name}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Label className="mb-2 block">New Role</Label>
+            <Select value={editRole} onValueChange={(v) => setEditRole(v as "teacher" | "student")}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="student">Student</SelectItem>
+                <SelectItem value="teacher">Teacher</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingMember(null)}>Cancel</Button>
+            <Button onClick={handleUpdateRole} disabled={savingRole}>
+              {savingRole ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove Member Confirmation */}
+      <AlertDialog open={!!removingMember} onOpenChange={() => setRemovingMember(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove {removingMember?.full_name}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove the member from your school. They will lose access to school resources. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRemoveMember}
+              disabled={removing}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {removing ? "Removing..." : "Remove Member"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
