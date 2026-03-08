@@ -118,12 +118,31 @@ export default function Dashboard() {
             <div className="hidden md:flex items-center gap-1 ml-6">
               <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
               <Button variant="ghost" size="sm" className="text-muted-foreground" asChild><Link to="/lab">Lab</Link></Button>
+              {isSchoolAdmin && (
+                <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                  <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>
+                </Button>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
-              <LogOut className="w-4 h-4 mr-1" /> Sign Out
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-muted-foreground">
+                  <LogOut className="w-4 h-4 mr-1" /> Sign Out
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Sign out?</AlertDialogTitle>
+                  <AlertDialogDescription>Are you sure you want to sign out of your account?</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>Sign Out</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
               <User className="w-4 h-4 text-primary-foreground" />
             </div>
