@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import { MeasuringLength, NewtonsSecondLaw, PendulumLab, WaveSimulation } from "./physics/Grade9Physics";
-import { VectorAddition, AccelerationSim, CircuitBuilder, ReflectionRefraction } from "./physics/Grade10Physics";
+import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
 import { ProjectileMotion, InclinedPlane, CoulombsLaw, HeatConduction } from "./physics/Grade11Physics";
 import { AdvancedProjectile, FluidPressure, MagneticField, DiodeRectifier } from "./physics/Grade12Physics";
 import { LabSafety, StatesOfMatter, AtomicStructure, ChemicalReactions, ConservationOfMass } from "./chemistry/Grade9Chemistry";
