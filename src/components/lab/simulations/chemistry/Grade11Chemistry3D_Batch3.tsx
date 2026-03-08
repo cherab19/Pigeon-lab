@@ -20,7 +20,7 @@ function CatalystScene({ catalyst, temp }: { catalyst: boolean; temp: number }) 
     const x = -1.5 + t * 3;
     const baseY = -0.5;
     const peak = activationE / 50;
-    const y = baseY + peak * Math.exp(-((t - 0.45) * 5) ** 2);
+    const y = baseY + peak * Math.exp(-(((t - 0.45) * 5) ** 2));
     if (t > 0.7) {
       const productDrop = (t - 0.7) * 0.5;
       curvePoints.push([x, y - productDrop, 0]);
