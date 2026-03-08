@@ -83,10 +83,6 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
                 { label: "Total Users", value: stats.total_users, icon: Users, color: "text-secondary" },
                 { label: "Students", value: stats.total_students, icon: GraduationCap, color: "text-accent" },
                 { label: "Teachers", value: stats.total_teachers, icon: BookOpen, color: "text-primary" },
-                { label: "Experiments Done", value: stats.experiments_completed, icon: Trophy, color: "text-secondary" },
-                { label: "Completion Rate", value: `${completionRate}%`, icon: TrendingUp, color: "text-accent" },
-                { label: "Avg Quiz Score", value: `${stats.avg_quiz_score}%`, icon: BarChart3, color: "text-primary" },
-                { label: "Avg Time (min)", value: stats.avg_time_spent > 0 ? Math.round(stats.avg_time_spent / 60) : 0, icon: Clock, color: "text-secondary" },
               ].map((c, i) => (
                 <motion.div
                   key={c.label}
