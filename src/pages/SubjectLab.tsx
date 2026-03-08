@@ -27,6 +27,9 @@ export default function SubjectLab() {
   const [preQuizDone, setPreQuizDone] = useState(false);
   const [use2D, setUse2D] = useState(false);
 
+  const trackerSubject = subject && labData[subject] ? subject : undefined;
+  const { markComplete } = useProgressTracker(labId || undefined, trackerSubject, grade || undefined);
+
   if (accessLoading) {
     return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
   }
@@ -64,7 +67,7 @@ export default function SubjectLab() {
   const SimComponent = use2D ? SimComponent2D : SimComponent3D;
   const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
-  const { markComplete } = useProgressTracker(selectedLab?.id, subject, grade);
+  
 
   const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); resetQuiz(); };
   const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); resetQuiz(); };
