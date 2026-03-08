@@ -78,6 +78,7 @@ export default function ManageUsers() {
   const loadMembers = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { navigate("/login"); return; }
+    setCurrentUserId(user.id);
 
     const { data: roleData } = await supabase
       .from("user_roles")
