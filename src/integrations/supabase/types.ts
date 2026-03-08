@@ -127,6 +127,62 @@ export type Database = {
         }
         Relationships: []
       }
+      school_subscriptions: {
+        Row: {
+          activated_at: string | null
+          billing_cycle: string
+          created_at: string
+          current_period_end: string
+          current_period_start: string
+          id: string
+          notes: string | null
+          price_per_student: number
+          school_id: string
+          status: string
+          student_count: number
+          suspended_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          activated_at?: string | null
+          billing_cycle?: string
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          notes?: string | null
+          price_per_student?: number
+          school_id: string
+          status?: string
+          student_count?: number
+          suspended_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activated_at?: string | null
+          billing_cycle?: string
+          created_at?: string
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          notes?: string | null
+          price_per_student?: number
+          school_id?: string
+          status?: string
+          student_count?: number
+          suspended_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_subscriptions_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: true
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       schools: {
         Row: {
           created_at: string
@@ -183,7 +239,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_subscription_access: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
       get_public_stats: { Args: never; Returns: Json }
+      get_subscription_stats: { Args: never; Returns: Json }
       get_super_admin_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
@@ -191,6 +252,15 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      update_school_subscription: {
+        Args: {
+          _notes?: string
+          _school_id: string
+          _status?: string
+          _student_count?: number
+        }
+        Returns: Json
       }
     }
     Enums: {
