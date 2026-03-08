@@ -23,7 +23,7 @@ const subjects = [
 
 const features = [
   { icon: Beaker, title: "Interactive Simulations", desc: "Drag-and-drop experiments with real-time results and measurement tools" },
-  { icon: BookOpen, title: "Curriculum Aligned", desc: "Mapped to Ethiopian national curriculum for Grades 7–12" },
+  { icon: BookOpen, title: "Curriculum Aligned", desc: "Mapped to Ethiopian national curriculum for Grades 9–12" },
   { icon: BarChart3, title: "Smart Analytics", desc: "Track student performance, completion rates, and progress trends" },
   { icon: Users, title: "Multi-Tenant SaaS", desc: "Each school gets its own dashboard, branding, and data isolation" },
   { icon: Shield, title: "Safe Experiments", desc: "No harmful chemicals—learn safely in a digital environment" },
