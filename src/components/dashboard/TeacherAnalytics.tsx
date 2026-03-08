@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { BarChart3, Users, CheckCircle, Clock, TrendingUp, ChevronDown, ChevronUp, User, Award } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
@@ -31,7 +32,7 @@ export default function TeacherAnalytics() {
 
   useEffect(() => {
     const loadAnalytics = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       const [{ data: progress }, { data: quizzes }, { data: profiles }] = await Promise.all([

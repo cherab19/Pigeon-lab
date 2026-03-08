@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 export interface QuizQuestion {
   question: string;
@@ -44,7 +45,7 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
       setFinished(true);
       const finalScore = answers.filter(a => a.correct).length;
       // Save to DB
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (user) {
         await supabase.from("quiz_results").insert({
           user_id: user.id,

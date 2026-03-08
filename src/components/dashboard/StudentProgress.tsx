@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { CheckCircle, Clock, Beaker, Trophy, Award, Star, Flame, Target, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
@@ -37,7 +38,7 @@ export default function StudentProgress() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) { setLoading(false); return; }
 
       const [{ data: prog }, { data: quiz }] = await Promise.all([

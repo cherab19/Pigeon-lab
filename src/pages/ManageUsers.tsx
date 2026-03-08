@@ -26,6 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "@/components/ui/sonner";
 
 type MemberRow = {
@@ -76,7 +77,7 @@ export default function ManageUsers() {
   const [currentUserId, setCurrentUserId] = useState<string>("");
 
   const loadMembers = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = await getSafeUser();
     if (!user) { navigate("/login"); return; }
     setCurrentUserId(user.id);
 

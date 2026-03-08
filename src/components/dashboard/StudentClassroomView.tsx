@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 interface Classroom {
   id: string;
@@ -45,7 +46,7 @@ export default function StudentClassroomView() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       // Get classrooms via classroom_students

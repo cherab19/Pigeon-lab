@@ -7,6 +7,7 @@ import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboar
 import StudentProgress from "./StudentProgress";
 import StudentClassroomView from "./StudentClassroomView";
 import { supabase } from "@/integrations/supabase/client";
+import { getSafeUser } from "@/lib/safeAuth";
 
 interface Props {
   fullName: string;
@@ -25,7 +26,7 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
 
   useEffect(() => {
     const load = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const user = await getSafeUser();
       if (!user) return;
 
       const { data } = await supabase
