@@ -4,16 +4,40 @@ import { labData, subjectMeta, getUnits } from "@/data/labActivities";
 import { simulationRegistry } from "@/components/lab/simulations";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle } from "lucide-react";
+import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle, Lock } from "lucide-react";
 import LabAssistant from "@/components/lab/LabAssistant";
 import LabQuiz from "@/components/lab/LabQuiz";
 import { getQuiz } from "@/data/quizData";
 import { useProgressTracker } from "@/hooks/useProgressTracker";
 import { toast } from "@/hooks/use-toast";
+import { useSubscriptionAccess } from "@/hooks/useSubscriptionAccess";
 
 const subjectIcons: Record<string, typeof Beaker> = { physics: Atom, chemistry: FlaskConical, biology: Microscope };
 
 export default function SubjectLab() {
+  const { hasAccess, loading: accessLoading } = useSubscriptionAccess();
+  const { subject } = useParams<{ subject: string }>();
+
+  if (accessLoading) {
+    return <div className="min-h-screen flex items-center justify-center"><p className="text-muted-foreground">Checking access...</p></div>;
+  }
+
+  if (hasAccess === false) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center">
+          <Lock className="w-8 h-8 text-destructive" />
+        </div>
+        <h2 className="text-xl font-display font-bold">Subscription Required</h2>
+        <p className="text-muted-foreground max-w-md">
+          Your school's subscription is not active. Please contact your school administrator to activate the subscription.
+        </p>
+        <Button asChild variant="outline">
+          <Link to="/dashboard">Back to Dashboard</Link>
+        </Button>
+      </div>
+    );
+  }
   const { subject } = useParams<{ subject: string }>();
   const [grade, setGrade] = useState<string>("");
   const [unitNum, setUnitNum] = useState<string>("");
