@@ -1,31 +1,29 @@
 import { motion } from "framer-motion";
 import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, ExperimentGrid, totalExperiments, subjectCounts } from "./SharedDashboard";
-import SuperAdminAnalytics from "./SuperAdminAnalytics";
 
 interface Props {
   fullName: string;
   schoolName: string;
-  isSuperAdmin?: boolean;
 }
 
-export default function AdminDashboardView({ fullName, schoolName, isSuperAdmin }: Props) {
+export default function AdminDashboardView({ fullName, schoolName }: Props) {
   return (
     <>
       {/* Welcome */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <h1 className="text-3xl font-display font-bold mb-1">
+        <div className="flex items-center gap-2 mb-1">
+          <Users className="w-5 h-5 text-primary" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-primary">School Admin</span>
+        </div>
+        <h1 className="text-3xl font-display font-bold">
           Welcome{fullName ? `, ${fullName}` : ""} 👋
         </h1>
-        {schoolName && <p className="text-muted-foreground">{schoolName} · {isSuperAdmin ? "Super Admin" : "School Admin"}</p>}
+        {schoolName && <p className="text-muted-foreground mt-1">{schoolName}</p>}
       </motion.div>
 
-      {/* Super Admin cross-school analytics */}
-      {isSuperAdmin && <SuperAdminAnalytics />}
-
-      {/* Admin stats */}
+      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Total Experiments", value: totalExperiments.toString(), icon: Beaker, color: "text-primary" },
@@ -51,7 +49,7 @@ export default function AdminDashboardView({ fullName, schoolName, isSuperAdmin 
 
       {/* Quick admin actions */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="mb-8">
-        <h2 className="text-xl font-display font-semibold mb-4">Admin Quick Actions</h2>
+        <h2 className="text-lg font-display font-semibold mb-4">Quick Actions</h2>
         <div className="grid md:grid-cols-2 gap-4">
           <Link to="/manage-users" className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-5 group">
             <div className="flex items-center gap-3">
@@ -81,8 +79,8 @@ export default function AdminDashboardView({ fullName, schoolName, isSuperAdmin 
       </motion.div>
 
       {/* Subjects */}
-      <div className="mb-6">
-        <h2 className="text-xl font-display font-semibold mb-4">Explore Subjects</h2>
+      <div className="mb-4">
+        <h2 className="text-lg font-display font-semibold mb-4">Explore Subjects</h2>
       </div>
       <SubjectCards />
 
