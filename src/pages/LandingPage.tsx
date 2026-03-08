@@ -120,9 +120,9 @@ export default function LandingPage() {
               </Button>
             </motion.div>
             <motion.div custom={4} variants={fadeUp} className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> 500+ Schools</div>
-              <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> 50K+ Students</div>
-              <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> 200+ Experiments</div>
+              <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> {stats.schools} Schools</div>
+              <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> {stats.students} Students</div>
+              <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> {stats.experiments} Experiments</div>
             </motion.div>
           </motion.div>
         </div>
