@@ -2,6 +2,8 @@ import { ComponentType } from "react";
 import { MeasuringLength, BeamBalanceLab, TimeMeasurementLab, DistanceDisplacementLab, GraphicalMotionLab, NewtonsSecondLaw, WorkEnergyLab, HookesLawLab, LeverLab, InclinedPlaneLab, PendulumLab, WaveSimulation, ThermalExpansionLab, TemperatureMeasurementLab } from "./physics/Grade9Physics";
 import { SimplePendulum3D } from "./physics/SimplePendulum3D";
 import { MeasuringLength3D, BeamBalance3D, TimeMeasurement3D, DistanceDisplacement3D, GraphicalMotion3D } from "./physics/Grade9Physics3D_Batch1";
+import { NewtonsSecondLaw3D, WorkEnergy3D, HookesLaw3D, Lever3D, InclinedPlane3D } from "./physics/Grade9Physics3D_Batch2";
+import { WaveSimulation3D, ThermalExpansion3D, TemperatureMeasurement3D } from "./physics/Grade9Physics3D_Batch3";
 import { VectorAddition, VectorResolution, DistanceDisplacement, AccelerationSim, StressStrainLab, TorqueEquilibrium, CircuitBuilder, MagneticFieldLab, ReflectionLab, ReflectionRefraction } from "./physics/Grade10Physics";
 import { BoilingPointAltitude, VectorAddition11, FieldDisplacement, UniformMotion, FreeFall, ProjectileMotion, NewtonsSecondLaw11, FrictionExperiment, InclinedPlane, HeatConduction, Calorimetry, CoulombsLaw, ElectricCircuit, RadioactiveDecay } from "./physics/Grade11Physics";
 import { MRISimulation, HorizontalProjectile, AngledProjectile, FluidPressureLab, ArchimedesPrinciple, MagneticFieldWire, ElectromagneticInduction, PNJunctionDiode, HalfWaveRectifier } from "./physics/Grade12Physics";
@@ -17,10 +19,10 @@ import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalS
 export const simulationRegistry: Record<string, ComponentType> = {
   "p9-1": MeasuringLength3D, "p9-2": BeamBalance3D, "p9-3": TimeMeasurement3D,
   "p9-4": DistanceDisplacement3D, "p9-5": GraphicalMotion3D,
-  "p9-6": NewtonsSecondLaw, "p9-7": WorkEnergyLab, "p9-8": HookesLawLab,
-  "p9-9": LeverLab, "p9-10": InclinedPlaneLab,
-  "p9-11": SimplePendulum3D, "p9-12": WaveSimulation,
-  "p9-13": ThermalExpansionLab, "p9-14": TemperatureMeasurementLab,
+  "p9-6": NewtonsSecondLaw3D, "p9-7": WorkEnergy3D, "p9-8": HookesLaw3D,
+  "p9-9": Lever3D, "p9-10": InclinedPlane3D,
+  "p9-11": SimplePendulum3D, "p9-12": WaveSimulation3D,
+  "p9-13": ThermalExpansion3D, "p9-14": TemperatureMeasurement3D,
   "p10-1": VectorAddition, "p10-2": VectorResolution, "p10-3": DistanceDisplacement, "p10-4": AccelerationSim,
   "p10-5": StressStrainLab, "p10-6": TorqueEquilibrium, "p10-7": CircuitBuilder,
   "p10-8": MagneticFieldLab, "p10-9": ReflectionLab, "p10-10": ReflectionRefraction,
