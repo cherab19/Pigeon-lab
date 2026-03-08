@@ -2,13 +2,24 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Beaker, Users, UserPlus, ChevronLeft, User, Shield, Upload, Send,
-  CheckCircle2, XCircle, FileSpreadsheet, Mail, Loader2
+  CheckCircle2, XCircle, FileSpreadsheet, Mail, Loader2, MoreHorizontal,
+  Pencil, Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -56,9 +67,18 @@ export default function ManageUsers() {
   const [inviteResults, setInviteResults] = useState<InviteResult[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Edit/Delete state
+  const [editingMember, setEditingMember] = useState<MemberRow | null>(null);
+  const [editRole, setEditRole] = useState<"teacher" | "student">("student");
+  const [savingRole, setSavingRole] = useState(false);
+  const [removingMember, setRemovingMember] = useState<MemberRow | null>(null);
+  const [removing, setRemoving] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
+
   const loadMembers = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { navigate("/login"); return; }
+    setCurrentUserId(user.id);
 
     const { data: roleData } = await supabase
       .from("user_roles")
@@ -220,6 +240,50 @@ export default function ManageUsers() {
       toast.error(e.message || "An error occurred");
     } finally {
       setBulkInviting(false);
+    }
+  };
+
+  // Update member role
+  const handleUpdateRole = async () => {
+    if (!editingMember) return;
+    setSavingRole(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("manage-school-member", {
+        body: { action: "update_role", member_user_id: editingMember.user_id, new_role: editRole },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || error?.message || "Failed to update role");
+      } else {
+        toast.success(`${editingMember.full_name}'s role updated to ${editRole}`);
+        setEditingMember(null);
+        loadMembers();
+      }
+    } catch (e: any) {
+      toast.error(e.message || "An error occurred");
+    } finally {
+      setSavingRole(false);
+    }
+  };
+
+  // Remove member from school
+  const handleRemoveMember = async () => {
+    if (!removingMember) return;
+    setRemoving(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("manage-school-member", {
+        body: { action: "remove", member_user_id: removingMember.user_id },
+      });
+      if (error || !data?.success) {
+        toast.error(data?.error || error?.message || "Failed to remove member");
+      } else {
+        toast.success(`${removingMember.full_name} removed from school`);
+        setRemovingMember(null);
+        loadMembers();
+      }
+    } catch (e: any) {
+      toast.error(e.message || "An error occurred");
+    } finally {
+      setRemoving(false);
     }
   };
 
@@ -475,6 +539,7 @@ export default function ManageUsers() {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
+                      <TableHead className="w-12"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -486,6 +551,31 @@ export default function ManageUsers() {
                             {m.role === "school_admin" ? "Admin" : m.role.charAt(0).toUpperCase() + m.role.slice(1)}
                           </Badge>
                         </TableCell>
+                        <TableCell>
+                          {m.role !== "school_admin" && m.user_id !== currentUserId && (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <MoreHorizontal className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => {
+                                  setEditingMember(m);
+                                  setEditRole(m.role as "teacher" | "student");
+                                }}>
+                                  <Pencil className="w-4 h-4 mr-2" /> Change Role
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={() => setRemovingMember(m)}
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" /> Remove Member
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -495,6 +585,53 @@ export default function ManageUsers() {
           </Card>
         </motion.div>
       </main>
+
+      {/* Edit Role Dialog */}
+      <Dialog open={!!editingMember} onOpenChange={() => setEditingMember(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Role — {editingMember?.full_name}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Label className="mb-2 block">New Role</Label>
+            <Select value={editRole} onValueChange={(v) => setEditRole(v as "teacher" | "student")}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="student">Student</SelectItem>
+                <SelectItem value="teacher">Teacher</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingMember(null)}>Cancel</Button>
+            <Button onClick={handleUpdateRole} disabled={savingRole}>
+              {savingRole ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove Member Confirmation */}
+      <AlertDialog open={!!removingMember} onOpenChange={() => setRemovingMember(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove {removingMember?.full_name}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove the member from your school. They will lose access to school resources. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRemoveMember}
+              disabled={removing}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {removing ? "Removing..." : "Remove Member"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
