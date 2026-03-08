@@ -10,7 +10,7 @@ import { WeakAcidIonization, BufferSolutions, VoltaicCell, HaberProcess } from "
 import { MicroscopeSimulation, SeedGerminationLab, DichotomousKeyLab, OnionCellObservation, OsmosisExperiment, StarchTestLab, ProteinTestLab, FoodChainBuilder } from "./biology/Grade9Biology";
 import { ClassificationLab, ScientificMethodSim, MicroscopePartsLab, OnionEpidermisSlideLab, DiffusionDemo, OsmosisSimulation, StarchTestLab as B10StarchTest, ProteinTestLab as B10ProteinTest, LipidTestLab, CO2ProductionTest, BreathingRateInvestigation, TranspirationLab, WaterTransportDye, FlowerDissection, IdentifyingBones, MeasuringPulseRate, ReflexActionDemo, QuadratSampling as B10QuadratSampling } from "./biology/Grade10Biology";
 import { CellStructureMicroscope, OsmosisDiffusion, FoodTests11, EnzymeActivity, Photosynthesis, Respiration, PlantTissues, Transpiration, HumanTissues, BloodCells, MonohybridCross, QuadratSampling as B11QuadratSampling } from "./biology/Grade11Biology";
-import { BacterialTransformation, NaturalSelection, ReflexArcSynapse, HormoneCycle } from "./biology/Grade12Biology";
+import { RecombinantDNA, MicroorganismObservation, EcosystemSimulation, NaturalSelection, PupilReflexExperiment, ReflexArcSynapse, HormoneCycle, PunnettSquareSimulation } from "./biology/Grade12Biology";
 
 export const simulationRegistry: Record<string, ComponentType> = {
   "p9-1": MeasuringLength, "p9-2": NewtonsSecondLaw, "p9-3": PendulumLab, "p9-4": WaveSimulation,
