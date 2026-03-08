@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments } from "./SharedDashboard";
 import TeacherAnalytics from "./TeacherAnalytics";
+import TeacherClassroomView from "./TeacherClassroomView";
 
 interface Props {
   fullName: string;
@@ -44,6 +45,9 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
           <Link to="/lab"><Beaker className="w-4 h-4 mr-1" /> Open Lab</Link>
         </Button>
       </motion.div>
+
+      {/* Classroom Management */}
+      <TeacherClassroomView />
 
       {/* Student Analytics — the core of teacher dashboard */}
       <TeacherAnalytics />

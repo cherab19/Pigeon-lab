@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboard";
 import StudentProgress from "./StudentProgress";
+import StudentClassroomView from "./StudentClassroomView";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
@@ -107,6 +108,9 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
           </div>
         </motion.div>
       )}
+
+      {/* My Classes - Assignments & Announcements */}
+      <StudentClassroomView />
 
       {/* Progress & Achievements */}
       <StudentProgress />

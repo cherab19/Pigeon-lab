@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { totalExperiments, subjectCounts } from "./SharedDashboard";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import AdminClassroomManager from "./AdminClassroomManager";
 
 interface Props {
   fullName: string;
@@ -121,6 +122,11 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </div>
         </Link>
+      </motion.div>
+
+      {/* Classroom Management */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-8">
+        <AdminClassroomManager />
       </motion.div>
     </>
   );
