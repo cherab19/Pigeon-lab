@@ -77,7 +77,7 @@ export default function AdminClassroomManager() {
 
     const { data: membersData } = await supabase.rpc("get_school_members_with_roles");
     if (membersData && Array.isArray(membersData)) {
-      setMembers(membersData as MemberRow[]);
+      setMembers(membersData as unknown as MemberRow[]);
     }
 
     // Load enrolled students for all classrooms
