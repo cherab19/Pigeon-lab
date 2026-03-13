@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GraduationCap, BookOpen, Beaker } from "lucide-react";
+import { GraduationCap, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments } from "./SharedDashboard";
