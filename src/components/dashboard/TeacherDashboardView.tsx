@@ -46,20 +46,6 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
 
       {/* Student Analytics — the core of teacher dashboard */}
       <TeacherAnalytics />
-
-      {/* Subject Quick Access */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary" /> Browse by Subject
-          </h2>
-        </div>
-        <SubjectCards />
-      </motion.div>
     </>
   );
 }
