@@ -31,19 +31,14 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground"
       >
-        <div>
-          <h2 className="text-lg font-display font-bold mb-1">
-            {totalExperiments} Lab Experiments Available
-          </h2>
-          <p className="text-sm opacity-80">
-            Browse experiments across Physics, Chemistry, and Biology to guide your students.
-          </p>
-        </div>
-        <Button variant="secondary" size="sm" asChild className="shrink-0">
-          <Link to="/lab"><Beaker className="w-4 h-4 mr-1" /> Open Lab</Link>
-        </Button>
+        <h2 className="text-lg font-display font-bold mb-1">
+          {totalExperiments} Lab Experiments Available
+        </h2>
+        <p className="text-sm opacity-80">
+          Browse experiments across Physics, Chemistry, and Biology to guide your students.
+        </p>
       </motion.div>
 
       {/* Classroom Management */}
