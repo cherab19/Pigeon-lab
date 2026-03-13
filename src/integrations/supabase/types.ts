@@ -397,6 +397,7 @@ export type Database = {
       }
       get_my_school_id: { Args: never; Returns: string }
       get_public_stats: { Args: never; Returns: Json }
+      get_school_members_with_roles: { Args: never; Returns: Json }
       get_subscription_stats: { Args: never; Returns: Json }
       get_super_admin_all_users: { Args: never; Returns: Json }
       get_super_admin_analytics: { Args: never; Returns: Json }
