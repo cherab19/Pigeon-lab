@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { GraduationCap } from "lucide-react";
-import { totalExperiments } from "./SharedDashboard";
+import { GraduationCap, BookOpen } from "lucide-react";
+import { SubjectCards, totalExperiments } from "./SharedDashboard";
 import TeacherAnalytics from "./TeacherAnalytics";
 import TeacherClassroomView from "./TeacherClassroomView";
 
