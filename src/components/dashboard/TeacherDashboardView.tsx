@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
-import { GraduationCap, BookOpen, Beaker } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { SubjectCards, totalExperiments } from "./SharedDashboard";
+import { GraduationCap } from "lucide-react";
+import { totalExperiments } from "./SharedDashboard";
 import TeacherAnalytics from "./TeacherAnalytics";
 import TeacherClassroomView from "./TeacherClassroomView";
 
@@ -31,19 +29,14 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground"
       >
-        <div>
-          <h2 className="text-lg font-display font-bold mb-1">
-            {totalExperiments} Lab Experiments Available
-          </h2>
-          <p className="text-sm opacity-80">
-            Browse experiments across Physics, Chemistry, and Biology to guide your students.
-          </p>
-        </div>
-        <Button variant="secondary" size="sm" asChild className="shrink-0">
-          <Link to="/lab"><Beaker className="w-4 h-4 mr-1" /> Open Lab</Link>
-        </Button>
+        <h2 className="text-lg font-display font-bold mb-1">
+          {totalExperiments} Lab Experiments Available
+        </h2>
+        <p className="text-sm opacity-80">
+          Browse experiments across Physics, Chemistry, and Biology to guide your students.
+        </p>
       </motion.div>
 
       {/* Classroom Management */}
@@ -51,20 +44,6 @@ export default function TeacherDashboardView({ fullName, schoolName }: Props) {
 
       {/* Student Analytics — the core of teacher dashboard */}
       <TeacherAnalytics />
-
-      {/* Subject Quick Access */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary" /> Browse by Subject
-          </h2>
-        </div>
-        <SubjectCards />
-      </motion.div>
     </>
   );
 }
