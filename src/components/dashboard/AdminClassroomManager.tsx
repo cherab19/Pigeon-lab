@@ -75,15 +75,9 @@ export default function AdminClassroomManager() {
     const { data: profile } = await supabase.from("profiles").select("school_id").eq("user_id", user.id).single();
     if (!profile?.school_id) return;
 
-    const { data: profiles } = await supabase.from("profiles").select("user_id, full_name").eq("school_id", profile.school_id);
-    if (profiles) {
-      const memberRows: MemberRow[] = [];
-      for (const p of profiles) {
-        const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", p.user_id);
-        const role = roles?.[0]?.role || "student";
-        memberRows.push({ ...p, role });
-      }
-      setMembers(memberRows);
+    const { data: membersData } = await supabase.rpc("get_school_members_with_roles");
+    if (membersData && Array.isArray(membersData)) {
+      setMembers(membersData as unknown as MemberRow[]);
     }
 
     // Load enrolled students for all classrooms
