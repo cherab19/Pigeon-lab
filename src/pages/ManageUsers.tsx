@@ -109,22 +109,10 @@ export default function ManageUsers() {
       .single();
     if (school) setSchoolName(school.name);
 
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("user_id, full_name, avatar_url")
-      .eq("school_id", profile.school_id);
-
-    if (profiles) {
-      const memberRows: MemberRow[] = [];
-      for (const p of profiles) {
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", p.user_id);
-        const role = roles?.[0]?.role || "student";
-        memberRows.push({ ...p, role });
-      }
-      setMembers(memberRows);
+    const { data: membersData } = await supabase.rpc("get_school_members_with_roles");
+    if (membersData) {
+      const parsed = membersData as unknown as { user_id: string; full_name: string; role: string }[];
+      setMembers(parsed.map(m => ({ ...m, avatar_url: null })));
     }
     setLoading(false);
   };
