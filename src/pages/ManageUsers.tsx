@@ -5,6 +5,12 @@ import {
   CheckCircle2, XCircle, FileSpreadsheet, Mail, Loader2, MoreHorizontal,
   Pencil, Trash2
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+  Beaker, Users, UserPlus, ChevronLeft, User, Shield, Upload, Send,
+  CheckCircle2, XCircle, FileSpreadsheet, Mail, Loader2, MoreHorizontal,
+  Pencil, Trash2
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
