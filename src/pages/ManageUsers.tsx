@@ -386,12 +386,12 @@ export default function ManageUsers() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Role</Label>
+                      <Label>{t("common.role")}</Label>
                       <Select value={newRole} onValueChange={(v) => setNewRole(v as "teacher" | "student")}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="student">Student</SelectItem>
-                          <SelectItem value="teacher">Teacher</SelectItem>
+                          <SelectItem value="student">{t("manage.student")}</SelectItem>
+                          <SelectItem value="teacher">{t("manage.teacher")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
