@@ -398,7 +398,7 @@ export default function ManageUsers() {
                     <div className="flex items-end">
                       <Button onClick={handleInvite} disabled={inviting} className="w-full gap-2">
                         {inviting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                        {inviting ? "Sending…" : "Send Invitation"}
+                        {inviting ? t("manage.sending") : t("manage.sendInvitation")}
                       </Button>
                     </div>
                   </div>
