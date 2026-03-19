@@ -346,10 +346,10 @@ export default function ManageUsers() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Mail className="w-5 h-5 text-primary" /> Invite Members
+                <Mail className="w-5 h-5 text-primary" /> {t("manage.inviteMembers")}
               </CardTitle>
               <CardDescription>
-                Send magic link email invitations — members set their own password when they accept
+                {t("manage.inviteDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
