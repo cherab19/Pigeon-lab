@@ -318,7 +318,7 @@ export default function ManageUsers() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="mb-6">
             <h1 className="text-3xl font-display font-bold flex items-center gap-2">
-              <Users className="w-7 h-7 text-primary" /> Manage Members
+              <Users className="w-7 h-7 text-primary" /> {t("manage.title")}
             </h1>
             {schoolName && <p className="text-muted-foreground mt-1">{schoolName}</p>}
           </div>
