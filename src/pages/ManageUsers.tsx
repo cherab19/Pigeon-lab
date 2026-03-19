@@ -367,7 +367,7 @@ export default function ManageUsers() {
                 <TabsContent value="individual">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="inv-name">Full Name</Label>
+                      <Label htmlFor="inv-name">{t("signup.fullName")}</Label>
                       <Input
                         id="inv-name"
                         value={newName}
