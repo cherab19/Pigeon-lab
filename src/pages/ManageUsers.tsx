@@ -307,8 +307,9 @@ export default function ManageUsers() {
               <span className="font-display font-bold text-lg">EthioLab</span>
             </Link>
           </div>
+          <LanguageToggle />
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> Back to Dashboard</Link>
+            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
           </Button>
         </div>
       </header>
