@@ -376,7 +376,7 @@ export default function ManageUsers() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="inv-email">Email</Label>
+                      <Label htmlFor="inv-email">{t("common.email")}</Label>
                       <Input
                         id="inv-email"
                         type="email"
