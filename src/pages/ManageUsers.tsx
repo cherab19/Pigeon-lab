@@ -51,6 +51,7 @@ type InviteResult = {
 };
 
 export default function ManageUsers() {
+  const { t } = useLanguage();
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [schoolName, setSchoolName] = useState("");
