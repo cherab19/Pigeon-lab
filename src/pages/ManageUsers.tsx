@@ -326,9 +326,9 @@ export default function ManageUsers() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             {[
-              { label: "Total Members", value: members.length, icon: Users },
-              { label: "Teachers", value: members.filter(m => m.role === "teacher").length, icon: Shield },
-              { label: "Students", value: members.filter(m => m.role === "student").length, icon: User },
+              { label: t("manage.totalMembers"), value: members.length, icon: Users },
+              { label: t("common.teachers"), value: members.filter(m => m.role === "teacher").length, icon: Shield },
+              { label: t("common.students"), value: members.filter(m => m.role === "student").length, icon: User },
             ].map((s) => (
               <Card key={s.label}>
                 <CardContent className="flex items-center justify-between p-5">
