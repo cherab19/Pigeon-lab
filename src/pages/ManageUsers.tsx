@@ -356,10 +356,10 @@ export default function ManageUsers() {
               <Tabs defaultValue="individual">
                 <TabsList className="mb-6">
                   <TabsTrigger value="individual" className="gap-1.5">
-                    <UserPlus className="w-4 h-4" /> Individual
+                    <UserPlus className="w-4 h-4" /> {t("manage.individual")}
                   </TabsTrigger>
                   <TabsTrigger value="bulk" className="gap-1.5">
-                    <FileSpreadsheet className="w-4 h-4" /> Bulk Import
+                    <FileSpreadsheet className="w-4 h-4" /> {t("manage.bulkImport")}
                   </TabsTrigger>
                 </TabsList>
 
