@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface QuizQuestion {
   question: string;
@@ -19,6 +20,7 @@ interface LabQuizProps {
 }
 
 export default function LabQuiz({ experimentId, quizType, questions, onComplete }: LabQuizProps) {
+  const { t } = useLanguage();
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -44,16 +46,11 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
     } else {
       setFinished(true);
       const finalScore = answers.filter(a => a.correct).length;
-      // Save to DB
       const user = await getSafeUser();
       if (user) {
         await supabase.from("quiz_results").insert({
-          user_id: user.id,
-          experiment_id: experimentId,
-          quiz_type: quizType,
-          score: finalScore,
-          total_questions: questions.length,
-          answers: JSON.stringify(answers),
+          user_id: user.id, experiment_id: experimentId, quiz_type: quizType,
+          score: finalScore, total_questions: questions.length, answers: JSON.stringify(answers),
         });
       }
       onComplete(finalScore, questions.length);
@@ -69,8 +66,8 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
         <div className={`w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center ${pct >= 70 ? "bg-primary/10" : "bg-destructive/10"}`}>
           {pct >= 70 ? <CheckCircle className="w-8 h-8 text-primary" /> : <XCircle className="w-8 h-8 text-destructive" />}
         </div>
-        <h3 className="text-xl font-display font-bold mb-1">{pct >= 70 ? "Great job!" : "Keep practicing!"}</h3>
-        <p className="text-muted-foreground text-sm">You scored {score}/{questions.length} ({pct}%)</p>
+        <h3 className="text-xl font-display font-bold mb-1">{pct >= 70 ? t("quiz.greatJob") : t("quiz.keepPracticing")}</h3>
+        <p className="text-muted-foreground text-sm">{t("quiz.scored")} {score}/{questions.length} ({pct}%)</p>
       </div>
     );
   }
@@ -79,7 +76,7 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
     <div className="bg-card border border-border rounded-xl p-6">
       <div className="flex items-center justify-between mb-4">
         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-          {quizType === "pre" ? "Pre-Lab" : "Post-Lab"} Quiz
+          {quizType === "pre" ? t("quiz.preLab") : t("quiz.postLab")} {t("quiz.quiz")}
         </span>
         <span className="text-xs text-muted-foreground">{currentQ + 1} / {questions.length}</span>
       </div>
@@ -89,22 +86,14 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
       <h3 className="font-display font-semibold mb-4">{q.question}</h3>
       <div className="space-y-2 mb-4">
         {q.options.map((opt, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleSelect(idx)}
-            disabled={showResult}
+          <button key={idx} onClick={() => handleSelect(idx)} disabled={showResult}
             className={`w-full text-left px-4 py-3 rounded-lg border text-sm transition-all ${
-              showResult && idx === q.correctIndex
-                ? "border-primary bg-primary/10 text-foreground"
-                : showResult && idx === selected && !isCorrect
-                ? "border-destructive bg-destructive/10 text-foreground"
-                : selected === idx
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-muted-foreground/30"
+              showResult && idx === q.correctIndex ? "border-primary bg-primary/10 text-foreground"
+              : showResult && idx === selected && !isCorrect ? "border-destructive bg-destructive/10 text-foreground"
+              : selected === idx ? "border-primary bg-primary/5"
+              : "border-border hover:border-muted-foreground/30"
             }`}
-          >
-            {opt}
-          </button>
+          >{opt}</button>
         ))}
       </div>
       {showResult && q.explanation && (
@@ -112,7 +101,7 @@ export default function LabQuiz({ experimentId, quizType, questions, onComplete 
       )}
       {showResult && (
         <Button onClick={handleNext} size="sm" className="w-full">
-          {currentQ < questions.length - 1 ? "Next Question" : "See Results"} <ChevronRight className="w-4 h-4 ml-1" />
+          {currentQ < questions.length - 1 ? t("quiz.nextQuestion") : t("quiz.seeResults")} <ChevronRight className="w-4 h-4 ml-1" />
         </Button>
       )}
     </div>
