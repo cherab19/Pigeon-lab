@@ -5,6 +5,8 @@ import {
   CheckCircle2, XCircle, FileSpreadsheet, Mail, Loader2, MoreHorizontal,
   Pencil, Trash2
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,6 +51,7 @@ type InviteResult = {
 };
 
 export default function ManageUsers() {
+  const { t } = useLanguage();
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [schoolName, setSchoolName] = useState("");
@@ -304,8 +307,9 @@ export default function ManageUsers() {
               <span className="font-display font-bold text-lg">EthioLab</span>
             </Link>
           </div>
+          <LanguageToggle />
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> Back to Dashboard</Link>
+            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
           </Button>
         </div>
       </header>
@@ -314,7 +318,7 @@ export default function ManageUsers() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="mb-6">
             <h1 className="text-3xl font-display font-bold flex items-center gap-2">
-              <Users className="w-7 h-7 text-primary" /> Manage Members
+              <Users className="w-7 h-7 text-primary" /> {t("manage.title")}
             </h1>
             {schoolName && <p className="text-muted-foreground mt-1">{schoolName}</p>}
           </div>
@@ -322,9 +326,9 @@ export default function ManageUsers() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mb-8">
             {[
-              { label: "Total Members", value: members.length, icon: Users },
-              { label: "Teachers", value: members.filter(m => m.role === "teacher").length, icon: Shield },
-              { label: "Students", value: members.filter(m => m.role === "student").length, icon: User },
+              { label: t("manage.totalMembers"), value: members.length, icon: Users },
+              { label: t("common.teachers"), value: members.filter(m => m.role === "teacher").length, icon: Shield },
+              { label: t("common.students"), value: members.filter(m => m.role === "student").length, icon: User },
             ].map((s) => (
               <Card key={s.label}>
                 <CardContent className="flex items-center justify-between p-5">
@@ -342,20 +346,20 @@ export default function ManageUsers() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Mail className="w-5 h-5 text-primary" /> Invite Members
+                <Mail className="w-5 h-5 text-primary" /> {t("manage.inviteMembers")}
               </CardTitle>
               <CardDescription>
-                Send magic link email invitations — members set their own password when they accept
+                {t("manage.inviteDesc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="individual">
                 <TabsList className="mb-6">
                   <TabsTrigger value="individual" className="gap-1.5">
-                    <UserPlus className="w-4 h-4" /> Individual
+                    <UserPlus className="w-4 h-4" /> {t("manage.individual")}
                   </TabsTrigger>
                   <TabsTrigger value="bulk" className="gap-1.5">
-                    <FileSpreadsheet className="w-4 h-4" /> Bulk Import
+                    <FileSpreadsheet className="w-4 h-4" /> {t("manage.bulkImport")}
                   </TabsTrigger>
                 </TabsList>
 
@@ -363,7 +367,7 @@ export default function ManageUsers() {
                 <TabsContent value="individual">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="inv-name">Full Name</Label>
+                      <Label htmlFor="inv-name">{t("signup.fullName")}</Label>
                       <Input
                         id="inv-name"
                         value={newName}
@@ -372,7 +376,7 @@ export default function ManageUsers() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="inv-email">Email</Label>
+                      <Label htmlFor="inv-email">{t("common.email")}</Label>
                       <Input
                         id="inv-email"
                         type="email"
@@ -382,19 +386,19 @@ export default function ManageUsers() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Role</Label>
+                      <Label>{t("common.role")}</Label>
                       <Select value={newRole} onValueChange={(v) => setNewRole(v as "teacher" | "student")}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="student">Student</SelectItem>
-                          <SelectItem value="teacher">Teacher</SelectItem>
+                          <SelectItem value="student">{t("manage.student")}</SelectItem>
+                          <SelectItem value="teacher">{t("manage.teacher")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="flex items-end">
                       <Button onClick={handleInvite} disabled={inviting} className="w-full gap-2">
                         {inviting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                        {inviting ? "Sending…" : "Send Invitation"}
+                        {inviting ? t("manage.sending") : t("manage.sendInvitation")}
                       </Button>
                     </div>
                   </div>

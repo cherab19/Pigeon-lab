@@ -12,10 +12,13 @@ import AdminDashboardView from "@/components/dashboard/AdminDashboardView";
 import TeacherDashboardView from "@/components/dashboard/TeacherDashboardView";
 import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
 import { getSafeUser } from "@/lib/safeAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 
 type AppRole = "super_admin" | "school_admin" | "teacher" | "student";
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const [profile, setProfile] = useState<{ full_name: string; school_id: string | null } | null>(null);
   const [schoolName, setSchoolName] = useState("");
   const [userRole, setUserRole] = useState<AppRole>("student");
@@ -26,59 +29,31 @@ export default function Dashboard() {
     const load = async () => {
       try {
         const user = await getSafeUser();
-        if (!user) {
-          navigate("/login");
-          return;
-        }
-
-        const { data: prof } = await supabase
-          .from("profiles")
-          .select("full_name, school_id")
-          .eq("user_id", user.id)
-          .single();
-
+        if (!user) { navigate("/login"); return; }
+        const { data: prof } = await supabase.from("profiles").select("full_name, school_id").eq("user_id", user.id).single();
         if (prof) {
           setProfile(prof);
           if (prof.school_id) {
-            const { data: school } = await supabase
-              .from("schools")
-              .select("name")
-              .eq("id", prof.school_id)
-              .single();
+            const { data: school } = await supabase.from("schools").select("name").eq("id", prof.school_id).single();
             if (school) setSchoolName(school.name);
           }
         }
-
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", user.id);
-
+        const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
         if (roles && roles.length > 0) {
           const priority: AppRole[] = ["super_admin", "school_admin", "teacher", "student"];
           const found = priority.find(r => roles.some(rd => rd.role === r));
           if (found) setUserRole(found);
         }
-      } finally {
-        setLoading(false);
-      }
+      } finally { setLoading(false); }
     };
     load();
   }, [navigate]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
-  };
-
+  const handleLogout = async () => { await supabase.auth.signOut(); navigate("/login"); };
   const isAdmin = userRole === "school_admin" || userRole === "super_admin";
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-muted-foreground">Loading...</div>
-      </div>
-    );
+    return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-muted-foreground">{t("common.loading")}</div></div>;
   }
 
   return (
@@ -94,35 +69,36 @@ export default function Dashboard() {
             </Link>
             {userRole !== "super_admin" && (
               <div className="hidden md:flex items-center gap-1 ml-6">
-                <Button variant="ghost" size="sm" className="text-foreground font-medium">Dashboard</Button>
+                <Button variant="ghost" size="sm" className="text-foreground font-medium">{t("nav.dashboard")}</Button>
                 {userRole === "student" && (
                   <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                    <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Lab</Link>
+                    <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}</Link>
                   </Button>
                 )}
                 {isAdmin && (
                   <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                    <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> Members</Link>
+                    <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> {t("nav.members")}</Link>
                   </Button>
                 )}
               </div>
             )}
           </div>
           <div className="flex items-center gap-3">
+            <LanguageToggle />
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-muted-foreground">
-                  <LogOut className="w-4 h-4 mr-1" /> Sign Out
+                  <LogOut className="w-4 h-4 mr-1" /> {t("nav.signOut")}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Sign out?</AlertDialogTitle>
-                  <AlertDialogDescription>Are you sure you want to sign out of your account?</AlertDialogDescription>
+                  <AlertDialogTitle>{t("dashboard.signOutConfirm")}</AlertDialogTitle>
+                  <AlertDialogDescription>{t("dashboard.signOutDesc")}</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLogout}>Sign Out</AlertDialogAction>
+                  <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>{t("nav.signOut")}</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -134,18 +110,10 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {userRole === "super_admin" && (
-          <SuperAdminDashboardView fullName={profile?.full_name || ""} />
-        )}
-        {userRole === "school_admin" && (
-          <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
-        )}
-        {userRole === "teacher" && (
-          <TeacherDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
-        )}
-        {userRole === "student" && (
-          <StudentDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />
-        )}
+        {userRole === "super_admin" && <SuperAdminDashboardView fullName={profile?.full_name || ""} />}
+        {userRole === "school_admin" && <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />}
+        {userRole === "teacher" && <TeacherDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />}
+        {userRole === "student" && <StudentDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />}
       </main>
     </div>
   );

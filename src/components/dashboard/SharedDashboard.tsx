@@ -3,13 +3,13 @@ import { Beaker, Atom, FlaskConical, Microscope, BookOpen, ChevronRight } from "
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { labData } from "@/data/labActivities";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const subjectIcon = (s: string) => {
   if (s === "physics") return Atom;
   if (s === "chemistry") return FlaskConical;
   return Microscope;
 };
-const subjectLabel = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const gradientMap: Record<string, string> = {
   physics: "bg-gradient-physics",
@@ -37,25 +37,21 @@ export const subjectCounts = {
 export const totalExperiments = allExperiments.length;
 
 export function SubjectCards() {
+  const { t } = useLanguage();
   return (
     <div className="grid md:grid-cols-3 gap-6 mb-10">
       {(["physics", "chemistry", "biology"] as const).map((subject, i) => {
         const Icon = subjectIcon(subject);
         const grades = Object.keys(labData[subject] || {}).sort();
         return (
-          <motion.div
-            key={subject}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 + i * 0.1 }}
-          >
+          <motion.div key={subject} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }}>
             <Link to={`/lab/${subject}`} className="block group">
               <div className={`${gradientMap[subject]} rounded-2xl p-6 text-primary-foreground transition-transform duration-300 group-hover:scale-[1.02]`}>
                 <Icon className="w-8 h-8 mb-3 opacity-90" />
-                <h3 className="text-xl font-display font-bold mb-1">{subjectLabel(subject)}</h3>
-                <p className="text-sm opacity-80">{subjectCounts[subject]} experiments · Grades {grades.join(", ")}</p>
+                <h3 className="text-xl font-display font-bold mb-1">{t(`subject.${subject}`)}</h3>
+                <p className="text-sm opacity-80">{subjectCounts[subject]} {t("common.experiments")} · {t("common.grade")} {grades.join(", ")}</p>
                 <div className="flex items-center gap-1 mt-3 text-sm opacity-70">
-                  Open Lab <ChevronRight className="w-4 h-4" />
+                  {t("shared.openLab")} <ChevronRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
@@ -67,30 +63,26 @@ export function SubjectCards() {
 }
 
 export function ExperimentGrid({ count = 6 }: { count?: number }) {
+  const { t } = useLanguage();
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-display font-semibold">Available Experiments</h2>
+        <h2 className="text-xl font-display font-semibold">{t("shared.availableExperiments")}</h2>
         <Button variant="outline" size="sm" asChild>
-          <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> Browse All</Link>
+          <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("shared.browseAll")}</Link>
         </Button>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {allExperiments.slice(0, count).map((exp, i) => {
           const Icon = subjectIcon(exp.subject);
           return (
-            <motion.div
-              key={exp.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.08 }}
-            >
+            <motion.div key={exp.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08 }}>
               <Link to={`/lab/${exp.subject}`} className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all duration-300 overflow-hidden group">
                 <div className={`${exp.gradient} h-2`} />
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <Icon className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-xs font-medium text-muted-foreground">{subjectLabel(exp.subject)} · Grade {exp.grade}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{t(`subject.${exp.subject}`)} · {t("common.grade")} {exp.grade}</span>
                   </div>
                   <h3 className="font-display font-semibold mb-1 group-hover:text-primary transition-colors">{exp.title}</h3>
                   <p className="text-xs text-muted-foreground line-clamp-2">{exp.objective}</p>
@@ -104,4 +96,4 @@ export function ExperimentGrid({ count = 6 }: { count?: number }) {
   );
 }
 
-export { subjectIcon, subjectLabel, gradientMap };
+export { subjectIcon, gradientMap };
