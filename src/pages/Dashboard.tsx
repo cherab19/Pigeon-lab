@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Beaker, BookOpen, LogOut, User, Users } from "lucide-react";
+import { Beaker, BookOpen, LogOut, User, Users, Library, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -71,9 +71,17 @@ export default function Dashboard() {
               <div className="hidden md:flex items-center gap-1 ml-6">
                 <Button variant="ghost" size="sm" className="text-foreground font-medium">{t("nav.dashboard")}</Button>
                 {userRole === "student" && (
-                  <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                    <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}</Link>
-                  </Button>
+                  <>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                      <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}</Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                      <Link to="/textbooks"><Library className="w-4 h-4 mr-1" /> {t("nav.library")}</Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                      <Link to="/success-guide"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.successGuide")}</Link>
+                    </Button>
+                  </>
                 )}
                 {isAdmin && (
                   <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
