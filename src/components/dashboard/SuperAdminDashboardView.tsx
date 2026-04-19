@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import SuperAdminSchoolManager from "./SuperAdminSchoolManager";
 import SuperAdminUserManager from "./SuperAdminUserManager";
 import SuperAdminAnalyticsCharts from "./SuperAdminAnalyticsCharts";
+import SuperAdminTextbookManager from "./SuperAdminTextbookManager";
 
 interface SubscriptionData {
   id: string;
@@ -215,6 +216,9 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
               <TabsTrigger value="analytics" className="gap-1.5">
                 <BarChart3 className="w-4 h-4" /> Analytics
               </TabsTrigger>
+              <TabsTrigger value="textbooks" className="gap-1.5">
+                <BookOpen className="w-4 h-4" /> Textbooks
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="schools">
@@ -238,6 +242,10 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
 
             <TabsContent value="analytics">
               <SuperAdminAnalyticsCharts />
+            </TabsContent>
+
+            <TabsContent value="textbooks">
+              <SuperAdminTextbookManager />
             </TabsContent>
           </Tabs>
         </>
