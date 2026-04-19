@@ -93,6 +93,79 @@ export type Database = {
           },
         ]
       }
+      chapter_quiz_results: {
+        Row: {
+          answers: Json
+          chapter_id: string
+          completed_at: string
+          id: string
+          score: number
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          chapter_id: string
+          completed_at?: string
+          id?: string
+          score: number
+          total_questions: number
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          chapter_id?: string
+          completed_at?: string
+          id?: string
+          score?: number
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapter_quiz_results_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "textbook_chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chapter_quizzes: {
+        Row: {
+          chapter_id: string
+          created_at: string
+          generated_by_ai: boolean
+          id: string
+          questions: Json
+          updated_at: string
+        }
+        Insert: {
+          chapter_id: string
+          created_at?: string
+          generated_by_ai?: boolean
+          id?: string
+          questions?: Json
+          updated_at?: string
+        }
+        Update: {
+          chapter_id?: string
+          created_at?: string
+          generated_by_ai?: boolean
+          id?: string
+          questions?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapter_quizzes_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "textbook_chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       classroom_students: {
         Row: {
           classroom_id: string
@@ -279,6 +352,38 @@ export type Database = {
         }
         Relationships: []
       }
+      reading_progress: {
+        Row: {
+          id: string
+          last_page: number
+          last_read_at: string
+          textbook_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          last_page?: number
+          last_read_at?: string
+          textbook_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          last_page?: number
+          last_read_at?: string
+          textbook_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_progress_textbook_id_fkey"
+            columns: ["textbook_id"]
+            isOneToOne: false
+            referencedRelation: "textbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       school_subscriptions: {
         Row: {
           activated_at: string | null
@@ -364,6 +469,188 @@ export type Database = {
           logo_url?: string | null
           name?: string
           phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      student_badges: {
+        Row: {
+          badge_key: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_key: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_key?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      student_gamification: {
+        Row: {
+          current_streak: number
+          id: string
+          last_active_date: string | null
+          longest_streak: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          current_streak?: number
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          current_streak?: number
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
+      student_reflections: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          week_of: string
+          what_to_improve: string | null
+          what_went_well: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          week_of: string
+          what_to_improve?: string | null
+          what_went_well?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          week_of?: string
+          what_to_improve?: string | null
+          what_went_well?: string | null
+        }
+        Relationships: []
+      }
+      student_routines: {
+        Row: {
+          id: string
+          schedule: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          schedule?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          schedule?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      textbook_chapters: {
+        Row: {
+          chapter_number: number
+          created_at: string
+          end_page: number
+          id: string
+          start_page: number
+          textbook_id: string
+          title: string
+        }
+        Insert: {
+          chapter_number: number
+          created_at?: string
+          end_page?: number
+          id?: string
+          start_page?: number
+          textbook_id: string
+          title: string
+        }
+        Update: {
+          chapter_number?: number
+          created_at?: string
+          end_page?: number
+          id?: string
+          start_page?: number
+          textbook_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "textbook_chapters_textbook_id_fkey"
+            columns: ["textbook_id"]
+            isOneToOne: false
+            referencedRelation: "textbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      textbooks: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_url: string
+          grade: number
+          id: string
+          language: string
+          subject: string
+          title: string
+          total_pages: number
+          updated_at: string
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_url: string
+          grade: number
+          id?: string
+          language?: string
+          subject: string
+          title: string
+          total_pages?: number
+          updated_at?: string
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_url?: string
+          grade?: number
+          id?: string
+          language?: string
+          subject?: string
+          title?: string
+          total_pages?: number
           updated_at?: string
         }
         Relationships: []
