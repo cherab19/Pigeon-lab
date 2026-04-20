@@ -157,7 +157,7 @@ export default function LabAssistant({ context }: LabAssistantProps) {
             </div>
             <div>
               <h3 className="font-display font-bold text-sm">SciBot</h3>
-              <p className="text-[10px] text-muted-foreground">AI Lab Assistant</p>
+              <p className="text-[10px] text-muted-foreground">AI Assistant</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
