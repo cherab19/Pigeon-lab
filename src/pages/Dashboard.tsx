@@ -72,8 +72,16 @@ export default function Dashboard() {
                 <Button variant="ghost" size="sm" className="text-foreground font-medium">{t("nav.dashboard")}</Button>
                 {userRole === "student" && (
                   <>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                      <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}</Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground"
+                      onClick={() => {
+                        const el = document.getElementById("choose-subject");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}
                     </Button>
                     <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
                       <Link to="/textbooks"><Library className="w-4 h-4 mr-1" /> {t("nav.library")}</Link>

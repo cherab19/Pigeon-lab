@@ -111,8 +111,8 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
       <StudentClassroomView />
       <StudentProgress />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-        <div className="mb-4 flex items-center justify-between">
+      <motion.div id="choose-subject" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+        <div className="mb-4 flex items-center justify-between scroll-mt-20">
           <h2 className="text-lg font-display font-semibold flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" /> {t("student.chooseSubject")}
           </h2>
