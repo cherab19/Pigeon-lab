@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LabQuiz, { type QuizQuestion } from "@/components/lab/LabQuiz";
+import LabAssistant from "@/components/lab/LabAssistant";
 import { useGamification } from "@/hooks/useGamification";
 import { toast } from "sonner";
 
