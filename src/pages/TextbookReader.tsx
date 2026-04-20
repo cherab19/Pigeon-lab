@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LabQuiz, { type QuizQuestion } from "@/components/lab/LabQuiz";
+import LabAssistant from "@/components/lab/LabAssistant";
 import { useGamification } from "@/hooks/useGamification";
 import { toast } from "sonner";
 
@@ -200,6 +201,19 @@ export default function TextbookReader() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* SciBot AI assistant — contextual help while reading */}
+      <LabAssistant
+        context={{
+          subject: book.subject,
+          grade: String(book.grade),
+          experiment: `Textbook: ${book.title}`,
+          step: currentChapter
+            ? `Chapter ${currentChapter.chapter_number}: ${currentChapter.title}`
+            : undefined,
+          readings: `Currently reading page ${pageNum} of ${numPages || book.total_pages}`,
+        }}
+      />
     </div>
   );
 }
