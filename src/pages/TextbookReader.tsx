@@ -4,16 +4,13 @@ import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import "@/lib/pdfWorker";
-import { ArrowLeft, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, BookOpen, ListTree, ClipboardCheck, Loader2, Download } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, BookOpen, ListTree, Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LabQuiz, { type QuizQuestion } from "@/components/lab/LabQuiz";
 import LabAssistant from "@/components/lab/LabAssistant";
-import { useGamification } from "@/hooks/useGamification";
 import { toast } from "sonner";
 
 interface Textbook {
@@ -28,15 +25,12 @@ export default function TextbookReader() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { awardXP } = useGamification();
   const [book, setBook] = useState<Textbook | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [pageNum, setPageNum] = useState(1);
   const [numPages, setNumPages] = useState<number>(0);
   const [scale, setScale] = useState(1.0);
   const [loadingPdf, setLoadingPdf] = useState(true);
-  const [activeQuiz, setActiveQuiz] = useState<{ chapter: Chapter; questions: QuizQuestion[] } | null>(null);
-  const [loadingQuiz, setLoadingQuiz] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -74,40 +68,6 @@ export default function TextbookReader() {
 
   const goToChapter = useCallback((c: Chapter) => setPageNum(c.start_page), []);
 
-  const startChapterQuiz = useCallback(async (c: Chapter) => {
-    setLoadingQuiz(true);
-    try {
-      const { data: existing } = await supabase
-        .from("chapter_quizzes")
-        .select("questions")
-        .eq("chapter_id", c.id)
-        .maybeSingle();
-      let questions: QuizQuestion[] = [];
-      if (existing?.questions && Array.isArray(existing.questions) && (existing.questions as any[]).length > 0) {
-        questions = existing.questions as unknown as QuizQuestion[];
-      } else {
-        // Trigger AI generation (super-admin only). Show fallback message for students.
-        toast.info(t("textbook.quizNotReady"));
-        setLoadingQuiz(false);
-        return;
-      }
-      setActiveQuiz({ chapter: c, questions });
-    } finally { setLoadingQuiz(false); }
-  }, [t]);
-
-  const handleQuizComplete = useCallback(async (score: number, total: number) => {
-    if (!activeQuiz) return;
-    const user = await getSafeUser();
-    if (user) {
-      await supabase.from("chapter_quiz_results").insert({
-        user_id: user.id, chapter_id: activeQuiz.chapter.id, score, total_questions: total, answers: [],
-      });
-    }
-    const pct = (score / total) * 100;
-    if (pct >= 70) await awardXP(25, ["quiz_pass"]);
-    else await awardXP(5);
-  }, [activeQuiz, awardXP]);
-
   const currentChapter = chapters.find(c => pageNum >= c.start_page && pageNum <= c.end_page);
 
   if (!book) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>;
@@ -139,9 +99,6 @@ export default function TextbookReader() {
                         <p className="text-xs text-muted-foreground">{t("textbook.chapter")} {c.chapter_number} · {t("textbook.page")} {c.start_page}</p>
                         <p className="font-medium text-sm">{c.title}</p>
                       </button>
-                      <Button size="sm" variant="ghost" className="mt-2 h-7 text-xs gap-1" onClick={() => startChapterQuiz(c)} disabled={loadingQuiz}>
-                        <ClipboardCheck className="w-3.5 h-3.5" /> {t("textbook.takeQuiz")}
-                      </Button>
                     </div>
                   ))}
                 </div>
@@ -174,33 +131,11 @@ export default function TextbookReader() {
             <ChevronLeft className="w-4 h-4 mr-1" /> {t("textbook.prev")}
           </Button>
           <span className="text-sm font-medium">{pageNum} / {numPages || "?"}</span>
-          {currentChapter && (
-            <Button size="sm" variant="default" className="gap-1.5" onClick={() => startChapterQuiz(currentChapter)} disabled={loadingQuiz}>
-              <ClipboardCheck className="w-4 h-4" /> {t("textbook.chapterQuiz")}
-            </Button>
-          )}
           <Button variant="outline" size="sm" onClick={() => setPageNum(p => Math.min(numPages, p + 1))} disabled={pageNum >= numPages}>
             {t("textbook.next")} <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
       </footer>
-
-      {/* Chapter Quiz Dialog */}
-      <Dialog open={!!activeQuiz} onOpenChange={(o) => !o && setActiveQuiz(null)}>
-        <DialogContent className="max-w-xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5 text-primary" /> {activeQuiz?.chapter.title}</DialogTitle>
-          </DialogHeader>
-          {activeQuiz && (
-            <LabQuiz
-              experimentId={`chapter:${activeQuiz.chapter.id}`}
-              quizType="post"
-              questions={activeQuiz.questions}
-              onComplete={handleQuizComplete}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* SciBot AI assistant — contextual help while reading */}
       <LabAssistant
