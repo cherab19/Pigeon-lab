@@ -131,33 +131,11 @@ export default function TextbookReader() {
             <ChevronLeft className="w-4 h-4 mr-1" /> {t("textbook.prev")}
           </Button>
           <span className="text-sm font-medium">{pageNum} / {numPages || "?"}</span>
-          {currentChapter && (
-            <Button size="sm" variant="default" className="gap-1.5" onClick={() => startChapterQuiz(currentChapter)} disabled={loadingQuiz}>
-              <ClipboardCheck className="w-4 h-4" /> {t("textbook.chapterQuiz")}
-            </Button>
-          )}
           <Button variant="outline" size="sm" onClick={() => setPageNum(p => Math.min(numPages, p + 1))} disabled={pageNum >= numPages}>
             {t("textbook.next")} <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
       </footer>
-
-      {/* Chapter Quiz Dialog */}
-      <Dialog open={!!activeQuiz} onOpenChange={(o) => !o && setActiveQuiz(null)}>
-        <DialogContent className="max-w-xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5 text-primary" /> {activeQuiz?.chapter.title}</DialogTitle>
-          </DialogHeader>
-          {activeQuiz && (
-            <LabQuiz
-              experimentId={`chapter:${activeQuiz.chapter.id}`}
-              quizType="post"
-              questions={activeQuiz.questions}
-              onComplete={handleQuizComplete}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* SciBot AI assistant — contextual help while reading */}
       <LabAssistant
