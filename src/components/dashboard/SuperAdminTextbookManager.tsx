@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Card } from "@/components/ui/card";
-import { Plus, Trash2, BookOpen, Sparkles, Loader2, Upload, ListTree } from "lucide-react";
+import { Plus, Trash2, BookOpen, Loader2, Upload, ListTree } from "lucide-react";
 import { toast } from "sonner";
 import { getSafeUser } from "@/lib/safeAuth";
 
@@ -33,7 +33,6 @@ export default function SuperAdminTextbookManager() {
   // Chapters
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [newCh, setNewCh] = useState({ chapter_number: 1, title: "", start_page: 1, end_page: 1 });
-  const [genLoading, setGenLoading] = useState<string | null>(null);
 
   const loadBooks = async () => {
     const { data } = await supabase.from("textbooks").select("*").order("grade").order("subject");
@@ -110,28 +109,12 @@ export default function SuperAdminTextbookManager() {
     if (openChapters) await loadChapters(openChapters.id);
   };
 
-  const generateQuiz = async (chapter: Chapter) => {
-    setGenLoading(chapter.id);
-    try {
-      const { data: sess } = await supabase.auth.getSession();
-      const { data, error } = await supabase.functions.invoke("generate-chapter-quiz", {
-        body: { chapter_id: chapter.id, chapter_title: chapter.title, chapter_text: `${chapter.title} (pages ${chapter.start_page}-${chapter.end_page})` },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      toast.success(`Quiz generated for "${chapter.title}"`);
-    } catch (e: any) {
-      console.error(e);
-      toast.error(e.message || "Quiz generation failed");
-    } finally { setGenLoading(null); }
-  };
-
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-lg font-display font-semibold flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /> Textbook Library</h2>
-          <p className="text-sm text-muted-foreground">Upload PDFs and define chapters for AI quiz generation</p>
+          <p className="text-sm text-muted-foreground">Upload PDFs and define chapters for easy navigation</p>
         </div>
         <Dialog open={openUpload} onOpenChange={setOpenUpload}>
           <DialogTrigger asChild><Button><Upload className="w-4 h-4 mr-1" /> Upload Textbook</Button></DialogTrigger>
@@ -220,9 +203,6 @@ export default function SuperAdminTextbookManager() {
                   <p className="font-medium text-sm truncate">{c.title}</p>
                   <p className="text-xs text-muted-foreground">Pages {c.start_page}–{c.end_page}</p>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => generateQuiz(c)} disabled={genLoading === c.id}>
-                  {genLoading === c.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <><Sparkles className="w-3.5 h-3.5 mr-1" /> AI Quiz</>}
-                </Button>
                 <Button size="sm" variant="ghost" onClick={() => deleteChapter(c.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
               </div>
             ))}
