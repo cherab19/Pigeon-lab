@@ -140,13 +140,18 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-card rounded-xl p-5 border border-border animate-pulse h-24" />
+            <div key={i} className="bg-card rounded-2xl p-5 border border-border animate-pulse h-24" />
           ))}
         </div>
       ) : (
         <>
           {/* Platform KPIs */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
+            <h2 className="text-lg font-display font-bold mb-1">EthioLab Platform Overview</h2>
+            <p className="text-sm opacity-80">{totalExperiments} experiments · {platformStats?.total_schools ?? 0} schools · {platformStats?.total_users ?? 0} users</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {[
                 { label: "Schools", value: platformStats?.total_schools ?? 0, icon: School, color: "text-primary" },
@@ -159,13 +164,17 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + i * 0.05 }}
-                  className="bg-card rounded-xl p-5 border border-border shadow-card"
+                  whileHover={{ y: -2 }}
+                  className="relative overflow-hidden bg-card rounded-2xl p-5 border border-border shadow-card hover:shadow-elevated transition-all"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <c.icon className={`w-5 h-5 ${c.color}`} />
-                    <span className="text-2xl font-display font-bold">{c.value}</span>
+                  <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-primary/5 blur-2xl" />
+                  <div className="relative flex items-center justify-between mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <c.icon className={`w-5 h-5 ${c.color}`} />
+                    </div>
+                    <span className="text-2xl font-display font-bold tracking-tight">{c.value}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">{c.label}</p>
+                  <p className="text-xs text-muted-foreground font-medium">{c.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -188,9 +197,11 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.25 + i * 0.04 }}
-                    className="bg-card rounded-xl p-4 border border-border shadow-card"
+                    whileHover={{ y: -2 }}
+                    className="relative overflow-hidden bg-card rounded-2xl p-4 border border-border shadow-card hover:shadow-elevated transition-all"
                   >
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full bg-primary/5 blur-2xl" />
+                    <div className="relative flex items-center justify-between mb-2">
                       <c.icon className={`w-4 h-4 ${c.color}`} />
                       <span className="text-xl font-display font-bold">{c.value}</span>
                     </div>
