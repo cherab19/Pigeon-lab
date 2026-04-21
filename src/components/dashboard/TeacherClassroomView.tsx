@@ -281,7 +281,6 @@ export default function TeacherClassroomView() {
                     <tr className="border-b border-border bg-muted/50">
                       <th className="text-left p-4 font-medium text-muted-foreground">Student</th>
                       <th className="text-right p-4 font-medium text-muted-foreground">Labs Done</th>
-                      <th className="text-right p-4 font-medium text-muted-foreground">Avg Score</th>
                       <th className="text-right p-4 font-medium text-muted-foreground hidden sm:table-cell">Time (min)</th>
                     </tr>
                   </thead>
@@ -293,11 +292,6 @@ export default function TeacherClassroomView() {
                           {sp.full_name}
                         </td>
                         <td className="p-4 text-right">{sp.experiments_completed}</td>
-                        <td className="p-4 text-right">
-                          <Badge variant={sp.avg_score >= 70 ? "default" : sp.avg_score >= 50 ? "secondary" : "outline"}>
-                            {sp.avg_score}%
-                          </Badge>
-                        </td>
                         <td className="p-4 text-right text-muted-foreground hidden sm:table-cell">
                           {Math.round(sp.total_time / 60)}
                         </td>

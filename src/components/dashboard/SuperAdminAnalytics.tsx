@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { School, Users, GraduationCap, BookOpen, Trophy, Clock, BarChart3, TrendingUp } from "lucide-react";
+import { School, Users, GraduationCap, BookOpen, Trophy, Clock, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SchoolDetail {
@@ -60,7 +60,6 @@ export default function SuperAdminAnalytics() {
     { label: "Teachers", value: stats.total_teachers, icon: BookOpen, color: "text-primary" },
     { label: "Experiments Done", value: stats.experiments_completed, icon: Trophy, color: "text-secondary" },
     { label: "Completion Rate", value: `${completionRate}%`, icon: TrendingUp, color: "text-accent" },
-    { label: "Avg Quiz Score", value: `${stats.avg_quiz_score}%`, icon: BarChart3, color: "text-primary" },
     { label: "Avg Time (min)", value: Math.round(stats.avg_time_spent / 60), icon: Clock, color: "text-secondary" },
   ];
 
