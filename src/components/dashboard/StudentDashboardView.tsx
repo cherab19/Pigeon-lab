@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, PlayCircle, BookOpen, Beaker, Library, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboard";
 import StudentProgress from "./StudentProgress";
@@ -111,14 +111,11 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
       <StudentClassroomView />
       <StudentProgress />
 
-      <motion.div id="choose-subject" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
-        <div className="mb-4 flex items-center justify-between scroll-mt-20">
+      <motion.div id="choose-subject" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="scroll-mt-20">
+        <div className="mb-4">
           <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary" /> {t("student.chooseSubject")}
+            <BookOpen className="w-5 h-5 text-primary" /> Choose a Subject to conduct experiment
           </h2>
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/lab">{t("student.browseAll")}</Link>
-          </Button>
         </div>
         <SubjectCards />
       </motion.div>
