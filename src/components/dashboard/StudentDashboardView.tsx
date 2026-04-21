@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, PlayCircle, BookOpen, Beaker, Library, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { Link } from "react-router-dom";
 import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboard";
 import StudentProgress from "./StudentProgress";
