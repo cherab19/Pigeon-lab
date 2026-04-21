@@ -130,21 +130,12 @@ export default function TeacherClassroomView() {
           .in("user_id", studentIds)
           .eq("subject", cls?.subject || "");
 
-        // Get quiz results
-        const { data: quizzes } = await supabase.from("quiz_results")
-          .select("user_id, score, total_questions")
-          .in("user_id", studentIds);
-
         const progressMap: StudentProgress[] = (profiles || []).map(p => {
           const userProgress = (progress || []).filter(ep => ep.user_id === p.user_id);
-          const userQuizzes = (quizzes || []).filter(q => q.user_id === p.user_id);
           const completed = userProgress.filter(ep => ep.status === "completed").length;
           const totalTime = userProgress.reduce((sum, ep) => sum + (ep.time_spent_seconds || 0), 0);
-          const avgScore = userQuizzes.length > 0
-            ? Math.round(userQuizzes.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / userQuizzes.length)
-            : 0;
 
-          return { student_id: p.user_id, full_name: p.full_name, experiments_completed: completed, avg_score: avgScore, total_time: totalTime };
+          return { student_id: p.user_id, full_name: p.full_name, experiments_completed: completed, avg_score: 0, total_time: totalTime };
         });
 
         setStudentProgress(progressMap);
