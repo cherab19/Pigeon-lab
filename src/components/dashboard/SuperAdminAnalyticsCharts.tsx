@@ -120,7 +120,7 @@ export default function SuperAdminAnalyticsCharts() {
                     </span>
                     <div>
                       <p className="text-sm font-medium">{school.name}</p>
-                      <p className="text-xs text-muted-foreground">{school.members} members · {school.avg_score}% avg score</p>
+                      <p className="text-xs text-muted-foreground">{school.members} members</p>
                     </div>
                   </div>
                   <span className="text-sm font-display font-bold">{school.completed_labs} labs</span>
