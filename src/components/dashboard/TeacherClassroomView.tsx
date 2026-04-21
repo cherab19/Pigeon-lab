@@ -130,21 +130,12 @@ export default function TeacherClassroomView() {
           .in("user_id", studentIds)
           .eq("subject", cls?.subject || "");
 
-        // Get quiz results
-        const { data: quizzes } = await supabase.from("quiz_results")
-          .select("user_id, score, total_questions")
-          .in("user_id", studentIds);
-
         const progressMap: StudentProgress[] = (profiles || []).map(p => {
           const userProgress = (progress || []).filter(ep => ep.user_id === p.user_id);
-          const userQuizzes = (quizzes || []).filter(q => q.user_id === p.user_id);
           const completed = userProgress.filter(ep => ep.status === "completed").length;
           const totalTime = userProgress.reduce((sum, ep) => sum + (ep.time_spent_seconds || 0), 0);
-          const avgScore = userQuizzes.length > 0
-            ? Math.round(userQuizzes.reduce((sum, q) => sum + (q.score / q.total_questions * 100), 0) / userQuizzes.length)
-            : 0;
 
-          return { student_id: p.user_id, full_name: p.full_name, experiments_completed: completed, avg_score: avgScore, total_time: totalTime };
+          return { student_id: p.user_id, full_name: p.full_name, experiments_completed: completed, avg_score: 0, total_time: totalTime };
         });
 
         setStudentProgress(progressMap);
@@ -290,7 +281,6 @@ export default function TeacherClassroomView() {
                     <tr className="border-b border-border bg-muted/50">
                       <th className="text-left p-4 font-medium text-muted-foreground">Student</th>
                       <th className="text-right p-4 font-medium text-muted-foreground">Labs Done</th>
-                      <th className="text-right p-4 font-medium text-muted-foreground">Avg Score</th>
                       <th className="text-right p-4 font-medium text-muted-foreground hidden sm:table-cell">Time (min)</th>
                     </tr>
                   </thead>
@@ -302,11 +292,6 @@ export default function TeacherClassroomView() {
                           {sp.full_name}
                         </td>
                         <td className="p-4 text-right">{sp.experiments_completed}</td>
-                        <td className="p-4 text-right">
-                          <Badge variant={sp.avg_score >= 70 ? "default" : sp.avg_score >= 50 ? "secondary" : "outline"}>
-                            {sp.avg_score}%
-                          </Badge>
-                        </td>
                         <td className="p-4 text-right text-muted-foreground hidden sm:table-cell">
                           {Math.round(sp.total_time / 60)}
                         </td>

@@ -8,8 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Beaker, Atom, Microscope, FlaskConical, CheckCircle, Lock } from "lucide-react";
 import LabAssistant from "@/components/lab/LabAssistant";
-import LabQuiz from "@/components/lab/LabQuiz";
-import { getQuiz } from "@/data/quizData";
 import { useProgressTracker } from "@/hooks/useProgressTracker";
 import { toast } from "@/hooks/use-toast";
 import { useSubscriptionAccess } from "@/hooks/useSubscriptionAccess";
@@ -25,9 +23,6 @@ export default function SubjectLab() {
   const [grade, setGrade] = useState<string>("");
   const [unitNum, setUnitNum] = useState<string>("");
   const [labId, setLabId] = useState<string>("");
-  const [showPreQuiz, setShowPreQuiz] = useState(false);
-  const [showPostQuiz, setShowPostQuiz] = useState(false);
-  const [preQuizDone, setPreQuizDone] = useState(false);
   const [use2D, setUse2D] = useState(false);
 
   const trackerSubject = subject && labData[subject] ? subject : undefined;
@@ -66,25 +61,10 @@ export default function SubjectLab() {
   const SimComponent3D = selectedLab ? simulationRegistry[selectedLab.id] : null;
   const SimComponent2D = selectedLab ? fallback2DRegistry[selectedLab.id] : null;
   const SimComponent = use2D ? SimComponent2D : SimComponent3D;
-  const quiz = selectedLab ? getQuiz(selectedLab.id) : null;
 
-  const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); resetQuiz(); };
-  const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); resetQuiz(); };
-  const handleLabSelect = (id: string) => { setLabId(id); resetQuiz(); setUse2D(false); setShowPreQuiz(true); };
-  const resetQuiz = () => { setShowPreQuiz(false); setShowPostQuiz(false); setPreQuizDone(false); };
-
-  const handlePreQuizComplete = (score: number, total: number) => {
-    setPreQuizDone(true); setShowPreQuiz(false);
-    toast({ title: `${t("quiz.preLab")} ${t("quiz.quiz")}: ${score}/${total}`, description: "Now explore the simulation!" });
-  };
-
-  const handlePostQuizComplete = async (score: number, total: number) => {
-    await markComplete(); setShowPostQuiz(false);
-    toast({
-      title: `${t("quiz.postLab")} ${t("quiz.quiz")}: ${score}/${total}`,
-      description: (<span className="flex items-center gap-1"><CheckCircle className="w-4 h-4 text-primary" /> {t("lab.experimentCompleted")}</span>),
-    });
-  };
+  const handleGradeChange = (g: string) => { setGrade(g); setUnitNum(""); setLabId(""); };
+  const handleUnitChange = (u: string) => { setUnitNum(u); setLabId(""); };
+  const handleLabSelect = (id: string) => { setLabId(id); setUse2D(false); };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -140,7 +120,7 @@ export default function SubjectLab() {
             <h2 className="text-lg font-display font-bold mb-4">{t("common.grade")} {grade} — {meta.name} {t("lab.units")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {units.map(u => (
-                <button key={u.unit} onClick={() => handleUnitChange(String(u.unit))} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
+                <button key={u.unit} onClick={() => handleUnitChange(String(u.unit))} className="text-left p-4 rounded-2xl border border-border bg-card hover:border-primary hover:shadow-elevated transition-all">
                   <h3 className="font-display font-semibold text-sm mb-1">Unit {u.unit}: {u.unitName}</h3>
                   <p className="text-xs text-muted-foreground">{allLabs.filter(l => l.unit === u.unit).length} {t("lab.labActivities")}</p>
                 </button>
@@ -153,7 +133,7 @@ export default function SubjectLab() {
             <h2 className="text-lg font-display font-bold mb-4">Unit {unitNum}: {units.find(u => u.unit === Number(unitNum))?.unitName} — {t("lab.labs")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {unitLabs.map(l => (
-                <button key={l.id} onClick={() => handleLabSelect(l.id)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md transition-all">
+                <button key={l.id} onClick={() => handleLabSelect(l.id)} className="text-left p-4 rounded-2xl border border-border bg-card hover:border-primary hover:shadow-elevated transition-all">
                   <h3 className="font-display font-semibold text-sm mb-1">{l.title}</h3>
                   <p className="text-xs text-muted-foreground">{l.objective}</p>
                 </button>
@@ -162,16 +142,7 @@ export default function SubjectLab() {
           </div>
         )}
 
-        {showPreQuiz && quiz && (
-          <div className="container mx-auto px-4 py-8 max-w-lg">
-            <LabQuiz experimentId={selectedLab!.id} quizType="pre" questions={quiz.pre} onComplete={handlePreQuizComplete} />
-            <button onClick={() => { setShowPreQuiz(false); setPreQuizDone(true); }} className="text-xs text-muted-foreground underline mt-3 block mx-auto">
-              {t("lab.skipQuiz")}
-            </button>
-          </div>
-        )}
-
-        {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
+        {labId && SimComponent && (
           <SimulationErrorBoundary onFallback={() => setUse2D(true)} fallback={
             use2D && SimComponent2D ? (
               <Suspense fallback={<div className="flex items-center justify-center min-h-[300px]"><p className="text-muted-foreground">{t("common.loading")}</p></div>}>
@@ -183,18 +154,11 @@ export default function SubjectLab() {
           </SimulationErrorBoundary>
         )}
 
-        {labId && !showPreQuiz && !showPostQuiz && SimComponent && (
-          <div className="container mx-auto px-4 py-4 flex justify-center gap-3">
-            <Button variant="outline" size="sm" onClick={() => setShowPostQuiz(true)}>{t("lab.takePostQuiz")}</Button>
+        {labId && SimComponent && (
+          <div className="container mx-auto px-4 py-4 flex justify-center">
             <Button size="sm" onClick={async () => { await markComplete(); toast({ title: t("lab.experimentCompleted") }); }}>
               <CheckCircle className="w-4 h-4 mr-1" /> {t("lab.markComplete")}
             </Button>
-          </div>
-        )}
-
-        {showPostQuiz && quiz && (
-          <div className="container mx-auto px-4 py-8 max-w-lg">
-            <LabQuiz experimentId={selectedLab!.id} quizType="post" questions={quiz.post} onComplete={handlePostQuizComplete} />
           </div>
         )}
       </div>

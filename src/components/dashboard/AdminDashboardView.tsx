@@ -78,6 +78,11 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
         </motion.div>
       )}
 
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
+        <h2 className="text-lg font-display font-bold mb-1">{totalExperiments} {t("admin.totalExperiments")}</h2>
+        <p className="text-sm opacity-80">{schoolName ? `${schoolName} · ` : ""}{t("admin.manageMembersDesc")}</p>
+      </motion.div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: t("admin.totalExperiments"), value: totalExperiments.toString(), icon: Beaker, color: "text-primary" },
@@ -85,21 +90,24 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
           { label: t("admin.chemistryLabs"), value: subjectCounts.chemistry.toString(), icon: FlaskConical, color: "text-secondary" },
           { label: t("admin.biologyLabs"), value: subjectCounts.biology.toString(), icon: Microscope, color: "text-accent" },
         ].map((s, i) => (
-          <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-card rounded-xl p-5 border border-border shadow-card">
-            <div className="flex items-center justify-between mb-3">
-              <s.icon className={`w-5 h-5 ${s.color}`} />
-              <span className="text-2xl font-display font-bold">{s.value}</span>
+          <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} whileHover={{ y: -2 }} className="relative overflow-hidden bg-card rounded-2xl p-5 border border-border shadow-card hover:shadow-elevated transition-all">
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-primary/5 blur-2xl" />
+            <div className="relative flex items-center justify-between mb-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                <s.icon className={`w-5 h-5 ${s.color}`} />
+              </div>
+              <span className="text-2xl font-display font-bold tracking-tight">{s.value}</span>
             </div>
-            <p className="text-xs text-muted-foreground">{s.label}</p>
+            <p className="text-xs text-muted-foreground font-medium">{s.label}</p>
           </motion.div>
         ))}
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
         <h2 className="text-lg font-display font-semibold mb-4">{t("admin.quickActions")}</h2>
-        <Link to="/manage-users" className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-6 group">
+        <Link to="/manage-users" className="block bg-card rounded-2xl border border-border shadow-card hover:shadow-elevated transition-all p-6 group">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Users className="w-6 h-6 text-primary" />
             </div>
             <div className="flex-1">

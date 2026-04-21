@@ -14,14 +14,6 @@ interface ProgressItem {
   completed_at: string | null;
 }
 
-interface QuizItem {
-  experiment_id: string;
-  quiz_type: string;
-  score: number;
-  total_questions: number;
-  completed_at: string;
-}
-
 interface Badge {
   id: string;
   label: string;
@@ -33,7 +25,6 @@ interface Badge {
 
 export default function StudentProgress() {
   const [progress, setProgress] = useState<ProgressItem[]>([]);
-  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,21 +32,13 @@ export default function StudentProgress() {
       const user = await getSafeUser();
       if (!user) { setLoading(false); return; }
 
-      const [{ data: prog }, { data: quiz }] = await Promise.all([
-        supabase
-          .from("experiment_progress")
-          .select("experiment_id, subject, grade, status, time_spent_seconds, completed_at")
-          .eq("user_id", user.id)
-          .order("completed_at", { ascending: false }),
-        supabase
-          .from("quiz_results")
-          .select("experiment_id, quiz_type, score, total_questions, completed_at")
-          .eq("user_id", user.id)
-          .order("completed_at", { ascending: false }),
-      ]);
+      const { data: prog } = await supabase
+        .from("experiment_progress")
+        .select("experiment_id, subject, grade, status, time_spent_seconds, completed_at")
+        .eq("user_id", user.id)
+        .order("completed_at", { ascending: false });
 
       setProgress(prog || []);
-      setQuizzes(quiz || []);
       setLoading(false);
     };
     load();
@@ -66,23 +49,17 @@ export default function StudentProgress() {
   const totalExps = allExperiments.length;
   const pct = totalExps ? Math.round((completed.length / totalExps) * 100) : 0;
 
-  // Compute badges
-  const postQuizzes = quizzes.filter(q => q.quiz_type === "post");
-  const perfectQuizzes = postQuizzes.filter(q => q.score === q.total_questions);
-  const avgScore = postQuizzes.length
-    ? Math.round(postQuizzes.reduce((s, q) => s + (q.score / q.total_questions) * 100, 0) / postQuizzes.length)
-    : 0;
   const subjectsCompleted = new Set(completed.map(p => p.subject));
 
   const badges: Badge[] = [
     { id: "first_exp", label: "First Step", description: "Complete your first experiment", icon: Star, earned: completed.length >= 1, color: "text-primary" },
     { id: "five_exp", label: "Lab Regular", description: "Complete 5 experiments", icon: Beaker, earned: completed.length >= 5, color: "text-secondary" },
     { id: "ten_exp", label: "Science Explorer", description: "Complete 10 experiments", icon: Zap, earned: completed.length >= 10, color: "text-accent" },
-    { id: "perfect_quiz", label: "Perfect Score", description: "Get 100% on a post-lab quiz", icon: Trophy, earned: perfectQuizzes.length >= 1, color: "text-primary" },
-    { id: "high_avg", label: "Honor Roll", description: "Maintain 80%+ average quiz score", icon: Award, earned: postQuizzes.length >= 3 && avgScore >= 80, color: "text-secondary" },
     { id: "all_subjects", label: "Renaissance", description: "Complete labs in all 3 subjects", icon: Target, earned: subjectsCompleted.size >= 3, color: "text-accent" },
     { id: "time_warrior", label: "Dedicated", description: "Spend 60+ minutes in labs", icon: Clock, earned: totalTime >= 3600, color: "text-primary" },
     { id: "streak", label: "On Fire", description: "Complete 3 experiments in a row", icon: Flame, earned: completed.length >= 3, color: "text-destructive" },
+    { id: "twenty_exp", label: "Lab Master", description: "Complete 20 experiments", icon: Trophy, earned: completed.length >= 20, color: "text-primary" },
+    { id: "two_subjects", label: "Cross Discipline", description: "Complete labs in 2+ subjects", icon: Award, earned: subjectsCompleted.size >= 2, color: "text-secondary" },
   ];
 
   const earnedCount = badges.filter(b => b.earned).length;
