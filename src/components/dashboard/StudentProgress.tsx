@@ -109,7 +109,7 @@ export default function StudentProgress() {
   return (
     <div className="mb-8">
       <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-        <Beaker className="w-5 h-5 text-primary" /> Your Progress
+        <Beaker className="w-5 h-5 text-primary" /> Your Progress of lab experiment
       </h2>
       <div className="grid grid-cols-3 gap-4 mb-4">
         {stats.map((s, i) => (
@@ -118,25 +118,34 @@ export default function StudentProgress() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-card rounded-xl p-5 border border-border shadow-card"
+            whileHover={{ y: -2 }}
+            className="relative overflow-hidden bg-card rounded-2xl p-5 border border-border shadow-card hover:shadow-elevated transition-all"
           >
-            <div className="flex items-center justify-between mb-3">
-              <s.icon className={`w-5 h-5 ${s.color}`} />
-              <span className="text-2xl font-display font-bold">{s.value}</span>
+            <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-primary/5 blur-2xl" />
+            <div className="relative flex items-center justify-between mb-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                <s.icon className={`w-5 h-5 ${s.color}`} />
+              </div>
+              <span className="text-2xl font-display font-bold tracking-tight">{s.value}</span>
             </div>
-            <p className="text-xs text-muted-foreground">{s.label}</p>
+            <p className="text-xs text-muted-foreground font-medium">{s.label}</p>
           </motion.div>
         ))}
       </div>
 
       {/* Progress bar */}
-      <div className="bg-card rounded-xl border border-border p-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium">Overall Completion</span>
-          <span className="text-sm font-mono">{completed.length} / {totalExps}</span>
+      <div className="bg-card rounded-2xl border border-border p-5 shadow-card">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-semibold">Overall Completion</span>
+          <span className="text-sm font-mono text-muted-foreground">{completed.length} / {totalExps}</span>
         </div>
-        <div className="w-full bg-muted rounded-full h-2.5">
-          <div className="bg-primary h-2.5 rounded-full transition-all" style={{ width: `${pct}%` }} />
+        <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${pct}%` }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-gradient-hero h-2.5 rounded-full"
+          />
         </div>
       </div>
 
@@ -148,7 +157,7 @@ export default function StudentProgress() {
         className="mt-6"
       >
         <h3 className="text-lg font-display font-semibold mb-1 flex items-center gap-2">
-          <Award className="w-5 h-5 text-primary" /> Achievements
+          <Award className="w-5 h-5 text-primary" /> Achievements you earned on experiments
           <span className="text-xs font-normal text-muted-foreground ml-1">{earnedCount}/{badges.length} earned</span>
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
@@ -158,75 +167,27 @@ export default function StudentProgress() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.35 + i * 0.05 }}
-              className={`relative rounded-xl border p-4 text-center transition-all ${
+              whileHover={{ y: -3, scale: 1.02 }}
+              className={`relative rounded-2xl border p-4 text-center transition-all ${
                 badge.earned
-                  ? "bg-card border-primary/30 shadow-card"
-                  : "bg-muted/30 border-border opacity-50"
+                  ? "bg-card border-primary/30 shadow-card hover:shadow-elevated"
+                  : "bg-muted/30 border-border opacity-60"
               }`}
             >
-              <badge.icon className={`w-7 h-7 mx-auto mb-2 ${badge.earned ? badge.color : "text-muted-foreground"}`} />
+              <div className={`w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center ${badge.earned ? "bg-primary/10" : "bg-muted"}`}>
+                <badge.icon className={`w-6 h-6 ${badge.earned ? badge.color : "text-muted-foreground"}`} />
+              </div>
               <p className="text-xs font-semibold">{badge.label}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">{badge.description}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 leading-snug">{badge.description}</p>
               {badge.earned && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-3 h-3 text-primary-foreground" />
+                <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-card">
+                  <CheckCircle className="w-3.5 h-3.5 text-primary-foreground" />
                 </div>
               )}
             </motion.div>
           ))}
         </div>
       </motion.div>
-
-      {/* Quiz Score History */}
-      {quizzes.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-6"
-        >
-          <h3 className="text-lg font-display font-semibold mb-3 flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-primary" /> Quiz History
-          </h3>
-          <div className="bg-card rounded-xl border border-border shadow-card overflow-hidden">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-muted/50">
-                  <th className="text-left p-3 font-medium text-muted-foreground">Experiment</th>
-                  <th className="text-center p-3 font-medium text-muted-foreground">Type</th>
-                  <th className="text-center p-3 font-medium text-muted-foreground">Score</th>
-                  <th className="text-right p-3 font-medium text-muted-foreground hidden sm:table-cell">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quizzes.slice(0, 10).map((q, i) => {
-                  const scorePct = Math.round((q.score / q.total_questions) * 100);
-                  const exp = allExperiments.find(e => e.id === q.experiment_id);
-                  return (
-                    <tr key={`${q.experiment_id}-${q.quiz_type}-${i}`} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                      <td className="p-3 font-medium truncate max-w-[200px]">{exp?.title || q.experiment_id}</td>
-                      <td className="p-3 text-center">
-                        <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${q.quiz_type === "pre" ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"}`}>
-                          {q.quiz_type}-lab
-                        </span>
-                      </td>
-                      <td className="p-3 text-center">
-                        <span className={`font-mono font-semibold ${scorePct >= 70 ? "text-primary" : scorePct >= 50 ? "text-accent" : "text-destructive"}`}>
-                          {q.score}/{q.total_questions}
-                        </span>
-                        <span className="text-xs text-muted-foreground ml-1">({scorePct}%)</span>
-                      </td>
-                      <td className="p-3 text-right text-muted-foreground text-xs hidden sm:table-cell">
-                        {new Date(q.completed_at).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-      )}
 
       {/* Recent Completions */}
       {completed.length > 0 && (
@@ -241,9 +202,11 @@ export default function StudentProgress() {
             {completed.slice(0, 5).map(p => {
               const exp = allExperiments.find(e => e.id === p.experiment_id);
               return (
-                <div key={p.experiment_id} className="flex items-center gap-3 bg-muted/50 rounded-lg px-3 py-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-primary shrink-0" />
-                  <span className="flex-1 truncate">{exp?.title || p.experiment_id}</span>
+                <div key={p.experiment_id} className="flex items-center gap-3 bg-card border border-border rounded-xl px-3 py-2.5 text-sm hover:border-primary/30 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="flex-1 truncate font-medium">{exp?.title || p.experiment_id}</span>
                   <span className="text-xs text-muted-foreground capitalize">{p.subject} · G{p.grade}</span>
                 </div>
               );
