@@ -4,16 +4,13 @@ import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import "@/lib/pdfWorker";
-import { ArrowLeft, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, BookOpen, ListTree, ClipboardCheck, Loader2, Download } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, BookOpen, ListTree, Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LabQuiz, { type QuizQuestion } from "@/components/lab/LabQuiz";
 import LabAssistant from "@/components/lab/LabAssistant";
-import { useGamification } from "@/hooks/useGamification";
 import { toast } from "sonner";
 
 interface Textbook {
@@ -28,15 +25,12 @@ export default function TextbookReader() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const { awardXP } = useGamification();
   const [book, setBook] = useState<Textbook | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [pageNum, setPageNum] = useState(1);
   const [numPages, setNumPages] = useState<number>(0);
   const [scale, setScale] = useState(1.0);
   const [loadingPdf, setLoadingPdf] = useState(true);
-  const [activeQuiz, setActiveQuiz] = useState<{ chapter: Chapter; questions: QuizQuestion[] } | null>(null);
-  const [loadingQuiz, setLoadingQuiz] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -73,40 +67,6 @@ export default function TextbookReader() {
   const onDocLoad = ({ numPages: n }: { numPages: number }) => { setNumPages(n); setLoadingPdf(false); };
 
   const goToChapter = useCallback((c: Chapter) => setPageNum(c.start_page), []);
-
-  const startChapterQuiz = useCallback(async (c: Chapter) => {
-    setLoadingQuiz(true);
-    try {
-      const { data: existing } = await supabase
-        .from("chapter_quizzes")
-        .select("questions")
-        .eq("chapter_id", c.id)
-        .maybeSingle();
-      let questions: QuizQuestion[] = [];
-      if (existing?.questions && Array.isArray(existing.questions) && (existing.questions as any[]).length > 0) {
-        questions = existing.questions as unknown as QuizQuestion[];
-      } else {
-        // Trigger AI generation (super-admin only). Show fallback message for students.
-        toast.info(t("textbook.quizNotReady"));
-        setLoadingQuiz(false);
-        return;
-      }
-      setActiveQuiz({ chapter: c, questions });
-    } finally { setLoadingQuiz(false); }
-  }, [t]);
-
-  const handleQuizComplete = useCallback(async (score: number, total: number) => {
-    if (!activeQuiz) return;
-    const user = await getSafeUser();
-    if (user) {
-      await supabase.from("chapter_quiz_results").insert({
-        user_id: user.id, chapter_id: activeQuiz.chapter.id, score, total_questions: total, answers: [],
-      });
-    }
-    const pct = (score / total) * 100;
-    if (pct >= 70) await awardXP(25, ["quiz_pass"]);
-    else await awardXP(5);
-  }, [activeQuiz, awardXP]);
 
   const currentChapter = chapters.find(c => pageNum >= c.start_page && pageNum <= c.end_page);
 
