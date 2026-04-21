@@ -99,9 +99,6 @@ export default function TextbookReader() {
                         <p className="text-xs text-muted-foreground">{t("textbook.chapter")} {c.chapter_number} · {t("textbook.page")} {c.start_page}</p>
                         <p className="font-medium text-sm">{c.title}</p>
                       </button>
-                      <Button size="sm" variant="ghost" className="mt-2 h-7 text-xs gap-1" onClick={() => startChapterQuiz(c)} disabled={loadingQuiz}>
-                        <ClipboardCheck className="w-3.5 h-3.5" /> {t("textbook.takeQuiz")}
-                      </Button>
                     </div>
                   ))}
                 </div>
