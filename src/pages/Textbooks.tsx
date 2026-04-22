@@ -90,11 +90,6 @@ export default function Textbooks() {
             </div>
             <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">{t("textbook.heroTitle")}</h1>
             <p className="opacity-90 max-w-2xl">{t("textbook.heroDesc")}</p>
-            {userGrade && (
-              <Button size="sm" variant="secondary" className="mt-5" onClick={() => setGrade(String(userGrade))}>
-                {t("textbook.showMyGrade").replace("{grade}", String(userGrade))}
-              </Button>
-            )}
           </div>
         </motion.div>
 
@@ -127,13 +122,6 @@ export default function Textbooks() {
               {[9, 10, 11, 12].map(g => <SelectItem key={g} value={String(g)}>{t("common.grade")} {g}</SelectItem>)}
             </SelectContent>
           </Select>
-          <Tabs value={lang} onValueChange={setLang}>
-            <TabsList>
-              <TabsTrigger value="all">{t("textbook.allLangs")}</TabsTrigger>
-              <TabsTrigger value="en">EN</TabsTrigger>
-              <TabsTrigger value="am">አማ</TabsTrigger>
-            </TabsList>
-          </Tabs>
         </div>
 
         {/* Grid */}
