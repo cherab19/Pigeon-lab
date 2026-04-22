@@ -553,7 +553,7 @@ export const translations: Record<string, TranslationMap> = {
     "super.failedUpdateSub": "Failed to update subscription",
     "super.subUpdated": "Subscription updated",
     "super.noSubscriptions": "No subscriptions yet",
-    "super.members": "members",
+    "super.membersWord": "members",
     "super.payingStudentsShort": "paying students",
     "super.perMonth": "/month",
     "super.billingPeriod": "Billing Period",
