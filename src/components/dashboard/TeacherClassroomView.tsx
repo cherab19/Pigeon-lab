@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "sonner";
 import { labData, LabActivity } from "@/data/labActivities";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Classroom {
   id: string;
@@ -56,6 +57,7 @@ interface StudentProgress {
 }
 
 export default function TeacherClassroomView() {
+  const { t } = useLanguage();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [selectedClassroom, setSelectedClassroom] = useState<string>("");
   const [assignments, setAssignments] = useState<Assignment[]>([]);
