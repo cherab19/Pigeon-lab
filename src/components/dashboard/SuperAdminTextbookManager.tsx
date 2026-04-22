@@ -25,7 +25,7 @@ export default function SuperAdminTextbookManager() {
   const [openChapters, setOpenChapters] = useState<Textbook | null>(null);
 
   // Upload form
-  const [form, setForm] = useState({ title: "", subject: "physics", grade: "9", language: "en", description: "", total_pages: "100" });
+  const [form, setForm] = useState({ title: "", subject: "physics", grade: "9", language: "en", description: "", total_pages: "0" });
   const [file, setFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -76,7 +76,7 @@ export default function SuperAdminTextbookManager() {
 
       toast.success("Textbook uploaded");
       setOpenUpload(false);
-      setForm({ title: "", subject: "physics", grade: "9", language: "en", description: "", total_pages: "100" });
+      setForm({ title: "", subject: "physics", grade: "9", language: "en", description: "", total_pages: "0" });
       setFile(null); setCoverFile(null);
       await loadBooks();
     } catch (e: any) {
