@@ -4,6 +4,7 @@ import { getSafeUser } from "@/lib/safeAuth";
 import { CheckCircle, Clock, Beaker, Trophy, Award, Star, Flame, Target, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ProgressItem {
   experiment_id: string;
@@ -24,6 +25,7 @@ interface Badge {
 }
 
 export default function StudentProgress() {
+  const { t } = useLanguage();
   const [progress, setProgress] = useState<ProgressItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,7 +88,7 @@ export default function StudentProgress() {
   return (
     <div className="mb-8">
       <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-        <Beaker className="w-5 h-5 text-primary" /> Your Progress of lab experiment
+        <Beaker className="w-5 h-5 text-primary" /> {t("progress.yourProgress")}
       </h2>
       <div className="grid grid-cols-3 gap-4 mb-4">
         {stats.map((s, i) => (
@@ -134,8 +136,8 @@ export default function StudentProgress() {
         className="mt-6"
       >
         <h3 className="text-lg font-display font-semibold mb-1 flex items-center gap-2">
-          <Award className="w-5 h-5 text-primary" /> Achievements you earned on experiments
-          <span className="text-xs font-normal text-muted-foreground ml-1">{earnedCount}/{badges.length} earned</span>
+          <Award className="w-5 h-5 text-primary" /> {t("progress.achievements")}
+          <span className="text-xs font-normal text-muted-foreground ml-1">{earnedCount}/{badges.length}</span>
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
           {badges.map((badge, i) => (
