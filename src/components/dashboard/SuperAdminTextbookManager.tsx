@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Plus, Trash2, BookOpen, Loader2, Upload, ListTree } from "lucide-react";
 import { toast } from "sonner";
 import { getSafeUser } from "@/lib/safeAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Textbook {
   id: string; title: string; subject: string; grade: number; language: string;
@@ -19,6 +20,7 @@ interface Chapter {
 }
 
 export default function SuperAdminTextbookManager() {
+  const { t } = useLanguage();
   const [books, setBooks] = useState<Textbook[]>([]);
   const [loading, setLoading] = useState(true);
   const [openUpload, setOpenUpload] = useState(false);
@@ -113,15 +115,15 @@ export default function SuperAdminTextbookManager() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-display font-semibold flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /> Textbook Library</h2>
-          <p className="text-sm text-muted-foreground">Upload PDFs and define chapters for easy navigation</p>
+          <h2 className="text-lg font-display font-semibold flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" /> {t("super.textbookLibrary")}</h2>
+          <p className="text-sm text-muted-foreground">{t("super.textbookLibraryDesc")}</p>
         </div>
         <Dialog open={openUpload} onOpenChange={setOpenUpload}>
-          <DialogTrigger asChild><Button><Upload className="w-4 h-4 mr-1" /> Upload Textbook</Button></DialogTrigger>
+          <DialogTrigger asChild><Button><Upload className="w-4 h-4 mr-1" /> {t("super.uploadTextbook")}</Button></DialogTrigger>
           <DialogContent className="max-w-lg">
-            <DialogHeader><DialogTitle>Upload New Textbook</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{t("super.uploadNewTextbook")}</DialogTitle></DialogHeader>
             <div className="space-y-3">
-              <Input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+              <Input placeholder={t("super.title")} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
               <div className="grid grid-cols-3 gap-2">
                 <Select value={form.subject} onValueChange={(v) => setForm({ ...form, subject: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
@@ -138,17 +140,17 @@ export default function SuperAdminTextbookManager() {
               </div>
               <Textarea placeholder="Description (optional)" rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               <div>
-                <label className="text-xs font-medium mb-1 block">PDF File *</label>
+                <label className="text-xs font-medium mb-1 block">{t("super.pdfFile")} *</label>
                 <Input type="file" accept="application/pdf" onChange={(e) => setFile(e.target.files?.[0] || null)} />
               </div>
               <div>
-                <label className="text-xs font-medium mb-1 block">Cover image (optional)</label>
+                <label className="text-xs font-medium mb-1 block">{t("super.coverImage")}</label>
                 <Input type="file" accept="image/*" onChange={(e) => setCoverFile(e.target.files?.[0] || null)} />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setOpenUpload(false)}>Cancel</Button>
-              <Button onClick={handleUpload} disabled={uploading}>{uploading ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Uploading...</> : "Upload"}</Button>
+              <Button variant="outline" onClick={() => setOpenUpload(false)}>{t("common.cancel")}</Button>
+              <Button onClick={handleUpload} disabled={uploading}>{uploading ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> {t("super.uploading")}</> : t("super.upload")}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -157,7 +159,7 @@ export default function SuperAdminTextbookManager() {
       {loading ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-32 bg-card rounded-xl animate-pulse" />)}</div>
       ) : books.length === 0 ? (
-        <Card className="p-8 text-center text-muted-foreground"><BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" /><p className="font-medium">No textbooks yet</p><p className="text-sm">Upload your first textbook above</p></Card>
+        <Card className="p-8 text-center text-muted-foreground"><BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" /><p className="font-medium">{t("super.noTextbooks")}</p><p className="text-sm">{t("super.uploadFirst")}</p></Card>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
           {books.map(b => (
@@ -170,7 +172,7 @@ export default function SuperAdminTextbookManager() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline" className="flex-1" onClick={() => { setOpenChapters(b); loadChapters(b.id); }}><ListTree className="w-3.5 h-3.5 mr-1" /> Chapters</Button>
+                <Button size="sm" variant="outline" className="flex-1" onClick={() => { setOpenChapters(b); loadChapters(b.id); }}><ListTree className="w-3.5 h-3.5 mr-1" /> {t("super.chapters")}</Button>
                 <Button size="sm" variant="ghost" onClick={() => deleteBook(b)}><Trash2 className="w-3.5 h-3.5" /></Button>
               </div>
             </Card>
@@ -181,20 +183,20 @@ export default function SuperAdminTextbookManager() {
       {/* Chapters dialog */}
       <Dialog open={!!openChapters} onOpenChange={(o) => !o && setOpenChapters(null)}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>Chapters — {openChapters?.title}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t("super.chapters")} — {openChapters?.title}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <Card className="p-3">
-              <p className="text-xs font-semibold mb-2">Add chapter</p>
+              <p className="text-xs font-semibold mb-2">{t("super.addChapter")}</p>
               <div className="grid grid-cols-12 gap-2">
                 <Input className="col-span-2" type="number" placeholder="#" value={newCh.chapter_number} onChange={(e) => setNewCh({ ...newCh, chapter_number: Number(e.target.value) })} />
-                <Input className="col-span-6" placeholder="Title" value={newCh.title} onChange={(e) => setNewCh({ ...newCh, title: e.target.value })} />
+                <Input className="col-span-6" placeholder={t("super.title")} value={newCh.title} onChange={(e) => setNewCh({ ...newCh, title: e.target.value })} />
                 <Input className="col-span-2" type="number" placeholder="Start" value={newCh.start_page} onChange={(e) => setNewCh({ ...newCh, start_page: Number(e.target.value) })} />
                 <Input className="col-span-2" type="number" placeholder="End" value={newCh.end_page} onChange={(e) => setNewCh({ ...newCh, end_page: Number(e.target.value) })} />
               </div>
-              <Button size="sm" className="mt-2 w-full" onClick={addChapter}><Plus className="w-3.5 h-3.5 mr-1" /> Add</Button>
+              <Button size="sm" className="mt-2 w-full" onClick={addChapter}><Plus className="w-3.5 h-3.5 mr-1" /> {t("super.addChapter")}</Button>
             </Card>
             {chapters.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">No chapters yet</p>
+              <p className="text-sm text-muted-foreground text-center py-4">{t("super.noChapters")}</p>
             ) : chapters.map(c => (
               <div key={c.id} className="flex items-center gap-2 p-3 border border-border rounded-lg">
                 <span className="font-mono text-xs text-muted-foreground w-8">{c.chapter_number}</span>
