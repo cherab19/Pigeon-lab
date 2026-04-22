@@ -136,7 +136,6 @@ export default function SuperAdminTextbookManager() {
                   <SelectContent><SelectItem value="en">English</SelectItem><SelectItem value="am">Amharic</SelectItem></SelectContent>
                 </Select>
               </div>
-              <Input type="number" placeholder="Total pages" value={form.total_pages} onChange={(e) => setForm({ ...form, total_pages: e.target.value })} />
               <Textarea placeholder="Description (optional)" rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               <div>
                 <label className="text-xs font-medium mb-1 block">PDF File *</label>
