@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "sonner";
 import { labData, LabActivity } from "@/data/labActivities";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Classroom {
   id: string;
@@ -56,6 +57,7 @@ interface StudentProgress {
 }
 
 export default function TeacherClassroomView() {
+  const { t } = useLanguage();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [selectedClassroom, setSelectedClassroom] = useState<string>("");
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -228,8 +230,8 @@ export default function TeacherClassroomView() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
           <BookOpen className="w-10 h-10 mx-auto mb-3 opacity-40" />
-          <p className="font-medium">No Classrooms Assigned</p>
-          <p className="text-sm mt-1">Your school admin hasn't assigned you to any classrooms yet.</p>
+          <p className="font-medium">{t("teacher.noClassrooms")}</p>
+          <p className="text-sm mt-1">{t("teacher.noClassroomsDesc")}</p>
         </div>
       </motion.div>
     );

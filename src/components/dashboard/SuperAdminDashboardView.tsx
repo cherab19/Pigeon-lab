@@ -67,7 +67,6 @@ interface Props {
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof CheckCircle }> = {
   active: { label: "Active", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20", icon: CheckCircle },
-  trial: { label: "Trial", color: "bg-blue-500/10 text-blue-600 border-blue-500/20", icon: Clock },
   expired: { label: "Expired", color: "bg-red-500/10 text-red-600 border-red-500/20", icon: AlertTriangle },
   suspended: { label: "Suspended", color: "bg-amber-500/10 text-amber-600 border-amber-500/20", icon: Pause },
 };
@@ -183,12 +182,11 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
           {/* Revenue mini KPIs */}
           {subStats && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
                 {[
                   { label: "Monthly Revenue", value: `${subStats.total_revenue} ETB`, icon: DollarSign, color: "text-primary" },
                   { label: "Paying Students", value: subStats.total_paying_students, icon: CreditCard, color: "text-secondary" },
                   { label: "Active", value: subStats.total_active, icon: CheckCircle, color: "text-emerald-600" },
-                  { label: "Trial", value: subStats.total_trial, icon: Clock, color: "text-blue-600" },
                   { label: "Expired", value: subStats.total_expired, icon: AlertTriangle, color: "text-red-600" },
                   { label: "Suspended", value: subStats.total_suspended, icon: Pause, color: "text-amber-600" },
                 ].map((c, i) => (
@@ -275,7 +273,6 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="trial">Trial</SelectItem>
                   <SelectItem value="expired">Expired</SelectItem>
                   <SelectItem value="suspended">Suspended</SelectItem>
                 </SelectContent>
@@ -339,7 +336,7 @@ function SubscriptionManager({
   return (
     <div className="space-y-3">
       {subStats.subscriptions.map((school, i) => {
-        const cfg = statusConfig[school.status] || statusConfig.trial;
+        const cfg = statusConfig[school.status] || statusConfig.active;
         const StatusIcon = cfg.icon;
         const isExpanded = expandedSchool === school.school_id;
 

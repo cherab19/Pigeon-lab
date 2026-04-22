@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight, AlertTriangle, CheckCircle2, Clock, ShieldAlert } from "lucide-react";
+import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight, AlertTriangle, CheckCircle2, ShieldAlert } from "lucide-react";
 import { Link } from "react-router-dom";
 import { totalExperiments, subjectCounts } from "./SharedDashboard";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,7 +14,7 @@ interface Props {
   schoolName: string;
 }
 
-type SubStatus = "active" | "trial" | "expired" | "suspended";
+type SubStatus = "active" | "expired" | "suspended";
 
 export default function AdminDashboardView({ fullName, schoolName }: Props) {
   const { t } = useLanguage();
@@ -22,7 +22,6 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
 
   const statusConfig: Record<SubStatus, { icon: typeof CheckCircle2; label: string; color: string; bg: string; description: string }> = {
     active: { icon: CheckCircle2, label: t("admin.active"), color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800", description: t("admin.activeDesc") },
-    trial: { icon: Clock, label: t("admin.trial"), color: "text-amber-600", bg: "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800", description: t("admin.trialDesc") },
     expired: { icon: AlertTriangle, label: t("admin.expired"), color: "text-destructive", bg: "bg-destructive/5 border-destructive/20", description: t("admin.expiredDesc") },
     suspended: { icon: ShieldAlert, label: t("admin.suspended"), color: "text-destructive", bg: "bg-destructive/5 border-destructive/20", description: t("admin.suspendedDesc") },
   };
@@ -39,7 +38,7 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
     load();
   }, []);
 
-  const cfg = sub ? statusConfig[sub.status] || statusConfig.trial : null;
+  const cfg = sub ? statusConfig[sub.status] || statusConfig.active : null;
 
   return (
     <>
@@ -62,7 +61,7 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-display font-semibold text-sm">{t("admin.subscription")}</span>
-                  <Badge variant={sub.status === "active" ? "default" : sub.status === "trial" ? "secondary" : "destructive"} className="text-xs">
+                  <Badge variant={sub.status === "active" ? "default" : "destructive"} className="text-xs">
                     {cfg.label}
                   </Badge>
                 </div>
@@ -80,7 +79,7 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
         <h2 className="text-lg font-display font-bold mb-1">{totalExperiments} {t("admin.totalExperiments")}</h2>
-        <p className="text-sm opacity-80">{schoolName ? `${schoolName} · ` : ""}{t("admin.manageMembersDesc")}</p>
+        <p className="text-sm opacity-80">{t("admin.manageMembersDesc")}</p>
       </motion.div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

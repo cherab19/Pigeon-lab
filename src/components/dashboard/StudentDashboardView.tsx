@@ -114,7 +114,7 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
       <motion.div id="choose-subject" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="scroll-mt-20">
         <div className="mb-4">
           <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary" /> Choose a Subject to conduct experiment
+            <BookOpen className="w-5 h-5 text-primary" /> {t("student.chooseSubjectToConduct")}
           </h2>
         </div>
         <SubjectCards />
