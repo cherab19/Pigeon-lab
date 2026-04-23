@@ -136,8 +136,10 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      {loading ? (
+        <div className="text-muted-foreground py-12 text-center">Loading…</div>
+      ) : (
+        <>
           {/* Platform KPIs */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
             <h2 className="text-lg font-display font-bold mb-1">Dovelab Platform Overview</h2>
