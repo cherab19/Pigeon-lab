@@ -136,8 +136,11 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
         </p>
       </motion.div>
 
-      {/* keep existing code */}
-{`__SENTINEL__`}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          {/* Platform KPIs */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
+            <h2 className="text-lg font-display font-bold mb-1">Dovelab Platform Overview</h2>
             <p className="text-sm opacity-80">{totalExperiments} experiments · {platformStats?.total_schools ?? 0} schools · {platformStats?.total_users ?? 0} users</p>
           </motion.div>
 
