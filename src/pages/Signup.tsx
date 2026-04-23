@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getSafeSession, getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 type InviteMeta = {
   full_name?: string;

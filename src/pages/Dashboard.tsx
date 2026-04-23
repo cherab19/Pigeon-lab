@@ -14,6 +14,7 @@ import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 type AppRole = "super_admin" | "school_admin" | "teacher" | "student";
 

@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getSafeSession } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 export default function Login() {
   const { t } = useLanguage();
