@@ -625,6 +625,15 @@ export const translations: Record<string, TranslationMap> = {
     "superAnalytics.completed": "Completed",
     "superAnalytics.labs": "labs",
     "superAnalytics.members": "members",
+    "superAnalytics.systemWide": "System-Wide Analytics",
+    "superAnalytics.systemWideDesc": "Cross-school overview of the entire platform",
+    "superAnalytics.totalSchools": "Total Schools",
+    "superAnalytics.totalUsers": "Total Users",
+    "superAnalytics.experimentsDone": "Experiments Done",
+    "superAnalytics.completionRate": "Completion Rate",
+    "superAnalytics.avgTimeMin": "Avg Time (min)",
+    "superAnalytics.schoolsOverview": "Schools Overview",
+    "superAnalytics.completedLabsCol": "Completed Labs",
 
     // Super Admin Textbook Manager (extra)
     "super.descriptionPh": "Description (optional)",
@@ -1264,6 +1273,15 @@ export const translations: Record<string, TranslationMap> = {
     "superAnalytics.completed": "የተጠናቀቁ",
     "superAnalytics.labs": "ላቦች",
     "superAnalytics.members": "አባላት",
+    "superAnalytics.systemWide": "የስርዓት ሁሉ ትንተና",
+    "superAnalytics.systemWideDesc": "የመድረኩ ሁሉ የት/ቤቶች አጠቃላይ እይታ",
+    "superAnalytics.totalSchools": "ጠቅላላ ት/ቤቶች",
+    "superAnalytics.totalUsers": "ጠቅላላ ተጠቃሚዎች",
+    "superAnalytics.experimentsDone": "የተጠናቀቁ ሙከራዎች",
+    "superAnalytics.completionRate": "የማጠናቀቂያ መጠን",
+    "superAnalytics.avgTimeMin": "አማካይ ጊዜ (ደቂቃ)",
+    "superAnalytics.schoolsOverview": "የት/ቤቶች አጠቃላይ እይታ",
+    "superAnalytics.completedLabsCol": "የተጠናቀቁ ላቦች",
 
     // Super Admin Textbook Manager (extra)
     "super.descriptionPh": "መግለጫ (አማራጭ)",
