@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Classroom {
   id: string;
@@ -37,6 +38,7 @@ interface Announcement {
 }
 
 export default function StudentClassroomView() {
+  const { t } = useLanguage();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [selectedClassroom, setSelectedClassroom] = useState("");
   const [assignments, setAssignments] = useState<Assignment[]>([]);
@@ -111,7 +113,7 @@ export default function StudentClassroomView() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-primary" /> My Classes
+          <BookOpen className="w-5 h-5 text-primary" /> {t("studentClassroom.myClasses")}
         </h2>
         <Select value={selectedClassroom} onValueChange={setSelectedClassroom}>
           <SelectTrigger className="w-64">
@@ -129,7 +131,7 @@ export default function StudentClassroomView() {
       {pendingAssignments.length > 0 && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-1.5">
-            <ClipboardList className="w-4 h-4" /> Pending Assignments ({pendingAssignments.length})
+            <ClipboardList className="w-4 h-4" /> {t("studentClassroom.pendingAssignments")} ({pendingAssignments.length})
           </h3>
           <div className="space-y-2">
             {pendingAssignments.map(a => (
@@ -143,12 +145,12 @@ export default function StudentClassroomView() {
                   {a.due_date && (
                     <span className={`text-xs mt-1 flex items-center gap-1 ${isOverdue(a.due_date) ? "text-destructive" : "text-muted-foreground"}`}>
                       {isOverdue(a.due_date) && <AlertCircle className="w-3 h-3" />}
-                      <Calendar className="w-3 h-3" /> Due: {new Date(a.due_date).toLocaleDateString()}
+                      <Calendar className="w-3 h-3" /> {t("studentClassroom.due")}: {new Date(a.due_date).toLocaleDateString()}
                     </span>
                   )}
                 </div>
                 <Button size="sm" asChild>
-                  <Link to={`/lab/${currentClassroom?.subject}`}>Start Lab</Link>
+                  <Link to={`/lab/${currentClassroom?.subject}`}>{t("studentClassroom.startLab")}</Link>
                 </Button>
               </div>
             ))}
@@ -160,7 +162,7 @@ export default function StudentClassroomView() {
       {completedAssignments.length > 0 && (
         <div className="mb-6">
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Completed ({completedAssignments.length})
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> {t("studentClassroom.completed")} ({completedAssignments.length})
           </h3>
           <div className="space-y-2">
             {completedAssignments.map(a => (
@@ -171,7 +173,7 @@ export default function StudentClassroomView() {
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-sm">{a.title}</h4>
                 </div>
-                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">Done</Badge>
+                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">{t("studentClassroom.done")}</Badge>
               </div>
             ))}
           </div>
@@ -182,7 +184,7 @@ export default function StudentClassroomView() {
       {announcements.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-1.5">
-            <Megaphone className="w-4 h-4" /> Announcements
+            <Megaphone className="w-4 h-4" /> {t("studentClassroom.announcements")}
           </h3>
           <div className="space-y-2">
             {announcements.map(a => (
@@ -198,7 +200,7 @@ export default function StudentClassroomView() {
 
       {assignments.length === 0 && announcements.length === 0 && (
         <div className="bg-card rounded-xl border border-border p-6 text-center text-muted-foreground">
-          <p className="text-sm">No assignments or announcements yet from your teacher.</p>
+          <p className="text-sm">{t("studentClassroom.empty")}</p>
         </div>
       )}
     </motion.div>

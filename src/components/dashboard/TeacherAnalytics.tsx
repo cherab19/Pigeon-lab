@@ -4,6 +4,7 @@ import { getSafeUser } from "@/lib/safeAuth";
 import { BarChart3, Users, CheckCircle, Clock, ChevronDown, ChevronUp, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StudentDetail {
   userId: string;
@@ -23,6 +24,7 @@ interface AnalyticsData {
 }
 
 export default function TeacherAnalytics() {
+  const { t } = useLanguage();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null);
@@ -58,7 +60,7 @@ export default function TeacherAnalytics() {
 
           return {
             userId,
-            fullName: profile?.full_name || "Unknown Student",
+            fullName: profile?.full_name || t("teacherAnalytics.unknown"),
             completedCount: studentCompleted.length,
             inProgressCount: studentInProgress.length,
             totalTime: studentTime,
@@ -101,9 +103,9 @@ export default function TeacherAnalytics() {
   if (!data) return null;
 
   const stats = [
-    { label: "Active Students", value: data.totalStudents, icon: Users, color: "text-primary" },
-    { label: "Experiments Done", value: data.totalCompleted, icon: CheckCircle, color: "text-secondary" },
-    { label: "Avg. Time (min)", value: data.avgTime, icon: Clock, color: "text-accent" },
+    { label: t("teacherAnalytics.activeStudents"), value: data.totalStudents, icon: Users, color: "text-primary" },
+    { label: t("teacherAnalytics.experimentsDone"), value: data.totalCompleted, icon: CheckCircle, color: "text-secondary" },
+    { label: t("teacherAnalytics.avgTime"), value: data.avgTime, icon: Clock, color: "text-accent" },
   ];
 
   const getExpTitle = (id: string) => allExperiments.find(e => e.id === id)?.title || id;
@@ -111,7 +113,7 @@ export default function TeacherAnalytics() {
   return (
     <div className="mb-8">
       <h2 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-        <BarChart3 className="w-5 h-5 text-primary" /> Student Analytics
+        <BarChart3 className="w-5 h-5 text-primary" /> {t("teacherAnalytics.title")}
       </h2>
       <div className="grid grid-cols-3 gap-4">
         {stats.map((s, i) => (
@@ -137,7 +139,7 @@ export default function TeacherAnalytics() {
 
       {data.subjectBreakdown.length > 0 && (
         <div className="mt-4 bg-card rounded-2xl border border-border p-5 shadow-card">
-          <h3 className="text-sm font-semibold mb-3">Experiments by Subject</h3>
+          <h3 className="text-sm font-semibold mb-3">{t("teacherAnalytics.bySubject")}</h3>
           <div className="space-y-2">
             {data.subjectBreakdown.map(s => (
               <div key={s.subject} className="flex items-center gap-3">
@@ -163,7 +165,7 @@ export default function TeacherAnalytics() {
           className="mt-6"
         >
           <h3 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
-            <User className="w-5 h-5 text-primary" /> Individual Student Progress
+            <User className="w-5 h-5 text-primary" /> {t("teacherAnalytics.individualProgress")}
           </h3>
           <div className="space-y-2">
             {data.students.map((student) => {
@@ -183,7 +185,7 @@ export default function TeacherAnalytics() {
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{student.fullName}</p>
                       <p className="text-xs text-muted-foreground">
-                        {student.completedCount} completed · {student.inProgressCount} in progress
+                        {student.completedCount} {t("teacherAnalytics.completed")} · {student.inProgressCount} {t("teacherAnalytics.inProgress")}
                       </p>
                     </div>
                     <div className="hidden md:flex items-center gap-4 text-sm text-muted-foreground">
@@ -211,9 +213,9 @@ export default function TeacherAnalytics() {
                       >
                         <div className="border-t border-border p-4 space-y-4">
                           <div>
-                            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Experiments</h4>
+                            <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("teacherAnalytics.experiments")}</h4>
                             {student.experiments.length === 0 ? (
-                              <p className="text-sm text-muted-foreground">No experiments started yet.</p>
+                              <p className="text-sm text-muted-foreground">{t("teacherAnalytics.noStarted")}</p>
                             ) : (
                               <div className="space-y-1.5">
                                 {student.experiments.map((exp) => (

@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Classroom {
   id: string;
@@ -40,6 +41,7 @@ interface MemberRow {
 }
 
 export default function AdminClassroomManager() {
+  const { t } = useLanguage();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [enrolledStudents, setEnrolledStudents] = useState<Record<string, string[]>>({});
@@ -98,7 +100,7 @@ export default function AdminClassroomManager() {
 
   const handleCreate = async () => {
     if (!formTeacher || !formSubject || !formGrade) {
-      toast.error("Please fill all required fields");
+      toast.error(t("adminClass.fillRequired"));
       return;
     }
     setSaving(true);
@@ -107,10 +109,10 @@ export default function AdminClassroomManager() {
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to create classroom");
+      toast.error(data?.error || error?.message || t("adminClass.fillRequired"));
       return;
     }
-    toast.success("Classroom created");
+    toast.success(t("adminClass.created"));
     setShowCreate(false);
     setFormTeacher(""); setFormSubject(""); setFormGrade(""); setFormSection("A");
     loadData();
@@ -124,10 +126,10 @@ export default function AdminClassroomManager() {
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to delete");
+      toast.error(data?.error || error?.message || t("common.delete"));
       return;
     }
-    toast.success("Classroom deleted");
+    toast.success(t("adminClass.deleted"));
     setDeletingClassroom(null);
     loadData();
   };
@@ -140,10 +142,10 @@ export default function AdminClassroomManager() {
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to enroll");
+      toast.error(data?.error || error?.message || t("adminClass.enroll"));
       return;
     }
-    toast.success(`${selectedStudents.length} student(s) enrolled`);
+    toast.success(`${selectedStudents.length} ${t("adminClass.studentsEnrolled")}`);
     setEnrollingClassroom(null);
     setSelectedStudents([]);
     loadData();
@@ -154,10 +156,10 @@ export default function AdminClassroomManager() {
       body: { action: "unenroll_student", classroom_id: classroomId, student_id: studentId },
     });
     if (error || !data?.success) {
-      toast.error("Failed to remove student");
+      toast.error(t("adminClass.failedRemove"));
       return;
     }
-    toast.success("Student removed from classroom");
+    toast.success(t("adminClass.studentRemoved"));
     loadData();
   };
 
@@ -168,8 +170,8 @@ export default function AdminClassroomManager() {
     setStudentSearch("");
   };
 
-  const getTeacherName = (id: string) => members.find(m => m.user_id === id)?.full_name || "Unknown";
-  const getStudentName = (id: string) => members.find(m => m.user_id === id)?.full_name || "Unknown";
+  const getTeacherName = (id: string) => members.find(m => m.user_id === id)?.full_name || t("common.unknown");
+  const getStudentName = (id: string) => members.find(m => m.user_id === id)?.full_name || t("common.unknown");
 
   const subjectIcon = (subject: string) => {
     if (subject === "physics") return "⚛️";
@@ -196,24 +198,24 @@ export default function AdminClassroomManager() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-          <School className="w-5 h-5 text-primary" /> Classrooms ({classrooms.length})
+          <School className="w-5 h-5 text-primary" /> {t("adminClass.title")} ({classrooms.length})
         </h2>
         <Button size="sm" onClick={() => setShowCreate(true)} className="gap-1.5">
-          <Plus className="w-4 h-4" /> Create Classroom
+          <Plus className="w-4 h-4" /> {t("adminClass.create")}
         </Button>
       </div>
 
       {teachers.length === 0 && (
         <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-4 text-sm text-amber-800 dark:text-amber-200">
-          ⚠️ No teachers found in your school. Invite teachers first before creating classrooms.
+          {t("adminClass.noTeachers")}
         </div>
       )}
 
       {classrooms.length === 0 ? (
         <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
           <School className="w-10 h-10 mx-auto mb-3 opacity-40" />
-          <p className="font-medium">No classrooms yet</p>
-          <p className="text-sm mt-1">Create classrooms to link teachers with their grade & subject students.</p>
+          <p className="font-medium">{t("adminClass.noClassrooms")}</p>
+          <p className="text-sm mt-1">{t("adminClass.noClassroomsDesc")}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -233,11 +235,11 @@ export default function AdminClassroomManager() {
                   <div className="flex-1 min-w-0">
                     <h3 className="font-display font-semibold truncate">{cls.name}</h3>
                     <p className="text-xs text-muted-foreground">
-                      Teacher: {getTeacherName(cls.teacher_id)} · {enrolled.length} students
+                      {t("adminClass.teacher")}: {getTeacherName(cls.teacher_id)} · {enrolled.length} {t("adminClass.students")}
                     </p>
                   </div>
                   <Badge variant="outline" className="text-xs capitalize shrink-0">{cls.subject}</Badge>
-                  <Badge variant="secondary" className="text-xs shrink-0">Grade {cls.grade}</Badge>
+                  <Badge variant="secondary" className="text-xs shrink-0">{t("common.grade")} {cls.grade}</Badge>
                   <Button variant="ghost" size="icon" className="shrink-0">
                     {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                   </Button>
@@ -246,19 +248,19 @@ export default function AdminClassroomManager() {
                 {isExpanded && (
                   <div className="border-t border-border px-4 pb-4 pt-3">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-medium">Enrolled Students ({enrolled.length})</span>
+                      <span className="text-sm font-medium">{t("adminClass.enrolledStudents")} ({enrolled.length})</span>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" onClick={() => openEnroll(cls)} className="gap-1">
-                          <UserPlus className="w-3.5 h-3.5" /> Add Students
+                          <UserPlus className="w-3.5 h-3.5" /> {t("adminClass.addStudents")}
                         </Button>
                         <Button size="sm" variant="outline" className="text-destructive gap-1" onClick={() => setDeletingClassroom(cls)}>
-                          <Trash2 className="w-3.5 h-3.5" /> Delete
+                          <Trash2 className="w-3.5 h-3.5" /> {t("adminClass.delete")}
                         </Button>
                       </div>
                     </div>
 
                     {enrolled.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No students enrolled yet.</p>
+                      <p className="text-sm text-muted-foreground">{t("adminClass.noEnrolled")}</p>
                     ) : (
                       <div className="space-y-1">
                         {enrolled.map(sid => (
@@ -273,7 +275,7 @@ export default function AdminClassroomManager() {
                               className="h-7 text-xs text-destructive"
                               onClick={(e) => { e.stopPropagation(); handleUnenroll(cls.id, sid); }}
                             >
-                              Remove
+                              {t("adminClass.remove")}
                             </Button>
                           </div>
                         ))}
@@ -290,52 +292,52 @@ export default function AdminClassroomManager() {
       {/* Create Classroom Dialog */}
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Create Classroom</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t("adminClass.create")}</DialogTitle></DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <Label>Teacher *</Label>
+              <Label>{t("adminClass.formTeacher")} *</Label>
               <Select value={formTeacher} onValueChange={setFormTeacher}>
-                <SelectTrigger><SelectValue placeholder="Select teacher" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t("adminClass.selectTeacher")} /></SelectTrigger>
                 <SelectContent>
-                  {teachers.map(t => (
-                    <SelectItem key={t.user_id} value={t.user_id}>{t.full_name}</SelectItem>
+                  {teachers.map(t2 => (
+                    <SelectItem key={t2.user_id} value={t2.user_id}>{t2.full_name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Subject *</Label>
+                <Label>{t("adminClass.formSubject")} *</Label>
                 <Select value={formSubject} onValueChange={setFormSubject}>
-                  <SelectTrigger><SelectValue placeholder="Select subject" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t("adminClass.selectSubject")} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="physics">Physics</SelectItem>
-                    <SelectItem value="chemistry">Chemistry</SelectItem>
-                    <SelectItem value="biology">Biology</SelectItem>
+                    <SelectItem value="physics">{t("subject.physics")}</SelectItem>
+                    <SelectItem value="chemistry">{t("subject.chemistry")}</SelectItem>
+                    <SelectItem value="biology">{t("subject.biology")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label>Grade *</Label>
+                <Label>{t("adminClass.formGrade")} *</Label>
                 <Select value={formGrade} onValueChange={setFormGrade}>
-                  <SelectTrigger><SelectValue placeholder="Grade" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={t("common.grade")} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="9">Grade 9</SelectItem>
-                    <SelectItem value="10">Grade 10</SelectItem>
-                    <SelectItem value="11">Grade 11</SelectItem>
-                    <SelectItem value="12">Grade 12</SelectItem>
+                    <SelectItem value="9">{t("common.grade")} 9</SelectItem>
+                    <SelectItem value="10">{t("common.grade")} 10</SelectItem>
+                    <SelectItem value="11">{t("common.grade")} 11</SelectItem>
+                    <SelectItem value="12">{t("common.grade")} 12</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div>
-              <Label>Section</Label>
+              <Label>{t("adminClass.formSection")}</Label>
               <Input value={formSection} onChange={e => setFormSection(e.target.value)} placeholder="A" maxLength={5} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
-            <Button onClick={handleCreate} disabled={saving}>{saving ? "Creating..." : "Create"}</Button>
+            <Button variant="outline" onClick={() => setShowCreate(false)}>{t("common.cancel")}</Button>
+            <Button onClick={handleCreate} disabled={saving}>{saving ? t("adminClass.creating") : t("adminClass.create")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -344,12 +346,12 @@ export default function AdminClassroomManager() {
       <Dialog open={!!enrollingClassroom} onOpenChange={() => setEnrollingClassroom(null)}>
         <DialogContent className="max-h-[80vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Add Students — {enrollingClassroom?.name}</DialogTitle>
+            <DialogTitle>{t("adminClass.addStudents")} — {enrollingClassroom?.name}</DialogTitle>
           </DialogHeader>
           <div className="relative mb-3">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search students..."
+              placeholder={t("adminClass.searchStudents")}
               value={studentSearch}
               onChange={e => setStudentSearch(e.target.value)}
               className="pl-9"
@@ -357,7 +359,7 @@ export default function AdminClassroomManager() {
           </div>
           <div className="flex-1 overflow-auto space-y-1 max-h-60">
             {filteredStudents.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">No students available to add.</p>
+              <p className="text-sm text-muted-foreground text-center py-4">{t("adminClass.noStudentsAvail")}</p>
             ) : (
               filteredStudents.map(s => (
                 <label key={s.user_id} className="flex items-center gap-3 py-2 px-2 rounded hover:bg-muted/30 cursor-pointer">
@@ -375,9 +377,9 @@ export default function AdminClassroomManager() {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEnrollingClassroom(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setEnrollingClassroom(null)}>{t("common.cancel")}</Button>
             <Button onClick={handleEnroll} disabled={saving || selectedStudents.length === 0}>
-              {saving ? "Enrolling..." : `Enroll ${selectedStudents.length} Student(s)`}
+              {saving ? t("adminClass.enrolling") : `${t("adminClass.enroll")} ${selectedStudents.length} ${t("adminClass.studentsCount")}`}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -387,15 +389,15 @@ export default function AdminClassroomManager() {
       <AlertDialog open={!!deletingClassroom} onOpenChange={() => setDeletingClassroom(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Classroom?</AlertDialogTitle>
+            <AlertDialogTitle>{t("adminClass.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete <strong>{deletingClassroom?.name}</strong> and all its assignments and enrollments.
+              {t("adminClass.deleteDesc").replace("{name}", deletingClassroom?.name || "")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -22,6 +22,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface UserRow {
   user_id: string;
@@ -48,6 +49,7 @@ const roleColors: Record<string, string> = {
 };
 
 export default function SuperAdminUserManager() {
+  const { t } = useLanguage();
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -88,10 +90,10 @@ export default function SuperAdminUserManager() {
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to update role");
+      toast.error(data?.error || error?.message || t("superUsers.failedUpdate"));
       return;
     }
-    toast.success(`Role updated to ${editRole}`);
+    toast.success(`${t("superUsers.roleUpdated")} ${editRole}`);
     setEditingUser(null);
     loadUsers();
   };
@@ -104,10 +106,10 @@ export default function SuperAdminUserManager() {
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to remove user");
+      toast.error(data?.error || error?.message || t("superUsers.failedRemove"));
       return;
     }
-    toast.success("User removed");
+    toast.success(t("superUsers.removed"));
     setRemovingUser(null);
     loadUsers();
   };
@@ -126,7 +128,7 @@ export default function SuperAdminUserManager() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-          <Users className="w-5 h-5 text-primary" /> All Users ({users.length})
+          <Users className="w-5 h-5 text-primary" /> {t("superUsers.title")} ({users.length})
         </h2>
       </div>
 
@@ -134,7 +136,7 @@ export default function SuperAdminUserManager() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search users..."
+            placeholder={t("superUsers.searchPlaceholder")}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="pl-9"
@@ -147,14 +149,14 @@ export default function SuperAdminUserManager() {
         </div>
         <Select value={roleFilter} onValueChange={setRoleFilter}>
           <SelectTrigger className="w-40">
-            <SelectValue placeholder="Filter by role" />
+            <SelectValue placeholder={t("superUsers.filterByRole")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Roles</SelectItem>
-            <SelectItem value="super_admin">Super Admin</SelectItem>
-            <SelectItem value="school_admin">School Admin</SelectItem>
-            <SelectItem value="teacher">Teacher</SelectItem>
-            <SelectItem value="student">Student</SelectItem>
+            <SelectItem value="all">{t("superUsers.allRoles")}</SelectItem>
+            <SelectItem value="super_admin">{t("super.role")}</SelectItem>
+            <SelectItem value="school_admin">{t("admin.role")}</SelectItem>
+            <SelectItem value="teacher">{t("teacher.role")}</SelectItem>
+            <SelectItem value="student">{t("manage.student")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -162,18 +164,18 @@ export default function SuperAdminUserManager() {
       {filtered.length === 0 ? (
         <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
           <Users className="w-10 h-10 mx-auto mb-3 opacity-40" />
-          <p className="font-medium">No users found</p>
+          <p className="font-medium">{t("superUsers.noUsersFound")}</p>
         </div>
       ) : (
         <div className="bg-card rounded-xl border border-border shadow-card overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="text-left p-4 font-medium text-muted-foreground">User</th>
-                <th className="text-left p-4 font-medium text-muted-foreground hidden md:table-cell">School</th>
-                <th className="text-left p-4 font-medium text-muted-foreground">Role</th>
-                <th className="text-left p-4 font-medium text-muted-foreground hidden lg:table-cell">Joined</th>
-                <th className="text-right p-4 font-medium text-muted-foreground">Actions</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">{t("superUsers.user")}</th>
+                <th className="text-left p-4 font-medium text-muted-foreground hidden md:table-cell">{t("superUsers.school")}</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">{t("common.role")}</th>
+                <th className="text-left p-4 font-medium text-muted-foreground hidden lg:table-cell">{t("manage.joined")}</th>
+                <th className="text-right p-4 font-medium text-muted-foreground">{t("common.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -188,8 +190,8 @@ export default function SuperAdminUserManager() {
                           <User className="w-4 h-4 text-primary" />
                         </div>
                         <div>
-                          <span className="font-medium">{u.full_name || "Unnamed"}</span>
-                          {isSelf && <Badge variant="outline" className="ml-2 text-[10px]">You</Badge>}
+                          <span className="font-medium">{u.full_name || t("superUsers.unnamed")}</span>
+                          {isSelf && <Badge variant="outline" className="ml-2 text-[10px]">{t("superUsers.you")}</Badge>}
                         </div>
                       </div>
                     </td>
@@ -215,11 +217,11 @@ export default function SuperAdminUserManager() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => { setEditingUser(u); setEditRole(u.role); }}>
-                              Change Role
+                              {t("superUsers.changeRole")}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-destructive" onClick={() => setRemovingUser(u)}>
-                              Remove User
+                              {t("superUsers.removeUser")}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -237,25 +239,25 @@ export default function SuperAdminUserManager() {
       <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Change Role — {editingUser?.full_name}</DialogTitle>
+            <DialogTitle>{t("superUsers.changeRole")} — {editingUser?.full_name}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Select value={editRole} onValueChange={setEditRole}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="super_admin">Super Admin</SelectItem>
-                <SelectItem value="school_admin">School Admin</SelectItem>
-                <SelectItem value="teacher">Teacher</SelectItem>
-                <SelectItem value="student">Student</SelectItem>
+                <SelectItem value="super_admin">{t("super.role")}</SelectItem>
+                <SelectItem value="school_admin">{t("admin.role")}</SelectItem>
+                <SelectItem value="teacher">{t("teacher.role")}</SelectItem>
+                <SelectItem value="student">{t("manage.student")}</SelectItem>
               </SelectContent>
             </Select>
             {editingUser?.school_name && (
-              <p className="text-xs text-muted-foreground mt-2">School: {editingUser.school_name}</p>
+              <p className="text-xs text-muted-foreground mt-2">{t("superUsers.schoolLabel")}: {editingUser.school_name}</p>
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
-            <Button onClick={handleUpdateRole} disabled={saving}>{saving ? "Saving..." : "Update Role"}</Button>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>{t("common.cancel")}</Button>
+            <Button onClick={handleUpdateRole} disabled={saving}>{saving ? t("superUsers.savingDots") : t("superUsers.updateRole")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -264,15 +266,15 @@ export default function SuperAdminUserManager() {
       <AlertDialog open={!!removingUser} onOpenChange={() => setRemovingUser(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove User?</AlertDialogTitle>
+            <AlertDialogTitle>{t("superUsers.removeTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Remove <strong>{removingUser?.full_name}</strong> from their school and delete their role. They will lose access to all features.
+              {t("superUsers.removeDesc").replace("{name}", removingUser?.full_name || "")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleRemoveUser} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Remove
+              {t("manage.removeTitle")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
