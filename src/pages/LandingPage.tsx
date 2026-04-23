@@ -68,10 +68,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <Beaker className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-xl text-foreground">EthioLab</span>
+            <DovelabLogo size="md" textClassName="text-foreground" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#subjects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.subjects")}</a>
@@ -207,10 +204,7 @@ export default function LandingPage() {
       <footer className="border-t border-border py-12 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-              <Beaker className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-lg">EthioLab</span>
+            <DovelabLogo size="sm" />
           </div>
           <p className="text-sm text-muted-foreground">{t("landing.footerTagline")}</p>
           <p className="text-xs text-muted-foreground mt-2">{t("landing.copyright")}</p>
