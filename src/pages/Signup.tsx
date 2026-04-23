@@ -179,8 +179,7 @@ export default function Signup() {
           <div className="flex justify-end"><LanguageToggle /></div>
           <div className="text-center lg:text-left">
             <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-gradient-hero flex items-center justify-center"><Beaker className="w-5 h-5 text-primary-foreground" /></div>
-              <span className="font-display font-bold text-xl">EthioLab</span>
+              <DovelabLogo size="md" />
             </div>
             <h1 className="text-2xl font-display font-bold">{t("signup.createAccount")}</h1>
             <p className="text-sm text-muted-foreground mt-2">{t("signup.fillDetails")}</p>
