@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SubscriptionData {
   school_id: string;
@@ -34,6 +35,7 @@ interface Props {
 }
 
 export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Props) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [showCreate, setShowCreate] = useState(false);
   const [editingSchool, setEditingSchool] = useState<SubscriptionData | null>(null);
@@ -65,17 +67,17 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
   };
 
   const handleCreate = async () => {
-    if (!formName.trim()) { toast.error("School name is required"); return; }
+    if (!formName.trim()) { toast.error(t("superSchools.nameRequired")); return; }
     setSaving(true);
     const { data, error } = await supabase.functions.invoke("super-admin-manage", {
       body: { action: "create_school", name: formName, location: formLocation, email: formEmail, phone: formPhone },
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to create school");
+      toast.error(data?.error || error?.message || t("superSchools.failedCreate"));
       return;
     }
-    toast.success("School created successfully");
+    toast.success(t("superSchools.created"));
     setShowCreate(false);
     onRefresh();
   };
@@ -88,10 +90,10 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to update school");
+      toast.error(data?.error || error?.message || t("superSchools.failedUpdate"));
       return;
     }
-    toast.success("School updated");
+    toast.success(t("superSchools.updated"));
     setEditingSchool(null);
     onRefresh();
   };
@@ -104,10 +106,10 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
     });
     setSaving(false);
     if (error || !data?.success) {
-      toast.error(data?.error || error?.message || "Failed to delete school");
+      toast.error(data?.error || error?.message || t("superSchools.failedDelete"));
       return;
     }
-    toast.success("School deleted");
+    toast.success(t("superSchools.deleted"));
     setDeletingSchool(null);
     onRefresh();
   };
@@ -117,25 +119,25 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
       <DialogHeader><DialogTitle>{title}</DialogTitle></DialogHeader>
       <div className="space-y-4 py-2">
         <div>
-          <label className="text-sm font-medium mb-1.5 block">School Name *</label>
-          <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder="School name" />
+          <label className="text-sm font-medium mb-1.5 block">{t("superSchools.schoolName")} *</label>
+          <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder={t("superSchools.namePh")} />
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Location</label>
-          <Input value={formLocation} onChange={e => setFormLocation(e.target.value)} placeholder="City, Region" />
+          <label className="text-sm font-medium mb-1.5 block">{t("superSchools.locationLabel")}</label>
+          <Input value={formLocation} onChange={e => setFormLocation(e.target.value)} placeholder={t("superSchools.cityRegion")} />
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Email</label>
-          <Input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder="school@example.com" />
+          <label className="text-sm font-medium mb-1.5 block">{t("superSchools.email")}</label>
+          <Input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder={t("superSchools.emailPh")} />
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Phone</label>
-          <Input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="+251..." />
+          <label className="text-sm font-medium mb-1.5 block">{t("superSchools.phone")}</label>
+          <Input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder={t("superSchools.phonePh")} />
         </div>
       </div>
       <DialogFooter>
-        <Button variant="outline" onClick={() => { setShowCreate(false); setEditingSchool(null); }}>Cancel</Button>
-        <Button onClick={onSave} disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
+        <Button variant="outline" onClick={() => { setShowCreate(false); setEditingSchool(null); }}>{t("common.cancel")}</Button>
+        <Button onClick={onSave} disabled={saving}>{saving ? t("superSchools.savingDots") : t("common.save")}</Button>
       </DialogFooter>
     </>
   );
@@ -144,17 +146,17 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-display font-semibold flex items-center gap-2">
-          <School className="w-5 h-5 text-primary" /> Schools ({subscriptions.length})
+          <School className="w-5 h-5 text-primary" /> {t("superSchools.title")} ({subscriptions.length})
         </h2>
         <Button size="sm" onClick={openCreate} className="gap-1.5">
-          <Plus className="w-4 h-4" /> Add School
+          <Plus className="w-4 h-4" /> {t("superSchools.add")}
         </Button>
       </div>
 
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
-          placeholder="Search schools..."
+          placeholder={t("superSchools.searchPlaceholder")}
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="pl-9"
@@ -169,18 +171,18 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
       {filtered.length === 0 ? (
         <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground">
           <School className="w-10 h-10 mx-auto mb-3 opacity-40" />
-          <p className="font-medium">{search ? "No schools match your search" : "No schools registered yet"}</p>
+          <p className="font-medium">{search ? t("superSchools.noMatch") : t("superSchools.noSchools")}</p>
         </div>
       ) : (
         <div className="bg-card rounded-xl border border-border shadow-card overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                <th className="text-left p-4 font-medium text-muted-foreground">School</th>
-                <th className="text-left p-4 font-medium text-muted-foreground hidden md:table-cell">Location</th>
-                <th className="text-right p-4 font-medium text-muted-foreground">Members</th>
-                <th className="text-right p-4 font-medium text-muted-foreground hidden sm:table-cell">Status</th>
-                <th className="text-right p-4 font-medium text-muted-foreground">Actions</th>
+                <th className="text-left p-4 font-medium text-muted-foreground">{t("superSchools.school")}</th>
+                <th className="text-left p-4 font-medium text-muted-foreground hidden md:table-cell">{t("superSchools.location")}</th>
+                <th className="text-right p-4 font-medium text-muted-foreground">{t("superSchools.members")}</th>
+                <th className="text-right p-4 font-medium text-muted-foreground hidden sm:table-cell">{t("common.status")}</th>
+                <th className="text-right p-4 font-medium text-muted-foreground">{t("superSchools.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -217,14 +219,14 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
       {/* Create Dialog */}
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent>
-          <SchoolForm onSave={handleCreate} title="Create New School" />
+          <SchoolForm onSave={handleCreate} title={t("superSchools.createNew")} />
         </DialogContent>
       </Dialog>
 
       {/* Edit Dialog */}
       <Dialog open={!!editingSchool} onOpenChange={() => setEditingSchool(null)}>
         <DialogContent>
-          <SchoolForm onSave={handleUpdate} title={`Edit — ${editingSchool?.school_name}`} />
+          <SchoolForm onSave={handleUpdate} title={`${t("superSchools.editTitle")} — ${editingSchool?.school_name}`} />
         </DialogContent>
       </Dialog>
 
@@ -232,15 +234,15 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
       <AlertDialog open={!!deletingSchool} onOpenChange={() => setDeletingSchool(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete School?</AlertDialogTitle>
+            <AlertDialogTitle>{t("superSchools.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete <strong>{deletingSchool?.school_name}</strong> and remove all members from this school. This action cannot be undone.
+              {t("superSchools.deleteDesc").replace("{name}", deletingSchool?.school_name || "")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              {saving ? "Deleting..." : "Delete School"}
+              {saving ? t("superSchools.deletingDots") : t("superSchools.deleteAction")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
