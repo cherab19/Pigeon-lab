@@ -51,7 +51,7 @@ export const translations: Record<string, TranslationMap> = {
     "landing.planName": "Standard",
     "landing.perStudentMonth": "per student/month",
     "landing.footerTagline": "Empowering science education across Ethiopia",
-    "landing.copyright": "© 2026 EthioLab. All rights reserved.",
+    "landing.copyright": "© 2026 Dovelab. All rights reserved.",
 
     // Subject descriptions
     "subject.physics": "Physics",
@@ -129,7 +129,7 @@ export const translations: Record<string, TranslationMap> = {
     "invite.activateBtn": "Activate Account",
     "invite.activating": "Activating…",
     "invite.activated": "Account activated",
-    "invite.welcome": "Welcome to EthioLab!",
+    "invite.welcome": "Welcome to Dovelab!",
     "invite.failed": "Activation failed",
 
     // Dashboard
@@ -530,9 +530,9 @@ export const translations: Record<string, TranslationMap> = {
 
     // Super Admin Dashboard
     "super.platformAdmin": "Platform Admin",
-    "super.platformOverviewDesc": "EthioLab platform overview",
+    "super.platformOverviewDesc": "Dovelab platform overview",
     "super.experimentsAvailable": "experiments available",
-    "super.platformOverviewBanner": "EthioLab Platform Overview",
+    "super.platformOverviewBanner": "Dovelab Platform Overview",
     "super.totalUsers": "Total Users",
     "super.activeStat": "Active",
     "super.expiredStat": "Expired",
@@ -1178,9 +1178,9 @@ export const translations: Record<string, TranslationMap> = {
 
     // Super Admin Dashboard
     "super.platformAdmin": "የመድረክ አስተዳዳሪ",
-    "super.platformOverviewDesc": "የኢትዮላብ መድረክ አጠቃላይ እይታ",
+    "super.platformOverviewDesc": "የዶቭላብ መድረክ አጠቃላይ እይታ",
     "super.experimentsAvailable": "ሙከራዎች ይገኛሉ",
-    "super.platformOverviewBanner": "የኢትዮላብ መድረክ አጠቃላይ እይታ",
+    "super.platformOverviewBanner": "የዶቭላብ መድረክ አጠቃላይ እይታ",
     "super.totalUsers": "ጠቅላላ ተጠቃሚዎች",
     "super.activeStat": "ንቁ",
     "super.expiredStat": "ጊዜው ያለፈ",

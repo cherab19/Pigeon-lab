@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getSafeSession, getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 type InviteMeta = {
   full_name?: string;
@@ -109,8 +110,7 @@ export default function Signup() {
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero items-center justify-center p-12">
           <div className="text-primary-foreground max-w-md">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 rounded-xl bg-primary-foreground/20 flex items-center justify-center"><Beaker className="w-7 h-7" /></div>
-              <span className="font-display font-bold text-3xl">EthioLab</span>
+              <DovelabLogo size="lg" />
             </div>
             <h2 className="text-2xl font-display font-bold mb-4">{t("invite.title")}</h2>
             <p className="opacity-80">{t("invite.desc")}</p>
@@ -121,8 +121,7 @@ export default function Signup() {
             <div className="flex justify-end"><LanguageToggle /></div>
             <div className="text-center lg:text-left">
               <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
-                <div className="w-9 h-9 rounded-lg bg-gradient-hero flex items-center justify-center"><Beaker className="w-5 h-5 text-primary-foreground" /></div>
-                <span className="font-display font-bold text-xl">EthioLab</span>
+                <DovelabLogo size="md" />
               </div>
               <h1 className="text-2xl font-display font-bold">{t("invite.complete")}</h1>
               <p className="text-sm text-muted-foreground mt-2">
@@ -162,8 +161,7 @@ export default function Signup() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero items-center justify-center p-12">
         <div className="text-primary-foreground max-w-md">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-primary-foreground/20 flex items-center justify-center"><Beaker className="w-7 h-7" /></div>
-            <span className="font-display font-bold text-3xl">EthioLab</span>
+            <DovelabLogo size="lg" />
           </div>
           <h2 className="text-2xl font-display font-bold mb-4">{t("signup.registerSchool")}</h2>
           <p className="opacity-80">{t("signup.registerDesc")}</p>
@@ -181,8 +179,7 @@ export default function Signup() {
           <div className="flex justify-end"><LanguageToggle /></div>
           <div className="text-center lg:text-left">
             <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-gradient-hero flex items-center justify-center"><Beaker className="w-5 h-5 text-primary-foreground" /></div>
-              <span className="font-display font-bold text-xl">EthioLab</span>
+              <DovelabLogo size="md" />
             </div>
             <h1 className="text-2xl font-display font-bold">{t("signup.createAccount")}</h1>
             <p className="text-sm text-muted-foreground mt-2">{t("signup.fillDetails")}</p>

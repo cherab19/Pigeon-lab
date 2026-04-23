@@ -14,6 +14,7 @@ import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 type AppRole = "super_admin" | "school_admin" | "teacher" | "student";
 
@@ -62,10 +63,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between h-16 px-6">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-                <Beaker className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="font-display font-bold text-lg">EthioLab</span>
+              <DovelabLogo size="sm" />
             </Link>
             {userRole !== "super_admin" && (
               <div className="hidden md:flex items-center gap-1 ml-6">

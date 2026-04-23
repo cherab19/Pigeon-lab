@@ -13,15 +13,30 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // Import translations
 import { translations } from "@/i18n/translations";
 
+const STORAGE_KEY = "dovelab-lang";
+const LEGACY_KEY = "ethiolab-lang";
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem("ethiolab-lang");
+    if (typeof window === "undefined") return "en";
+    const saved = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY);
     return (saved === "am" ? "am" : "en") as Language;
   });
 
+  useEffect(() => {
+    // Reflect on <html lang> for accessibility & SEO
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = language;
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, language);
+    } catch {
+      /* storage may be blocked */
+    }
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem("ethiolab-lang", lang);
   };
 
   const t = (key: string): string => {

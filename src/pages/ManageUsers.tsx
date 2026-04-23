@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,7 +92,7 @@ export default function ManageUsers() {
       .eq("role", "school_admin" as any);
 
     if (!roleData || roleData.length === 0) {
-      toast.error("Access denied. School admin role required.");
+      toast.error(t("manage.accessDenied"));
       navigate("/dashboard");
       return;
     }
@@ -125,7 +126,7 @@ export default function ManageUsers() {
   // Individual invite
   const handleInvite = async () => {
     if (!newEmail || !newName) {
-      toast.error("Please fill in name and email");
+      toast.error(t("manage.fillNameEmail"));
       return;
     }
     setInviting(true);
@@ -135,18 +136,18 @@ export default function ManageUsers() {
       });
 
       if (error) {
-        toast.error(error.message || "Failed to send invitation");
+        toast.error(error.message || t("manage.failedInvite"));
       } else if (data?.results?.[0]?.success) {
-        toast.success(`Invitation sent to ${newEmail}`);
+        toast.success(`${t("manage.invitationSent")} ${newEmail}`);
         setNewEmail("");
         setNewName("");
         setNewRole("student");
         loadMembers();
       } else {
-        toast.error(data?.results?.[0]?.error || "Failed to invite");
+        toast.error(data?.results?.[0]?.error || t("manage.failedInvite"));
       }
     } catch (e: any) {
-      toast.error(e.message || "An error occurred");
+      toast.error(e.message || t("manage.errorOccurred"));
     } finally {
       setInviting(false);
     }
@@ -187,9 +188,9 @@ export default function ManageUsers() {
       const entries = parseCSV(text);
       setBulkEntries(entries);
       if (entries.length === 0) {
-        toast.error("No valid entries found. Use format: email, full_name, role (teacher/student)");
+        toast.error(t("manage.noValidEntries"));
       } else {
-        toast.success(`${entries.length} valid entries found`);
+        toast.success(`${entries.length} ${t("manage.validEntries")}`);
       }
     };
     reader.readAsText(file);
@@ -206,7 +207,7 @@ export default function ManageUsers() {
   // Bulk invite
   const handleBulkInvite = async () => {
     if (bulkEntries.length === 0) {
-      toast.error("No valid entries to invite");
+      toast.error(t("manage.noValidEntries"));
       return;
     }
     setBulkInviting(true);
@@ -217,19 +218,21 @@ export default function ManageUsers() {
       });
 
       if (error) {
-        toast.error(error.message || "Failed to send invitations");
+        toast.error(error.message || t("manage.failedInvite"));
       } else {
         setInviteResults(data.results);
         const { invited, failed } = data.summary;
         if (failed === 0) {
-          toast.success(`All ${invited} invitations sent successfully!`);
+          toast.success(t("manage.allSent"));
         } else {
-          toast.warning(`${invited} sent, ${failed} failed`);
+          toast.warning(
+            t("manage.someSent").replace("{invited}", String(invited)).replace("{failed}", String(failed))
+          );
         }
         loadMembers();
       }
     } catch (e: any) {
-      toast.error(e.message || "An error occurred");
+      toast.error(e.message || t("manage.errorOccurred"));
     } finally {
       setBulkInviting(false);
     }
@@ -244,14 +247,14 @@ export default function ManageUsers() {
         body: { action: "update_role", member_user_id: editingMember.user_id, new_role: editRole },
       });
       if (error || !data?.success) {
-        toast.error(data?.error || error?.message || "Failed to update role");
+        toast.error(data?.error || error?.message || t("manage.failedUpdateRole"));
       } else {
-        toast.success(`${editingMember.full_name}'s role updated to ${editRole}`);
+        toast.success(`${editingMember.full_name} — ${t("manage.roleUpdatedTo")} ${editRole}`);
         setEditingMember(null);
         loadMembers();
       }
     } catch (e: any) {
-      toast.error(e.message || "An error occurred");
+      toast.error(e.message || t("manage.errorOccurred"));
     } finally {
       setSavingRole(false);
     }
@@ -266,14 +269,14 @@ export default function ManageUsers() {
         body: { action: "remove", member_user_id: removingMember.user_id },
       });
       if (error || !data?.success) {
-        toast.error(data?.error || error?.message || "Failed to remove member");
+        toast.error(data?.error || error?.message || t("manage.failedRemove"));
       } else {
-        toast.success(`${removingMember.full_name} removed from school`);
+        toast.success(`${removingMember.full_name} — ${t("manage.removedFromSchool")}`);
         setRemovingMember(null);
         loadMembers();
       }
     } catch (e: any) {
-      toast.error(e.message || "An error occurred");
+      toast.error(e.message || t("manage.errorOccurred"));
     } finally {
       setRemoving(false);
     }
@@ -288,7 +291,7 @@ export default function ManageUsers() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-muted-foreground">Loading...</div>
+        <div className="text-muted-foreground">{t("common.loading")}</div>
       </div>
     );
   }
@@ -301,10 +304,7 @@ export default function ManageUsers() {
         <div className="flex items-center justify-between h-16 px-6">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-                <Beaker className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="font-display font-bold text-lg">EthioLab</span>
+              <DovelabLogo size="sm" />
             </Link>
           </div>
           <LanguageToggle />
@@ -420,16 +420,16 @@ export default function ManageUsers() {
                         onClick={() => fileInputRef.current?.click()}
                         className="gap-2"
                       >
-                        <Upload className="w-4 h-4" /> Upload CSV File
+                        <Upload className="w-4 h-4" /> {t("manage.uploadCsvBtn")}
                       </Button>
-                      <span className="text-sm text-muted-foreground">or paste data below</span>
+                      <span className="text-sm text-muted-foreground">{t("manage.orPaste")}</span>
                     </div>
 
                     <div className="bg-muted/50 rounded-lg p-3 border border-border">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">CSV Format (one per line):</p>
+                      <p className="text-xs font-medium text-muted-foreground mb-1">{t("manage.csvFormatHint")}</p>
                       <code className="text-xs text-foreground">email, full_name, role</code>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Example: <code className="text-foreground">teacher@school.et, Tigist Hailu, teacher</code>
+                        {t("manage.example")}: <code className="text-foreground">teacher@school.et, Tigist Hailu, teacher</code>
                       </p>
                     </div>
 
@@ -445,12 +445,12 @@ export default function ManageUsers() {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <p className="text-sm font-medium">
-                            {bulkEntries.length} valid {bulkEntries.length === 1 ? "entry" : "entries"} found
+                            {bulkEntries.length} {bulkEntries.length === 1 ? t("manage.entry") : t("manage.entries")} · {t("manage.validEntries")}
                           </p>
                           <div className="flex gap-2 text-xs text-muted-foreground">
-                            <span>{bulkEntries.filter(e => e.role === "teacher").length} teachers</span>
+                            <span>{bulkEntries.filter(e => e.role === "teacher").length} {t("common.teachers")}</span>
                             <span>·</span>
-                            <span>{bulkEntries.filter(e => e.role === "student").length} students</span>
+                            <span>{bulkEntries.filter(e => e.role === "student").length} {t("common.students")}</span>
                           </div>
                         </div>
 
@@ -458,9 +458,9 @@ export default function ManageUsers() {
                           <Table>
                             <TableHeader>
                               <TableRow>
-                                <TableHead className="text-xs">Email</TableHead>
-                                <TableHead className="text-xs">Name</TableHead>
-                                <TableHead className="text-xs">Role</TableHead>
+                                <TableHead className="text-xs">{t("common.email")}</TableHead>
+                                <TableHead className="text-xs">{t("common.name")}</TableHead>
+                                <TableHead className="text-xs">{t("common.role")}</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -485,7 +485,7 @@ export default function ManageUsers() {
                           className="w-full gap-2"
                         >
                           {bulkInviting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                          {bulkInviting ? "Sending invitations…" : `Send ${bulkEntries.length} Invitations`}
+                          {bulkInviting ? t("manage.sendingInvitations") : `${t("manage.send")} ${bulkEntries.length} ${t("manage.sendInvitations")}`}
                         </Button>
                       </div>
                     )}
@@ -493,7 +493,7 @@ export default function ManageUsers() {
                     {/* Results */}
                     {inviteResults && (
                       <div className="space-y-2 border-t border-border pt-4">
-                        <p className="text-sm font-medium">Invitation Results</p>
+                        <p className="text-sm font-medium">{t("manage.invitationResults")}</p>
                         <div className="max-h-48 overflow-y-auto space-y-1">
                           {inviteResults.map((r, i) => (
                             <div key={i} className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg ${r.success ? "bg-green-500/10" : "bg-destructive/10"}`}>
@@ -517,21 +517,21 @@ export default function ManageUsers() {
           {/* Members table */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">School Members</CardTitle>
-              <CardDescription>Teachers and students in your school</CardDescription>
+              <CardTitle className="text-lg">{t("manage.schoolMembers")}</CardTitle>
+              <CardDescription>{t("manage.schoolMembersDesc")}</CardDescription>
             </CardHeader>
             <CardContent>
               {members.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
                   <Users className="w-10 h-10 mx-auto mb-3 opacity-40" />
-                  <p>No members yet. Send your first invitation above.</p>
+                  <p>{t("manage.noMembersYet")}</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Role</TableHead>
+                      <TableHead>{t("common.name")}</TableHead>
+                      <TableHead>{t("common.role")}</TableHead>
                       <TableHead className="w-12"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -541,7 +541,11 @@ export default function ManageUsers() {
                         <TableCell className="font-medium">{m.full_name}</TableCell>
                         <TableCell>
                           <Badge variant={roleBadgeVariant(m.role)}>
-                            {m.role === "school_admin" ? "Admin" : m.role.charAt(0).toUpperCase() + m.role.slice(1)}
+                            {m.role === "school_admin"
+                              ? t("manage.admin")
+                              : m.role === "teacher"
+                              ? t("manage.teacher")
+                              : t("manage.student")}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -557,13 +561,13 @@ export default function ManageUsers() {
                                   setEditingMember(m);
                                   setEditRole(m.role as "teacher" | "student");
                                 }}>
-                                  <Pencil className="w-4 h-4 mr-2" /> Change Role
+                                  <Pencil className="w-4 h-4 mr-2" /> {t("manage.changeRoleTo")}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   className="text-destructive focus:text-destructive"
                                   onClick={() => setRemovingMember(m)}
                                 >
-                                  <Trash2 className="w-4 h-4 mr-2" /> Remove Member
+                                  <Trash2 className="w-4 h-4 mr-2" /> {t("manage.removeMemberAction")}
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -583,22 +587,22 @@ export default function ManageUsers() {
       <Dialog open={!!editingMember} onOpenChange={() => setEditingMember(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Change Role — {editingMember?.full_name}</DialogTitle>
+            <DialogTitle>{t("manage.changeRoleTitle")} — {editingMember?.full_name}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <Label className="mb-2 block">New Role</Label>
+            <Label className="mb-2 block">{t("manage.newRole")}</Label>
             <Select value={editRole} onValueChange={(v) => setEditRole(v as "teacher" | "student")}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="student">Student</SelectItem>
-                <SelectItem value="teacher">Teacher</SelectItem>
+                <SelectItem value="student">{t("manage.student")}</SelectItem>
+                <SelectItem value="teacher">{t("manage.teacher")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingMember(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setEditingMember(null)}>{t("common.cancel")}</Button>
             <Button onClick={handleUpdateRole} disabled={savingRole}>
-              {savingRole ? "Saving..." : "Save"}
+              {savingRole ? t("manage.saving") : t("common.save")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -608,19 +612,19 @@ export default function ManageUsers() {
       <AlertDialog open={!!removingMember} onOpenChange={() => setRemovingMember(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove {removingMember?.full_name}?</AlertDialogTitle>
+            <AlertDialogTitle>{t("manage.removeTitle")} {removingMember?.full_name}?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will remove the member from your school. They will lose access to school resources. This action cannot be undone.
+              {t("manage.removeMemberDesc")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRemoveMember}
               disabled={removing}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {removing ? "Removing..." : "Remove Member"}
+              {removing ? t("manage.removingMember") : t("manage.removeMemberAction")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
