@@ -301,10 +301,7 @@ export default function ManageUsers() {
         <div className="flex items-center justify-between h-16 px-6">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
-                <Beaker className="w-4 h-4 text-primary-foreground" />
-              </div>
-              <span className="font-display font-bold text-lg">EthioLab</span>
+              <DovelabLogo size="sm" />
             </Link>
           </div>
           <LanguageToggle />

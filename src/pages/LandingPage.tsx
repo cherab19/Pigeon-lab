@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { labData } from "@/data/labActivities";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import DovelabLogo from "@/components/DovelabLogo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
