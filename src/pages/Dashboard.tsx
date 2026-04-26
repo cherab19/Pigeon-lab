@@ -14,7 +14,7 @@ import StudentDashboardView from "@/components/dashboard/StudentDashboardView";
 import { getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
-import DovelabLogo from "@/components/DovelabLogo";
+import AxislabLogo from "@/components/AxislabLogo";
 
 type AppRole = "super_admin" | "school_admin" | "teacher" | "student";
 
@@ -63,7 +63,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between h-16 px-6">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <DovelabLogo size="sm" />
+              <AxislabLogo size="sm" />
             </Link>
             {userRole !== "super_admin" && (
               <div className="hidden md:flex items-center gap-1 ml-6">

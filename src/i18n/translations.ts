@@ -51,7 +51,7 @@ export const translations: Record<string, TranslationMap> = {
     "landing.planName": "Standard",
     "landing.perStudentMonth": "per student/month",
     "landing.footerTagline": "Empowering science education across Ethiopia",
-    "landing.copyright": "© 2026 Dovelab. All rights reserved.",
+    "landing.copyright": "© 2026 Axislab. All rights reserved.",
 
     // Subject descriptions
     "subject.physics": "Physics",
@@ -129,7 +129,7 @@ export const translations: Record<string, TranslationMap> = {
     "invite.activateBtn": "Activate Account",
     "invite.activating": "Activating…",
     "invite.activated": "Account activated",
-    "invite.welcome": "Welcome to Dovelab!",
+    "invite.welcome": "Welcome to Axislab!",
     "invite.failed": "Activation failed",
 
     // Dashboard
@@ -530,9 +530,9 @@ export const translations: Record<string, TranslationMap> = {
 
     // Super Admin Dashboard
     "super.platformAdmin": "Platform Admin",
-    "super.platformOverviewDesc": "Dovelab platform overview",
+    "super.platformOverviewDesc": "Axislab platform overview",
     "super.experimentsAvailable": "experiments available",
-    "super.platformOverviewBanner": "Dovelab Platform Overview",
+    "super.platformOverviewBanner": "Axislab Platform Overview",
     "super.totalUsers": "Total Users",
     "super.activeStat": "Active",
     "super.expiredStat": "Expired",
