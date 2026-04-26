@@ -132,7 +132,7 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
           Welcome{fullName ? `, ${fullName}` : ""} 👋
         </h1>
         <p className="text-muted-foreground mt-1">
-          Dovelab platform overview · {totalExperiments} experiments available
+          Axislab platform overview · {totalExperiments} experiments available
         </p>
       </motion.div>
 
@@ -142,7 +142,7 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
         <>
           {/* Platform KPIs */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8 bg-gradient-hero rounded-2xl p-6 text-primary-foreground">
-            <h2 className="text-lg font-display font-bold mb-1">Dovelab Platform Overview</h2>
+            <h2 className="text-lg font-display font-bold mb-1">Axislab Platform Overview</h2>
             <p className="text-sm opacity-80">{totalExperiments} experiments · {platformStats?.total_schools ?? 0} schools · {platformStats?.total_users ?? 0} users</p>
           </motion.div>
 

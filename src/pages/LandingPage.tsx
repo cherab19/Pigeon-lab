@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { labData } from "@/data/labActivities";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
-import DovelabLogo from "@/components/DovelabLogo";
+import AxislabLogo from "@/components/AxislabLogo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -69,7 +69,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center gap-2">
-            <DovelabLogo size="md" textClassName="text-foreground" />
+            <AxislabLogo size="md" textClassName="text-foreground" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#subjects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.subjects")}</a>
@@ -205,7 +205,7 @@ export default function LandingPage() {
       <footer className="border-t border-border py-12 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <DovelabLogo size="sm" />
+            <AxislabLogo size="sm" />
           </div>
           <p className="text-sm text-muted-foreground">{t("landing.footerTagline")}</p>
           <p className="text-xs text-muted-foreground mt-2">{t("landing.copyright")}</p>
