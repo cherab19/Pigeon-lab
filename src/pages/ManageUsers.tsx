@@ -536,7 +536,7 @@ export default function ManageUsers() {
                         </div>
 
                         <Button
-                          onClick={handleBulkInvite}
+                          onClick={() => handleBulkInvite()}
                           disabled={bulkInviting}
                           className="w-full gap-2"
                         >
