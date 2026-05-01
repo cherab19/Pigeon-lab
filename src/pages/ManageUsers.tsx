@@ -246,36 +246,51 @@ export default function ManageUsers() {
   };
 
   // Bulk invite
-  const handleBulkInvite = async () => {
-    if (bulkEntries.length === 0) {
+  const handleBulkInvite = async (entriesArg?: BulkEntry[]) => {
+    const entries = entriesArg ?? bulkEntries;
+    if (entries.length === 0) {
       toast.error(t("manage.noValidEntries"));
       return;
     }
     setBulkInviting(true);
     setInviteResults(null);
     try {
-      const { data, error } = await supabase.functions.invoke("invite-school-members", {
-        body: { members: bulkEntries },
-      });
+      const { status, json } = await sendInvitations(entries);
 
-      if (error) {
-        toast.error(error.message || t("manage.failedInvite"));
-      } else {
-        setInviteResults(data.results);
-        const { invited, failed } = data.summary;
-        if (failed === 0) {
-          toast.success(t("manage.allSent"));
-        } else {
-          toast.warning(
-            t("manage.someSent").replace("{invited}", String(invited)).replace("{failed}", String(failed))
-          );
-        }
-        loadMembers();
+      if (status === 402 && json?.shortfall) {
+        triggerPaymentForShortfall(entries, json.shortfall);
+        toast.message(t("pay.quotaToast") || "Seat limit reached — opening checkout");
+        return;
       }
+      if (!json?.success) {
+        toast.error(json?.message || t("manage.failedInvite"));
+        return;
+      }
+      setInviteResults(json.results);
+      const { invited, failed } = json.summary;
+      if (failed === 0) {
+        toast.success(t("manage.allSent"));
+      } else {
+        toast.warning(
+          t("manage.someSent").replace("{invited}", String(invited)).replace("{failed}", String(failed))
+        );
+      }
+      loadMembers(); refreshQuota();
     } catch (e: any) {
       toast.error(e.message || t("manage.errorOccurred"));
     } finally {
       setBulkInviting(false);
+    }
+  };
+
+  // After successful payment, retry the queued invitations
+  const handlePaymentSuccess = async () => {
+    refreshQuota();
+    if (pendingInvites && pendingInvites.length > 0) {
+      const queued = pendingInvites;
+      setPendingInvites(null);
+      toast.message(t("pay.retrying") || "Payment received — sending invitations…");
+      await handleBulkInvite(queued);
     }
   };
 
