@@ -692,6 +692,15 @@ export default function ManageUsers() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ChapaCheckoutModal
+        open={payOpen}
+        onOpenChange={setPayOpen}
+        defaultTeacherSeats={payDefaults.teachers}
+        defaultStudentSeats={payDefaults.students}
+        reason={payDefaults.reason}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 }
