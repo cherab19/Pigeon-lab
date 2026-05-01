@@ -31,6 +31,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { getSafeUser } from "@/lib/safeAuth";
 import { toast } from "@/components/ui/sonner";
+import ChapaCheckoutModal from "@/components/payments/ChapaCheckoutModal";
+import SeatUsageCard from "@/components/payments/SeatUsageCard";
+import { useSeatQuota } from "@/hooks/useSeatQuota";
 
 type MemberRow = {
   user_id: string;
@@ -56,8 +59,15 @@ export default function ManageUsers() {
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [schoolName, setSchoolName] = useState("");
+  const [schoolId, setSchoolId] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const { quota, refresh: refreshQuota } = useSeatQuota(schoolId);
+
+  // Payment modal state
+  const [payOpen, setPayOpen] = useState(false);
+  const [payDefaults, setPayDefaults] = useState<{ teachers: number; students: number; reason: string }>({ teachers: 0, students: 0, reason: "" });
+  const [pendingInvites, setPendingInvites] = useState<BulkEntry[] | null>(null);
 
   // Individual invite state
   const [newEmail, setNewEmail] = useState("");
@@ -105,6 +115,7 @@ export default function ManageUsers() {
       .single();
 
     if (!profile?.school_id) { navigate("/dashboard"); return; }
+    setSchoolId(profile.school_id);
 
     const { data: school } = await supabase
       .from("schools")
