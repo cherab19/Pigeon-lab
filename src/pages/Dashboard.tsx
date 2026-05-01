@@ -90,9 +90,16 @@ export default function Dashboard() {
                   </>
                 )}
                 {isAdmin && (
-                  <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                    <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> {t("nav.members")}</Link>
-                  </Button>
+                  <>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                      <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> {t("nav.members")}</Link>
+                    </Button>
+                    {userRole === "school_admin" && (
+                      <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+                        <Link to="/subscribe"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.subscription") || "Subscription"}</Link>
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             )}

@@ -62,6 +62,27 @@ Deno.serve(async (req) => {
     const members: Array<{ email: string; full_name: string; role: string }> = 
       Array.isArray(body.members) ? body.members : [body];
 
+    // ===== Seat quota enforcement =====
+    const { data: quotaData } = await supabaseAdmin.rpc("can_invite_member", { _school_id: school_id, _role: "student" });
+    const q = (quotaData as any) || { available_teachers: 0, available_students: 0, teacher_seats: 0, student_seats: 0 };
+
+    const reqTeachers = members.filter(m => m.role === "teacher").length;
+    const reqStudents = members.filter(m => m.role === "student").length;
+    const teacherShortfall = Math.max(0, reqTeachers - (q.available_teachers || 0));
+    const studentShortfall = Math.max(0, reqStudents - (q.available_students || 0));
+
+    if (teacherShortfall > 0 || studentShortfall > 0) {
+      return new Response(JSON.stringify({
+        error: "seat_quota_exceeded",
+        message: "Not enough seats. Please purchase additional seats to continue.",
+        shortfall: { teacher_seats: teacherShortfall, student_seats: studentShortfall },
+        quota: q,
+        requested: { teacher_seats: reqTeachers, student_seats: reqStudents },
+      }), {
+        status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const results: Array<{ email: string; success: boolean; error?: string }> = [];
 
     for (const member of members) {
