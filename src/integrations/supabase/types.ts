@@ -278,6 +278,54 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_transactions: {
+        Row: {
+          amount: number
+          applied_at: string | null
+          chapa_response: Json | null
+          created_at: string
+          currency: string
+          id: string
+          school_id: string
+          status: string
+          student_seats: number
+          teacher_seats: number
+          tx_ref: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          applied_at?: string | null
+          chapa_response?: Json | null
+          created_at?: string
+          currency?: string
+          id?: string
+          school_id: string
+          status?: string
+          student_seats?: number
+          teacher_seats?: number
+          tx_ref: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          applied_at?: string | null
+          chapa_response?: Json | null
+          created_at?: string
+          currency?: string
+          id?: string
+          school_id?: string
+          status?: string
+          student_seats?: number
+          teacher_seats?: number
+          tx_ref?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -397,7 +445,10 @@ export type Database = {
           school_id: string
           status: string
           student_count: number
+          student_seats: number
           suspended_at: string | null
+          teacher_seats: number
+          total_seats: number | null
           updated_at: string
         }
         Insert: {
@@ -412,7 +463,10 @@ export type Database = {
           school_id: string
           status?: string
           student_count?: number
+          student_seats?: number
           suspended_at?: string | null
+          teacher_seats?: number
+          total_seats?: number | null
           updated_at?: string
         }
         Update: {
@@ -427,7 +481,10 @@ export type Database = {
           school_id?: string
           status?: string
           student_count?: number
+          student_seats?: number
           suspended_at?: string | null
+          teacher_seats?: number
+          total_seats?: number | null
           updated_at?: string
         }
         Relationships: [
@@ -678,6 +735,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_seat_topup: { Args: { _tx_ref: string }; Returns: Json }
+      can_invite_member: {
+        Args: { _role: string; _school_id: string }
+        Returns: Json
+      }
       check_subscription_access: {
         Args: { _user_id: string }
         Returns: boolean
