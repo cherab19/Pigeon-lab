@@ -398,7 +398,14 @@ export default function ManageUsers() {
             ))}
           </div>
 
-          {/* Invite Tabs */}
+          {/* Seat usage */}
+          <div className="mb-8">
+            <SeatUsageCard quota={quota} onBuyMore={() => {
+              setPayDefaults({ teachers: 0, students: 10, reason: "" });
+              setPendingInvites(null);
+              setPayOpen(true);
+            }} />
+          </div>
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
