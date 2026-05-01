@@ -134,6 +134,34 @@ export default function ManageUsers() {
 
   useEffect(() => { loadMembers(); }, [navigate]);
 
+  // Send invitations via raw fetch so we can read the 402 quota body
+  const sendInvitations = async (entries: BulkEntry[]) => {
+    const { data: sess } = await supabase.auth.getSession();
+    const token = sess?.session?.access_token;
+    const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/invite-school-members`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      },
+      body: JSON.stringify({ members: entries }),
+    });
+    const json = await res.json().catch(() => ({}));
+    return { status: res.status, json };
+  };
+
+  const triggerPaymentForShortfall = (entries: BulkEntry[], shortfall: { teacher_seats: number; student_seats: number }) => {
+    setPendingInvites(entries);
+    setPayDefaults({
+      teachers: shortfall.teacher_seats || 0,
+      students: shortfall.student_seats || 0,
+      reason: t("pay.quotaReason") || "Your school has reached its seat limit. Buy more seats to invite these members.",
+    });
+    setPayOpen(true);
+  };
+
   // Individual invite
   const handleInvite = async () => {
     if (!newEmail || !newName) {
@@ -142,20 +170,22 @@ export default function ManageUsers() {
     }
     setInviting(true);
     try {
-      const { data, error } = await supabase.functions.invoke("invite-school-members", {
-        body: { members: [{ email: newEmail, full_name: newName, role: newRole }] },
-      });
+      const entries: BulkEntry[] = [{ email: newEmail, full_name: newName, role: newRole }];
+      const { status, json } = await sendInvitations(entries);
 
-      if (error) {
-        toast.error(error.message || t("manage.failedInvite"));
-      } else if (data?.results?.[0]?.success) {
+      if (status === 402 && json?.shortfall) {
+        triggerPaymentForShortfall(entries, json.shortfall);
+        toast.message(t("pay.quotaToast") || "Seat limit reached — opening checkout");
+        return;
+      }
+      if (!json?.success) {
+        toast.error(json?.results?.[0]?.error || json?.message || t("manage.failedInvite"));
+      } else if (json?.results?.[0]?.success) {
         toast.success(`${t("manage.invitationSent")} ${newEmail}`);
-        setNewEmail("");
-        setNewName("");
-        setNewRole("student");
-        loadMembers();
+        setNewEmail(""); setNewName(""); setNewRole("student");
+        loadMembers(); refreshQuota();
       } else {
-        toast.error(data?.results?.[0]?.error || t("manage.failedInvite"));
+        toast.error(json?.results?.[0]?.error || t("manage.failedInvite"));
       }
     } catch (e: any) {
       toast.error(e.message || t("manage.errorOccurred"));
