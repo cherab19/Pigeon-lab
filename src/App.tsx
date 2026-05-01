@@ -18,6 +18,7 @@ const SubjectLab = lazy(() => import("./pages/SubjectLab"));
 const Textbooks = lazy(() => import("./pages/Textbooks"));
 const TextbookReader = lazy(() => import("./pages/TextbookReader"));
 const SuccessGuide = lazy(() => import("./pages/SuccessGuide"));
+const Subscribe = lazy(() => import("./pages/Subscribe"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
                 <Route path="/textbooks" element={<Textbooks />} />
                 <Route path="/textbooks/:id" element={<TextbookReader />} />
                 <Route path="/success-guide" element={<SuccessGuide />} />
+                <Route path="/subscribe" element={<Subscribe />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
