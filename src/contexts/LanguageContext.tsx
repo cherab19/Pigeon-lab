@@ -13,7 +13,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // Import translations
 import { translations } from "@/i18n/translations";
 
-const STORAGE_KEY = "axislab-lang";
+const STORAGE_KEY = "pigeonlab-lang";
 const LEGACY_KEY = "ethiolab-lang";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

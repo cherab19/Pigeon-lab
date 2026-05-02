@@ -4,7 +4,7 @@ import { ChevronLeft, CreditCard, Sparkles } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import AxislabLogo from "@/components/AxislabLogo";
+import PigeonlabLogo from "@/components/PigeonlabLogo";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,7 +52,7 @@ export default function Subscribe() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between h-16 px-6">
-          <Link to="/" className="flex items-center gap-2"><AxislabLogo size="sm" /></Link>
+          <Link to="/" className="flex items-center gap-2"><PigeonlabLogo size="sm" /></Link>
           <LanguageToggle />
           <Button variant="ghost" size="sm" asChild>
             <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>

@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
-import AxislabLogo from "@/components/AxislabLogo";
+import PigeonlabLogo from "@/components/PigeonlabLogo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -360,7 +360,7 @@ export default function ManageUsers() {
         <div className="flex items-center justify-between h-16 px-6">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <AxislabLogo size="sm" />
+              <PigeonlabLogo size="sm" />
             </Link>
           </div>
           <LanguageToggle />

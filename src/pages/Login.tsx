@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getSafeSession } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
-import AxislabLogo from "@/components/AxislabLogo";
+import PigeonlabLogo from "@/components/PigeonlabLogo";
 
 export default function Login() {
   const { t } = useLanguage();
@@ -67,7 +67,7 @@ export default function Login() {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero items-center justify-center p-12">
         <div className="text-primary-foreground max-w-md">
           <div className="flex items-center gap-3 mb-8">
-            <AxislabLogo size="lg" />
+            <PigeonlabLogo size="lg" />
           </div>
           <h2 className="text-2xl font-display font-bold mb-4">{t("login.welcomeBack")}</h2>
           <p className="opacity-80">{t("login.accessLab")}</p>
@@ -81,7 +81,7 @@ export default function Login() {
           </div>
           <div className="text-center lg:text-left">
             <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
-              <AxislabLogo size="md" />
+              <PigeonlabLogo size="md" />
             </div>
             <h1 className="text-2xl font-display font-bold">{t("login.signIn")}</h1>
             <p className="text-sm text-muted-foreground mt-2">{t("login.credentials")}</p>
