@@ -46,7 +46,9 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const teacher_seats = Math.max(0, parseInt(body.teacher_seats || "0", 10));
     const student_seats = Math.max(0, parseInt(body.student_seats || "0", 10));
-    const return_url = body.return_url || "https://ethiolab.vercel.app/subscribe";
+    // Frontend should always pass return_url (window.location.origin/subscribe).
+    // Fallback used only for server-to-server tests.
+    const return_url = body.return_url || `${supabaseUrl.replace(".supabase.co", ".lovable.app")}/subscribe`;
 
     const total_seats = teacher_seats + student_seats;
     if (total_seats <= 0) {
