@@ -13,13 +13,15 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // Import translations
 import { translations } from "@/i18n/translations";
 
-const STORAGE_KEY = "axislab-lang";
-const LEGACY_KEY = "ethiolab-lang";
+const STORAGE_KEY = "pigeonlab-lang";
+const LEGACY_KEYS = ["axislab-lang", "dovelab-lang", "ethiolab-lang"];
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window === "undefined") return "en";
-    const saved = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY);
+    const saved =
+      localStorage.getItem(STORAGE_KEY) ??
+      LEGACY_KEYS.map((k) => localStorage.getItem(k)).find(Boolean);
     return (saved === "am" ? "am" : "en") as Language;
   });
 
