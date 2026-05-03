@@ -40,10 +40,21 @@ export default function Dashboard() {
           }
         }
         const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+        let resolvedRole: AppRole = "student";
         if (roles && roles.length > 0) {
           const priority: AppRole[] = ["super_admin", "school_admin", "teacher", "student"];
           const found = priority.find(r => roles.some(rd => rd.role === r));
-          if (found) setUserRole(found);
+          if (found) { setUserRole(found); resolvedRole = found; }
+        }
+        // Gate: school admins must have purchased seats before accessing dashboard
+        if (resolvedRole === "school_admin" && prof?.school_id) {
+          const { data: sub } = await supabase
+            .from("school_subscriptions")
+            .select("teacher_seats, student_seats, status")
+            .eq("school_id", prof.school_id)
+            .maybeSingle();
+          const totalSeats = (sub?.teacher_seats ?? 0) + (sub?.student_seats ?? 0);
+          if (totalSeats <= 0) { navigate("/subscribe?onboarding=1", { replace: true }); return; }
         }
       } finally { setLoading(false); }
     };

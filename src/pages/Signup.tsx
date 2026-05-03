@@ -73,17 +73,12 @@ export default function Signup() {
     if (error) {
       toast({ title: t("signup.registrationFailed"), description: error.message, variant: "destructive" });
     } else {
-      toast({ title: t("signup.accountCreated") });
-      if (data.session) {
-        navigate("/dashboard", { replace: true });
-      } else {
-        // Fallback: sign in immediately (auto-confirm enabled)
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: form.email, password: form.password,
-        });
-        if (signInError) navigate("/login");
-        else navigate("/dashboard", { replace: true });
+      toast({ title: t("signup.accountCreated"), description: "Choose your subscription seats to activate your school." });
+      if (!data.session) {
+        await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
       }
+      // School admins must purchase seats before accessing the dashboard
+      navigate("/subscribe?onboarding=1", { replace: true });
     }
   };
 
