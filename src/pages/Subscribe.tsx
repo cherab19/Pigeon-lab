@@ -65,10 +65,14 @@ export default function Subscribe() {
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between h-16 px-6">
           <Link to="/" className="flex items-center gap-2"><PigeonlabLogo size="sm" /></Link>
-          <LanguageToggle />
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            {!isOnboarding && (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
+              </Button>
+            )}
+          </div>
         </div>
       </header>
 
@@ -79,6 +83,14 @@ export default function Subscribe() {
               <CreditCard className="w-7 h-7 text-primary" /> {t("pay.subscriptionTitle") || "Subscription & Seats"}
             </h1>
             {schoolName && <p className="text-muted-foreground mt-1">{schoolName}</p>}
+            {isOnboarding && (
+              <div className="mt-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm">
+                <p className="font-medium text-foreground">Activate your school subscription</p>
+                <p className="text-muted-foreground mt-1">
+                  Welcome! To access your dashboard and start inviting teachers and students, please purchase your seats below. You can always top up later.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
