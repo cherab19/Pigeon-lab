@@ -62,7 +62,7 @@ export default function Signup() {
       toast({ title: t("signup.passwordLength"), variant: "destructive" }); return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: form.email, password: form.password,
       options: {
         data: { full_name: form.fullName, school_name: form.schoolName, school_location: form.schoolLocation, school_phone: form.schoolPhone },
@@ -73,8 +73,17 @@ export default function Signup() {
     if (error) {
       toast({ title: t("signup.registrationFailed"), description: error.message, variant: "destructive" });
     } else {
-      toast({ title: t("signup.accountCreated"), description: t("signup.checkEmail") });
-      navigate("/login");
+      toast({ title: t("signup.accountCreated") });
+      if (data.session) {
+        navigate("/dashboard", { replace: true });
+      } else {
+        // Fallback: sign in immediately (auto-confirm enabled)
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: form.email, password: form.password,
+        });
+        if (signInError) navigate("/login");
+        else navigate("/dashboard", { replace: true });
+      }
     }
   };
 
