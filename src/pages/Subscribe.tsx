@@ -42,11 +42,23 @@ export default function Subscribe() {
         if (data?.status === "success") {
           toast.success(t("pay.success") || "Payment confirmed — seats added!");
           refresh();
+          if (params.get("onboarding")) {
+            setTimeout(() => navigate("/dashboard", { replace: true }), 1200);
+          }
         }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const isOnboarding = params.get("onboarding") === "1";
+
+  // Auto-redirect to dashboard once seats are purchased during onboarding
+  useEffect(() => {
+    if (isOnboarding && quota && (quota.teacher_seats + quota.student_seats) > 0) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isOnboarding, quota, navigate]);
 
   return (
     <div className="min-h-screen bg-background">
