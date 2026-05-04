@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.chapa-webhook]
 verify_jwt = false
+
+[functions.chapa-initiate-signup]
+verify_jwt = false
+
+[functions.chapa-finalize-signup]
+verify_jwt = false
