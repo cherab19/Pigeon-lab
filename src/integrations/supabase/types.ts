@@ -326,6 +326,66 @@ export type Database = {
         }
         Relationships: []
       }
+      pending_school_signups: {
+        Row: {
+          amount: number
+          chapa_response: Json | null
+          consumed_user_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          full_name: string
+          id: string
+          password: string
+          school_location: string | null
+          school_name: string
+          school_phone: string | null
+          status: string
+          student_seats: number
+          teacher_seats: number
+          tx_ref: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          chapa_response?: Json | null
+          consumed_user_id?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          full_name: string
+          id?: string
+          password: string
+          school_location?: string | null
+          school_name: string
+          school_phone?: string | null
+          status?: string
+          student_seats?: number
+          teacher_seats?: number
+          tx_ref: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          chapa_response?: Json | null
+          consumed_user_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          full_name?: string
+          id?: string
+          password?: string
+          school_location?: string | null
+          school_name?: string
+          school_phone?: string | null
+          status?: string
+          student_seats?: number
+          teacher_seats?: number
+          tx_ref?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
