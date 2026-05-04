@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Beaker, Loader2, School, UserPlus } from "lucide-react";
+import { CreditCard, Loader2, School, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getSafeSession, getSafeUser } from "@/lib/safeAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -17,11 +17,14 @@ type InviteMeta = {
   invited_school_id?: string;
 };
 
+const PRICE_PER_SEAT = 30;
+
 export default function Signup() {
   const { t } = useLanguage();
   const [form, setForm] = useState({
     fullName: "", email: "", password: "", confirmPassword: "",
     schoolName: "", schoolLocation: "", schoolPhone: "",
+    teacherSeats: 2, studentSeats: 30,
   });
   const [inviteForm, setInviteForm] = useState({ fullName: "", password: "", confirmPassword: "" });
   const [inviteMeta, setInviteMeta] = useState<InviteMeta | null>(null);
@@ -30,8 +33,11 @@ export default function Signup() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const update = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
+  const update = (key: string, value: string | number) => setForm((prev) => ({ ...prev, [key]: value as never }));
   const updateInvite = (key: string, value: string) => setInviteForm((prev) => ({ ...prev, [key]: value }));
+
+  const totalSeats = form.teacherSeats + form.studentSeats;
+  const totalAmount = totalSeats * PRICE_PER_SEAT;
 
   useEffect(() => {
     let mounted = true;
@@ -61,24 +67,38 @@ export default function Signup() {
     if (form.password.length < 6) {
       toast({ title: t("signup.passwordLength"), variant: "destructive" }); return;
     }
+    if (totalSeats <= 0) {
+      toast({ title: "Select at least 1 seat", variant: "destructive" }); return;
+    }
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email, password: form.password,
-      options: {
-        data: { full_name: form.fullName, school_name: form.schoolName, school_location: form.schoolLocation, school_phone: form.schoolPhone },
-        emailRedirectTo: window.location.origin,
-      },
-    });
-    setLoading(false);
-    if (error) {
-      toast({ title: t("signup.registrationFailed"), description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: t("signup.accountCreated"), description: "Choose your subscription seats to activate your school." });
-      if (!data.session) {
-        await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
+    try {
+      const { data, error } = await supabase.functions.invoke("chapa-initiate-signup", {
+        body: {
+          email: form.email,
+          password: form.password,
+          full_name: form.fullName,
+          school_name: form.schoolName,
+          school_location: form.schoolLocation,
+          school_phone: form.schoolPhone,
+          teacher_seats: form.teacherSeats,
+          student_seats: form.studentSeats,
+          return_url: `${window.location.origin}/signup/complete`,
+        },
+      });
+      if (error || !data?.checkout_url) {
+        toast({
+          title: "Could not start payment",
+          description: data?.error || error?.message || "Please try again.",
+          variant: "destructive",
+        });
+        return;
       }
-      // School admins must purchase seats before accessing the dashboard
-      navigate("/subscribe?onboarding=1", { replace: true });
+      // Persist tx_ref so /signup/complete can recover it if Chapa drops the query
+      try { sessionStorage.setItem("dovelab.signup.tx_ref", data.tx_ref); } catch {}
+      // Redirect to Chapa checkout
+      window.location.href = data.checkout_url;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -173,7 +193,7 @@ export default function Signup() {
             <p>✓ {t("signup.simulations")}</p>
             <p>✓ {t("signup.subjects")}</p>
             <p>✓ {t("signup.grades")}</p>
-            <p>✓ {t("signup.subscription")}</p>
+            <p>✓ Pay once · {PRICE_PER_SEAT} ETB / seat / month</p>
           </div>
         </div>
       </div>
@@ -186,7 +206,9 @@ export default function Signup() {
               <PigeonlabLogo size="md" />
             </div>
             <h1 className="text-2xl font-display font-bold">{t("signup.createAccount")}</h1>
-            <p className="text-sm text-muted-foreground mt-2">{t("signup.fillDetails")}</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Pay your school's subscription first — your account is created the moment payment succeeds.
+            </p>
           </div>
 
           <form onSubmit={handleSignup} className="space-y-4">
@@ -230,9 +252,42 @@ export default function Signup() {
               </div>
             </div>
 
-            <Button type="submit" variant="hero" className="w-full" disabled={loading}>
-              {loading ? t("signup.creating") : <><UserPlus className="w-4 h-4 mr-2" /> {t("signup.registerBtn")}</>}
+            <div className="space-y-3 pt-2 border-t border-border">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5 pt-2">
+                <CreditCard className="w-3.5 h-3.5" /> Subscription seats
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="teacherSeats">{t("common.teachers")}</Label>
+                  <Input id="teacherSeats" type="number" min={0} value={form.teacherSeats}
+                    onChange={(e) => update("teacherSeats", Math.max(0, parseInt(e.target.value || "0", 10)))} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="studentSeats">{t("common.students")}</Label>
+                  <Input id="studentSeats" type="number" min={0} value={form.studentSeats}
+                    onChange={(e) => update("studentSeats", Math.max(0, parseInt(e.target.value || "0", 10)))} />
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-muted/40 p-3 text-sm space-y-1">
+                <div className="flex justify-between"><span>Total seats</span><span className="font-medium">{totalSeats}</span></div>
+                <div className="flex justify-between"><span>Price / seat / month</span><span>{PRICE_PER_SEAT} ETB</span></div>
+                <div className="flex justify-between text-base pt-1 border-t border-border">
+                  <span className="font-medium">Total due now</span>
+                  <span className="font-display font-bold text-primary">{totalAmount} ETB</span>
+                </div>
+              </div>
+            </div>
+
+            <Button type="submit" variant="hero" className="w-full" disabled={loading || totalSeats <= 0}>
+              {loading ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirecting to payment…</>
+              ) : (
+                <><CreditCard className="w-4 h-4 mr-2" /> Pay {totalAmount} ETB & create account</>
+              )}
             </Button>
+            <p className="text-[11px] text-muted-foreground text-center">
+              You'll be redirected to Chapa to complete payment securely. Your account is created automatically once the payment is confirmed.
+            </p>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">
