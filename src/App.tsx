@@ -11,6 +11,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
+const SignupComplete = lazy(() => import("./pages/SignupComplete"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const ManageUsers = lazy(() => import("./pages/ManageUsers"));
 const VirtualLab = lazy(() => import("./pages/VirtualLab"));
@@ -36,6 +37,7 @@ const App = () => (
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/signup/complete" element={<SignupComplete />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/manage-users" element={<ManageUsers />} />
                 <Route path="/lab" element={<VirtualLab />} />
