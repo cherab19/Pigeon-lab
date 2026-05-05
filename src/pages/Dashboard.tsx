@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Beaker, BookOpen, LogOut, User, Users, Library, Sparkles } from "lucide-react";
+import { Beaker, BookOpen, LogOut, Menu, User, Users, Library, Sparkles } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
