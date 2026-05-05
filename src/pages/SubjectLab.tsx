@@ -68,16 +68,16 @@ export default function SubjectLab() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="border-b border-border bg-card px-4 py-3">
-        <div className="container mx-auto flex items-center gap-4 flex-wrap">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/"><ArrowLeft className="w-4 h-4 mr-1" /> {t("nav.home")}</Link>
+      <div className="border-b border-border bg-card px-3 sm:px-4 py-3">
+        <div className="container mx-auto flex items-center gap-2 sm:gap-4 flex-wrap">
+          <Button variant="ghost" size="sm" asChild className="px-2 sm:px-3">
+            <Link to="/"><ArrowLeft className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">{t("nav.home")}</span></Link>
           </Button>
-          <div className="flex items-center gap-2">
-            <Icon className="w-5 h-5 text-primary" />
-            <h1 className="font-display font-bold text-lg">{t(`subject.${subject}`)} {t("lab.laboratory")}</h1>
+          <div className="flex items-center gap-2 min-w-0">
+            <Icon className="w-5 h-5 text-primary shrink-0" />
+            <h1 className="font-display font-bold text-sm sm:text-lg truncate">{t(`subject.${subject}`)} {t("lab.laboratory")}</h1>
           </div>
-          <div className="flex items-center gap-3 ml-auto flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-wrap">
             <LanguageToggle />
             <Select value={grade} onValueChange={handleGradeChange}>
               <SelectTrigger className="w-[140px] h-9"><SelectValue placeholder={t("lab.selectGrade")} /></SelectTrigger>
