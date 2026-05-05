@@ -67,21 +67,21 @@ export default function LandingPage() {
     <div className="min-h-screen bg-background">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <Link to="/" className="flex items-center gap-2">
-            <PigeonlabLogo size="md" textClassName="text-foreground" />
+        <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-3 sm:px-4 gap-2">
+          <Link to="/" className="flex items-center gap-2 min-w-0">
+            <PigeonlabLogo size="md" textClassName="text-foreground" responsiveText />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#subjects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.subjects")}</a>
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.features")}</a>
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.pricing")}</a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             <LanguageToggle />
-            <Button variant="ghost" size="sm" asChild>
+            <Button variant="ghost" size="sm" asChild className="hidden xs:inline-flex sm:inline-flex px-2 sm:px-3">
               <Link to="/login">{t("nav.login")}</Link>
             </Button>
-            <Button variant="hero" size="sm" asChild>
+            <Button variant="hero" size="sm" asChild className="px-2.5 sm:px-3 text-xs sm:text-sm">
               <Link to="/signup">{t("nav.getStarted")}</Link>
             </Button>
           </div>
