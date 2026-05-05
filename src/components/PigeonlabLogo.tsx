@@ -37,7 +37,7 @@ export default function PigeonlabLogo({
           src={pigeonImg}
           alt=""
           aria-hidden="true"
-          className={`absolute left-1/2 -translate-x-1/2 bottom-full ${s.pigeon} object-contain drop-shadow-md pointer-events-none select-none`}
+          className={`absolute left-1/2 -translate-x-1/2 bottom-[calc(100%-2px)] ${s.pigeon} object-contain object-bottom drop-shadow-md pointer-events-none select-none`}
           draggable={false}
         />
 
