@@ -126,7 +126,7 @@ export default function Textbooks() {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-72 bg-card rounded-xl animate-pulse" />)}
           </div>
         ) : filtered.length === 0 ? (
@@ -136,7 +136,7 @@ export default function Textbooks() {
             <p className="text-sm mt-1">{t("textbook.emptyDesc")}</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {filtered.map((book, i) => {
               const Icon = subjectIcon(book.subject);
               return (
