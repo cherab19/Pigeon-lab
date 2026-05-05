@@ -63,20 +63,23 @@ export default function Subscribe() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-16 px-6">
-          <Link to="/" className="flex items-center gap-2"><PigeonlabLogo size="sm" /></Link>
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 gap-2">
+          <Link to="/" className="flex items-center gap-2 min-w-0"><PigeonlabLogo size="sm" responsiveText /></Link>
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <LanguageToggle />
             {!isOnboarding && (
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
+              <Button variant="ghost" size="sm" asChild className="px-2 sm:px-3">
+                <Link to="/dashboard">
+                  <ChevronLeft className="w-4 h-4 sm:mr-1" />
+                  <span className="hidden sm:inline">{t("nav.backToDashboard")}</span>
+                </Link>
               </Button>
             )}
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="mb-8">
             <h1 className="text-3xl font-display font-bold flex items-center gap-2">

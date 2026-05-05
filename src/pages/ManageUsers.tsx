@@ -357,20 +357,23 @@ export default function ManageUsers() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-16 px-6">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2">
-              <PigeonlabLogo size="sm" />
-            </Link>
+        <div className="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 gap-2">
+          <Link to="/" className="flex items-center gap-2 min-w-0">
+            <PigeonlabLogo size="sm" responsiveText />
+          </Link>
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
+            <LanguageToggle />
+            <Button variant="ghost" size="sm" asChild className="px-2 sm:px-3">
+              <Link to="/dashboard">
+                <ChevronLeft className="w-4 h-4 sm:mr-1" />
+                <span className="hidden sm:inline">{t("nav.backToDashboard")}</span>
+              </Link>
+            </Button>
           </div>
-          <LanguageToggle />
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/dashboard"><ChevronLeft className="w-4 h-4 mr-1" /> {t("nav.backToDashboard")}</Link>
-          </Button>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="mb-6">
             <h1 className="text-3xl font-display font-bold flex items-center gap-2">
@@ -380,19 +383,19 @@ export default function ManageUsers() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
             {[
               { label: t("manage.totalMembers"), value: members.length, icon: Users },
               { label: t("common.teachers"), value: members.filter(m => m.role === "teacher").length, icon: Shield },
               { label: t("common.students"), value: members.filter(m => m.role === "student").length, icon: User },
             ].map((s) => (
               <Card key={s.label}>
-                <CardContent className="flex items-center justify-between p-5">
-                  <div>
-                    <p className="text-xs text-muted-foreground">{s.label}</p>
-                    <p className="text-2xl font-display font-bold">{s.value}</p>
+                <CardContent className="flex items-center justify-between p-3 sm:p-5">
+                  <div className="min-w-0">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{s.label}</p>
+                    <p className="text-xl sm:text-2xl font-display font-bold">{s.value}</p>
                   </div>
-                  <s.icon className="w-5 h-5 text-muted-foreground" />
+                  <s.icon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground shrink-0" />
                 </CardContent>
               </Card>
             ))}

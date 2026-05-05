@@ -67,21 +67,21 @@ export default function LandingPage() {
     <div className="min-h-screen bg-background">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <Link to="/" className="flex items-center gap-2">
-            <PigeonlabLogo size="md" textClassName="text-foreground" />
+        <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-3 sm:px-4 gap-2">
+          <Link to="/" className="flex items-center gap-2 min-w-0">
+            <PigeonlabLogo size="md" textClassName="text-foreground" responsiveText />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#subjects" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.subjects")}</a>
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.features")}</a>
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.pricing")}</a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             <LanguageToggle />
-            <Button variant="ghost" size="sm" asChild>
+            <Button variant="ghost" size="sm" asChild className="hidden xs:inline-flex sm:inline-flex px-2 sm:px-3">
               <Link to="/login">{t("nav.login")}</Link>
             </Button>
-            <Button variant="hero" size="sm" asChild>
+            <Button variant="hero" size="sm" asChild className="px-2.5 sm:px-3 text-xs sm:text-sm">
               <Link to="/signup">{t("nav.getStarted")}</Link>
             </Button>
           </div>
@@ -99,11 +99,11 @@ export default function LandingPage() {
               <GraduationCap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">{t("landing.badge")}</span>
             </motion.div>
-            <motion.h1 custom={1} variants={fadeUp} className="text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
+            <motion.h1 custom={1} variants={fadeUp} className="text-4xl sm:text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
               <span className="text-foreground">{t("landing.heroTitle1")}</span>
               <span className="text-gradient-hero">{t("landing.heroTitle2")}</span>
             </motion.h1>
-            <motion.p custom={2} variants={fadeUp} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            <motion.p custom={2} variants={fadeUp} className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
               {t("landing.heroDesc")}
             </motion.p>
             <motion.div custom={3} variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -113,7 +113,7 @@ export default function LandingPage() {
                 </Link>
               </Button>
             </motion.div>
-            <motion.div custom={4} variants={fadeUp} className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground">
+            <motion.div custom={4} variants={fadeUp} className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-12 text-sm text-muted-foreground">
               <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> {stats.schools} {t("common.schools")}</div>
               <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> {stats.students} {t("common.students")}</div>
               <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> {stats.experiments} {t("common.experiments")}</div>

@@ -118,15 +118,15 @@ export default function SuccessGuide() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-16 px-6 max-w-7xl mx-auto">
-          <Link to="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="w-4 h-4" /> <span className="text-sm">{t("nav.backToDashboard")}</span>
+        <div className="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 max-w-7xl mx-auto gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground min-w-0">
+            <ArrowLeft className="w-4 h-4 shrink-0" /> <span className="text-sm truncate">{t("nav.backToDashboard")}</span>
           </Link>
           <LanguageToggle />
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-12 space-y-20">
+      <main className="max-w-5xl mx-auto px-3 sm:px-6 py-8 sm:py-12 space-y-12 sm:space-y-20">
         {/* HERO */}
         <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center relative">
           <div className="absolute inset-0 bg-gradient-hero opacity-10 blur-3xl rounded-full" />

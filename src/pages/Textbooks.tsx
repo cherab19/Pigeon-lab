@@ -71,15 +71,15 @@ export default function Textbooks() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-16 px-6 max-w-7xl mx-auto">
-          <Link to="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="w-4 h-4" /> <span className="text-sm">{t("nav.backToDashboard")}</span>
+        <div className="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 max-w-7xl mx-auto gap-2">
+          <Link to="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground min-w-0">
+            <ArrowLeft className="w-4 h-4 shrink-0" /> <span className="text-sm truncate">{t("nav.backToDashboard")}</span>
           </Link>
           <LanguageToggle />
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
         {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 bg-gradient-hero rounded-3xl p-8 md:p-12 text-primary-foreground relative overflow-hidden">
           <div className="absolute top-4 right-4 opacity-20"><BookOpen className="w-32 h-32" /></div>
@@ -126,7 +126,7 @@ export default function Textbooks() {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {Array.from({ length: 8 }).map((_, i) => <div key={i} className="h-72 bg-card rounded-xl animate-pulse" />)}
           </div>
         ) : filtered.length === 0 ? (
@@ -136,7 +136,7 @@ export default function Textbooks() {
             <p className="text-sm mt-1">{t("textbook.emptyDesc")}</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {filtered.map((book, i) => {
               const Icon = subjectIcon(book.subject);
               return (
