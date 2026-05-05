@@ -34,24 +34,24 @@ export default function VirtualLab() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-14 px-6">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/dashboard"><ArrowLeft className="w-4 h-4 mr-1" /> {t("common.back")}</Link>
+        <div className="flex items-center justify-between h-14 px-3 sm:px-6 gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <Button variant="ghost" size="sm" asChild className="px-2 sm:px-3">
+              <Link to="/dashboard"><ArrowLeft className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">{t("common.back")}</span></Link>
             </Button>
-            <div className="h-6 w-px bg-border" />
-            <div>
-              <h1 className="text-sm font-display font-semibold">{t("vlab.ohmsLaw")}</h1>
-              <p className="text-xs text-muted-foreground">{t("vlab.physicsGrade8")}</p>
+            <div className="h-6 w-px bg-border hidden sm:block" />
+            <div className="min-w-0">
+              <h1 className="text-sm font-display font-semibold truncate">{t("vlab.ohmsLaw")}</h1>
+              <p className="text-xs text-muted-foreground truncate">{t("vlab.physicsGrade8")}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             <LanguageToggle />
             <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
               <Progress value={progress} className="w-32 h-2" />
               <span>{Math.round(progress)}%</span>
             </div>
-            <Button variant="outline" size="sm"><FileText className="w-4 h-4 mr-1" /> {t("vlab.labReport")}</Button>
+            <Button variant="outline" size="sm" className="px-2 sm:px-3"><FileText className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">{t("vlab.labReport")}</span></Button>
           </div>
         </div>
       </header>
