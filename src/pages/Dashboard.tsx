@@ -69,59 +69,81 @@ export default function Dashboard() {
     return <div className="min-h-screen bg-background flex items-center justify-center"><div className="text-muted-foreground">{t("common.loading")}</div></div>;
   }
 
+  const navLinks = (
+    <>
+      <Button variant="ghost" size="sm" className="text-foreground font-medium justify-start">{t("nav.dashboard")}</Button>
+      {userRole === "student" && (
+        <>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground justify-start"
+            onClick={() => {
+              const el = document.getElementById("choose-subject");
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            <BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}
+          </Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground justify-start" asChild>
+            <Link to="/textbooks"><Library className="w-4 h-4 mr-1" /> {t("nav.library")}</Link>
+          </Button>
+          <Button variant="ghost" size="sm" className="text-muted-foreground justify-start" asChild>
+            <Link to="/success-guide"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.successGuide")}</Link>
+          </Button>
+        </>
+      )}
+      {isAdmin && (
+        <>
+          <Button variant="ghost" size="sm" className="text-muted-foreground justify-start" asChild>
+            <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> {t("nav.members")}</Link>
+          </Button>
+          {userRole === "school_admin" && (
+            <Button variant="ghost" size="sm" className="text-muted-foreground justify-start" asChild>
+              <Link to="/subscribe"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.subscription") || "Subscription"}</Link>
+            </Button>
+          )}
+        </>
+      )}
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="flex items-center justify-between h-16 px-6">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="flex items-center gap-2">
-              <PigeonlabLogo size="sm" />
+        <div className="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6 gap-2">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            {userRole !== "super_admin" && (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="md:hidden h-9 w-9 shrink-0" aria-label="Menu">
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-72 p-4">
+                  <div className="mb-6">
+                    <PigeonlabLogo size="md" />
+                  </div>
+                  <nav className="flex flex-col gap-1">{navLinks}</nav>
+                </SheetContent>
+              </Sheet>
+            )}
+            <Link to="/" className="flex items-center gap-2 min-w-0">
+              <PigeonlabLogo size="sm" responsiveText />
             </Link>
             {userRole !== "super_admin" && (
               <div className="hidden md:flex items-center gap-1 ml-6">
-                <Button variant="ghost" size="sm" className="text-foreground font-medium">{t("nav.dashboard")}</Button>
-                {userRole === "student" && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-muted-foreground"
-                      onClick={() => {
-                        const el = document.getElementById("choose-subject");
-                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }}
-                    >
-                      <BookOpen className="w-4 h-4 mr-1" /> {t("nav.lab")}
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                      <Link to="/textbooks"><Library className="w-4 h-4 mr-1" /> {t("nav.library")}</Link>
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                      <Link to="/success-guide"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.successGuide")}</Link>
-                    </Button>
-                  </>
-                )}
-                {isAdmin && (
-                  <>
-                    <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                      <Link to="/manage-users"><Users className="w-4 h-4 mr-1" /> {t("nav.members")}</Link>
-                    </Button>
-                    {userRole === "school_admin" && (
-                      <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
-                        <Link to="/subscribe"><Sparkles className="w-4 h-4 mr-1" /> {t("nav.subscription") || "Subscription"}</Link>
-                      </Button>
-                    )}
-                  </>
-                )}
+                {navLinks}
               </div>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             <LanguageToggle />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-muted-foreground">
-                  <LogOut className="w-4 h-4 mr-1" /> {t("nav.signOut")}
+                <Button variant="ghost" size="sm" className="text-muted-foreground px-2 sm:px-3">
+                  <LogOut className="w-4 h-4 sm:mr-1" />
+                  <span className="hidden sm:inline">{t("nav.signOut")}</span>
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -135,14 +157,14 @@ export default function Dashboard() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary flex items-center justify-center shrink-0">
               <User className="w-4 h-4 text-primary-foreground" />
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-8">
         {userRole === "super_admin" && <SuperAdminDashboardView fullName={profile?.full_name || ""} />}
         {userRole === "school_admin" && <AdminDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />}
         {userRole === "teacher" && <TeacherDashboardView fullName={profile?.full_name || ""} schoolName={schoolName} />}
