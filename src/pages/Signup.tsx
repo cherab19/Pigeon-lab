@@ -140,7 +140,7 @@ export default function Signup() {
             <p className="opacity-80">{t("invite.desc")}</p>
           </div>
         </div>
-        <div className="flex-1 flex items-center justify-center p-8">
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
           <div className="w-full max-w-md space-y-6">
             <div className="flex justify-end"><LanguageToggle /></div>
             <div className="text-center lg:text-left">
@@ -198,7 +198,7 @@ export default function Signup() {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8 overflow-y-auto">
         <div className="w-full max-w-md space-y-6">
           <div className="flex justify-end"><LanguageToggle /></div>
           <div className="text-center lg:text-left">
