@@ -99,11 +99,11 @@ export default function LandingPage() {
               <GraduationCap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">{t("landing.badge")}</span>
             </motion.div>
-            <motion.h1 custom={1} variants={fadeUp} className="text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
+            <motion.h1 custom={1} variants={fadeUp} className="text-4xl sm:text-5xl md:text-7xl font-display font-bold leading-[1.1] mb-6">
               <span className="text-foreground">{t("landing.heroTitle1")}</span>
               <span className="text-gradient-hero">{t("landing.heroTitle2")}</span>
             </motion.h1>
-            <motion.p custom={2} variants={fadeUp} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            <motion.p custom={2} variants={fadeUp} className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
               {t("landing.heroDesc")}
             </motion.p>
             <motion.div custom={3} variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -113,7 +113,7 @@ export default function LandingPage() {
                 </Link>
               </Button>
             </motion.div>
-            <motion.div custom={4} variants={fadeUp} className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground">
+            <motion.div custom={4} variants={fadeUp} className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mt-12 text-sm text-muted-foreground">
               <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-primary" /> {stats.schools} {t("common.schools")}</div>
               <div className="flex items-center gap-2"><Users className="w-4 h-4 text-secondary" /> {stats.students} {t("common.students")}</div>
               <div className="flex items-center gap-2"><Beaker className="w-4 h-4 text-accent" /> {stats.experiments} {t("common.experiments")}</div>
