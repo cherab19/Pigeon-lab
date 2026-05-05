@@ -80,14 +80,14 @@ export default function SubjectLab() {
           <div className="flex items-center gap-2 sm:gap-3 ml-auto flex-wrap">
             <LanguageToggle />
             <Select value={grade} onValueChange={handleGradeChange}>
-              <SelectTrigger className="w-[140px] h-9"><SelectValue placeholder={t("lab.selectGrade")} /></SelectTrigger>
+              <SelectTrigger className="w-[120px] sm:w-[140px] h-9"><SelectValue placeholder={t("lab.selectGrade")} /></SelectTrigger>
               <SelectContent>
                 {grades.map(g => (<SelectItem key={g} value={String(g)}>{t("common.grade")} {g}</SelectItem>))}
               </SelectContent>
             </Select>
             {grade && (
               <Select value={unitNum} onValueChange={handleUnitChange}>
-                <SelectTrigger className="w-[220px] h-9"><SelectValue placeholder={t("lab.selectUnit")} /></SelectTrigger>
+                <SelectTrigger className="w-[180px] sm:w-[220px] h-9"><SelectValue placeholder={t("lab.selectUnit")} /></SelectTrigger>
                 <SelectContent>
                   {units.map(u => (<SelectItem key={u.unit} value={String(u.unit)}>Unit {u.unit}: {u.unitName}</SelectItem>))}
                 </SelectContent>
@@ -95,7 +95,7 @@ export default function SubjectLab() {
             )}
             {unitNum && (
               <Select value={labId} onValueChange={handleLabSelect}>
-                <SelectTrigger className="w-[260px] h-9"><SelectValue placeholder={t("lab.selectLab")} /></SelectTrigger>
+                <SelectTrigger className="w-[200px] sm:w-[260px] h-9"><SelectValue placeholder={t("lab.selectLab")} /></SelectTrigger>
                 <SelectContent>
                   {unitLabs.map(l => (<SelectItem key={l.id} value={l.id}>{l.title}</SelectItem>))}
                 </SelectContent>
