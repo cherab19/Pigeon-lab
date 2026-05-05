@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 
 export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
+  const isEn = language === "en";
 
   return (
     <Button
       variant="ghost"
       size="sm"
-      onClick={() => setLanguage(language === "en" ? "am" : "en")}
-      className="gap-1.5 text-muted-foreground hover:text-foreground"
+      onClick={() => setLanguage(isEn ? "am" : "en")}
+      aria-label={isEn ? "Switch to Amharic" : "Switch to English"}
+      title={isEn ? "Switch to Amharic" : "Switch to English"}
+      className="gap-1.5 px-2 sm:px-3 h-9 text-muted-foreground hover:text-foreground shrink-0"
     >
       <Globe className="w-4 h-4" />
-      <span className="text-xs font-medium">{language === "en" ? "አማ" : "EN"}</span>
+      <span className="text-xs font-medium">{isEn ? "አማ" : "EN"}</span>
     </Button>
   );
 }
