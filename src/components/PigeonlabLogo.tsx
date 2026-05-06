@@ -39,9 +39,7 @@ export default function PigeonlabLogo({
       />
       {!iconOnly && (
         <span
-          className={`font-display font-bold ${s.text} ${textClassName} truncate ${
-            responsiveText ? "hidden sm:inline" : ""
-          }`}
+          className={`font-display font-bold ${s.text} ${textClassName} truncate`}
         >
           Pigeonlab
         </span>
