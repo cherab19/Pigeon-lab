@@ -78,7 +78,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             <LanguageToggle />
-            <Button variant="ghost" size="sm" asChild className="hidden xs:inline-flex sm:inline-flex px-2 sm:px-3">
+            <Button variant="ghost" size="sm" asChild className="px-2 sm:px-3 text-xs sm:text-sm">
               <Link to="/login">{t("nav.login")}</Link>
             </Button>
             <Button variant="hero" size="sm" asChild className="px-2.5 sm:px-3 text-xs sm:text-sm">
