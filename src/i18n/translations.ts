@@ -37,8 +37,8 @@ export const translations: Record<string, TranslationMap> = {
 
     // Landing Page
     "landing.badge": "Grades 9–12 · Ethiopian Curriculum",
-    "landing.heroTitle1": "Ethiopia's ",
-    "landing.heroTitle2": "Virtual Science Laboratory",
+    "landing.heroTitle1": "Ethio ",
+    "landing.heroTitle2": "Virtual Science Space",
     "landing.heroDesc": "Interactive physics, chemistry, and biology experiments aligned with the national curriculum. Safe, scalable, and accessible for every school.",
     "landing.cta": "Start Experimenting",
     "landing.subjectsTitle": "Three Core Subjects",
