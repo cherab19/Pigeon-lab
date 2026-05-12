@@ -100,8 +100,8 @@ Deno.serve(async (req) => {
         callback_url,
         return_url: `${return_url}?tx_ref=${encodeURIComponent(tx_ref)}`,
         customization: {
-          title: "Dovelab Subscription",
-          description: `${teacher_seats}T + ${student_seats}S seats`,
+          title: "Dovelab Seats",
+          description: `${teacher_seats} teachers ${student_seats} students`,
         },
       }),
     });
