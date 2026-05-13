@@ -12,7 +12,19 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY")!;
+    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY");
+    if (!chapaKey) {
+      console.error("[chapa-webhook] MISSING CHAPA_SECRET_KEY");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY is not configured. Set CHAPA_SECRET_KEY in your Edge Function Secrets." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!chapaKey.startsWith("CHASECK_")) {
+      console.error("[chapa-webhook] CHAPA_SECRET_KEY appears invalid (wrong prefix)");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY appears invalid. It should start with 'CHASECK_'." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const admin = createClient(supabaseUrl, serviceRoleKey);
 
     let payload: any = {};
@@ -31,11 +43,14 @@ Deno.serve(async (req) => {
       });
     }
 
+    console.log(`[chapa-webhook] tx_ref=${tx_ref}`);
+
     // Verify with Chapa (single source of truth)
     const verifyRes = await fetch(`https://api.chapa.co/v1/transaction/verify/${tx_ref}`, {
       headers: { Authorization: `Bearer ${chapaKey}` },
     });
     const verifyJson = await verifyRes.json();
+    console.log("[chapa-webhook] chapa verify", JSON.stringify(verifyJson));
 
     const ok = verifyJson?.status === "success" && verifyJson?.data?.status === "success";
 
@@ -43,7 +58,7 @@ Deno.serve(async (req) => {
       await admin.from("payment_transactions")
         .update({ status: "failed", chapa_response: verifyJson })
         .eq("tx_ref", tx_ref);
-      return new Response(JSON.stringify({ ok: false, verifyJson }), {
+      return new Response(JSON.stringify({ ok: false, message: verifyJson?.message || null, verifyJson }), {
         status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
