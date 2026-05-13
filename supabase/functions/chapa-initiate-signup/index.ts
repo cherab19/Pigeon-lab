@@ -15,7 +15,19 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY")!;
+    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY");
+    if (!chapaKey) {
+      console.error("[chapa-initiate-signup] MISSING CHAPA_SECRET_KEY");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY is not configured. Set CHAPA_SECRET_KEY in your Edge Function Secrets." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!chapaKey.startsWith("CHASECK_")) {
+      console.error("[chapa-initiate-signup] CHAPA_SECRET_KEY appears invalid (wrong prefix)");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY appears invalid. It should start with 'CHASECK_'." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const admin = createClient(supabaseUrl, serviceRoleKey);
 
     const body = await req.json();
@@ -68,6 +80,8 @@ Deno.serve(async (req) => {
     const tx_ref = `dovelab-signup-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     const callback_url = `${supabaseUrl}/functions/v1/chapa-webhook`;
 
+    console.log(`[chapa-initiate-signup] tx_ref=${tx_ref} email=${email} amount=${amount}`);
+
     // Clean up any expired pending rows for this email
     await admin.from("pending_school_signups")
       .delete()
@@ -106,6 +120,7 @@ Deno.serve(async (req) => {
       }),
     });
     const chapaJson = await chapaRes.json();
+    console.log("[chapa-initiate-signup] chapa init", JSON.stringify(chapaJson));
 
     if (chapaJson?.status !== "success") {
       await admin.from("pending_school_signups")
