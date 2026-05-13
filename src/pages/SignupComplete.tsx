@@ -30,9 +30,9 @@ export default function SignupComplete() {
     }
 
     const finalize = async () => {
-      // Poll up to ~2 minutes for the payment to be confirmed
+      // Poll up to ~5 minutes for the payment to be confirmed
       const start = Date.now();
-      const TIMEOUT = 2 * 60 * 1000;
+      const TIMEOUT = 5 * 60 * 1000;
       let attempt = 0;
       while (Date.now() - start < TIMEOUT) {
         attempt++;
@@ -59,8 +59,9 @@ export default function SignupComplete() {
           setTimeout(() => navigate(`/login?email=${encodeURIComponent(email)}`, { replace: true }), 1800);
           return;
         }
-        setMessage(`Waiting for payment confirmation… (attempt ${attempt})`);
-        await new Promise(r => setTimeout(r, 4000));
+        const chapaMsg = data?.message || data?.chapa?.message || null;
+        setMessage(`Waiting for payment confirmation… (attempt ${attempt})${chapaMsg ? ` — ${chapaMsg}` : ''}`);
+        await new Promise(r => setTimeout(r, 3000));
       }
       setState("pending");
       setMessage("We haven't received confirmation from Chapa yet. If you completed the payment, refresh this page or try again later.");
