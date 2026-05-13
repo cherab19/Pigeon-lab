@@ -15,7 +15,19 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY")!;
+    const chapaKey = Deno.env.get("CHAPA_SECRET_KEY");
+    if (!chapaKey) {
+      console.error("[chapa-finalize-signup] MISSING CHAPA_SECRET_KEY");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY is not configured. Set CHAPA_SECRET_KEY in your Edge Function Secrets." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!chapaKey.startsWith("CHASECK_")) {
+      console.error("[chapa-finalize-signup] CHAPA_SECRET_KEY appears invalid (wrong prefix)");
+      return new Response(JSON.stringify({ error: "CHAPA_SECRET_KEY appears invalid. It should start with 'CHASECK_'." }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const admin = createClient(supabaseUrl, serviceRoleKey);
 
     const body = await req.json();
@@ -25,6 +37,8 @@ Deno.serve(async (req) => {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    console.log(`[chapa-finalize-signup] tx_ref=${tx_ref}`);
 
     const { data: pending } = await admin
       .from("pending_school_signups")
@@ -50,10 +64,11 @@ Deno.serve(async (req) => {
       headers: { Authorization: `Bearer ${chapaKey}` },
     });
     const verifyJson = await verifyRes.json();
+    console.log("[chapa-finalize-signup] chapa verify", JSON.stringify(verifyJson));
     const ok = verifyJson?.status === "success" && verifyJson?.data?.status === "success";
 
     if (!ok) {
-      return new Response(JSON.stringify({ status: "pending", chapa: verifyJson }), {
+      return new Response(JSON.stringify({ status: "pending", message: verifyJson?.message || null, chapa: verifyJson }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
