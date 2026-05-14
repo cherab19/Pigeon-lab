@@ -154,13 +154,6 @@ export default function SubjectLab() {
           </SimulationErrorBoundary>
         )}
 
-        {labId && SimComponent && (
-          <div className="container mx-auto px-4 py-4 flex justify-center">
-            <Button size="sm" onClick={async () => { await markComplete(); toast({ title: t("lab.experimentCompleted") }); }}>
-              <CheckCircle className="w-4 h-4 mr-1" /> {t("lab.markComplete")}
-            </Button>
-          </div>
-        )}
       </div>
 
       <LabAssistant context={{ subject, grade: grade ? `Grade ${grade}` : undefined, experiment: selectedLab?.title, step: selectedLab ? `Step in progress` : undefined }} />
