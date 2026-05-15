@@ -156,7 +156,7 @@ export default function SubjectLab() {
 
       </div>
 
-      <LabAssistant context={{ subject, grade: grade ? `Grade ${grade}` : undefined, experiment: selectedLab?.title, step: selectedLab ? `Step in progress` : undefined }} />
+      <LabAssistant mode="lab" context={{ subject, grade: grade ? `Grade ${grade}` : undefined, experiment: selectedLab?.title, step: selectedLab ? `Step in progress` : undefined }} />
     </div>
   );
 }
