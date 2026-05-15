@@ -139,6 +139,7 @@ export default function TextbookReader() {
 
       {/* SciBot AI assistant — contextual help while reading */}
       <LabAssistant
+        mode="textbook"
         context={{
           subject: book.subject,
           grade: String(book.grade),
