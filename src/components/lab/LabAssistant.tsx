@@ -25,24 +25,43 @@ interface LabContext {
 
 interface LabAssistantProps {
   context?: LabContext;
+  mode?: "lab" | "textbook";
 }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/lab-assistant`;
 
-const QUICK_PROMPTS = [
-  "Explain this experiment simply",
-  "What should I observe?",
-  "Why is this happening?",
-  "What's the next step?",
-];
+const LAB_COPY = {
+  welcomeTitle: "Hi! I'm SciBot 🔬",
+  welcomeDescription: "Ask me anything about your experiment!",
+  placeholder: "Ask about your experiment...",
+  quickPrompts: [
+    "Explain this experiment simply",
+    "What should I observe?",
+    "Why is this happening?",
+    "What's the next step?",
+  ],
+};
 
-export default function LabAssistant({ context }: LabAssistantProps) {
+const TEXTBOOK_COPY = {
+  welcomeTitle: "Hi! I'm SciBot 📚",
+  welcomeDescription: "Ask me about this textbook, chapter, or page.",
+  placeholder: "Ask about this chapter...",
+  quickPrompts: [
+    "Summarize this page simply",
+    "What should I focus on?",
+    "Explain this concept",
+    "What's the key takeaway?",
+  ],
+};
+
+export default function LabAssistant({ context, mode = "lab" }: LabAssistantProps) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const copy = mode === "textbook" ? TEXTBOOK_COPY : LAB_COPY;
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -175,12 +194,10 @@ export default function LabAssistant({ context }: LabAssistantProps) {
           {messages.length === 0 && (
             <div className="text-center py-8">
               <Bot className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
-              <p className="text-sm font-semibold mb-1">Hi! I'm SciBot 🔬</p>
-              <p className="text-xs text-muted-foreground mb-4">
-                Ask me anything about your experiment!
-              </p>
+              <p className="text-sm font-semibold mb-1">{copy.welcomeTitle}</p>
+              <p className="text-xs text-muted-foreground mb-4">{copy.welcomeDescription}</p>
               <div className="flex flex-wrap gap-2 justify-center">
-                {QUICK_PROMPTS.map(q => (
+                {copy.quickPrompts.map(q => (
                   <button
                     key={q}
                     onClick={() => sendMessage(q)}
@@ -230,7 +247,7 @@ export default function LabAssistant({ context }: LabAssistantProps) {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about your experiment..."
+                placeholder={copy.placeholder}
               className="flex-1 bg-muted rounded-xl px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20"
               disabled={isLoading}
             />
