@@ -19,7 +19,6 @@ interface AnalyticsData {
   totalStudents: number;
   totalCompleted: number;
   avgTime: number;
-  subjectBreakdown: { subject: string; count: number }[];
   students: StudentDetail[];
 }
 
@@ -33,30 +32,44 @@ export default function TeacherAnalytics() {
     const loadAnalytics = async () => {
       const user = await getSafeUser();
       if (!user) return;
+      // Get classrooms for this teacher
+      const { data: cls } = await supabase.from("classrooms").select("id").eq("teacher_id", user.id);
+      const classroomIds = (cls || []).map((c: any) => c.id);
 
+      if (classroomIds.length === 0) {
+        setData({ totalStudents: 0, totalCompleted: 0, avgTime: 0, students: [] });
+        setLoading(false);
+        return;
+      }
+
+      // Get students enrolled in these classrooms
+      const { data: enrolled } = await supabase.from("classroom_students").select("student_id").in("classroom_id", classroomIds);
+      const studentIds = [...new Set((enrolled || []).map((e: any) => e.student_id))];
+
+      if (studentIds.length === 0) {
+        setData({ totalStudents: 0, totalCompleted: 0, avgTime: 0, students: [] });
+        setLoading(false);
+        return;
+      }
+
+      // Get progress and profiles only for these students
       const [{ data: progress }, { data: profiles }] = await Promise.all([
-        supabase.from("experiment_progress").select("*"),
-        supabase.from("profiles").select("user_id, full_name"),
+        supabase.from("experiment_progress").select("*").in("user_id", studentIds),
+        supabase.from("profiles").select("user_id, full_name").in("user_id", studentIds),
       ]);
 
-      const completed = progress?.filter(p => p.status === "completed") || [];
-      const uniqueStudentIds = [...new Set(progress?.map(p => p.user_id) || [])];
-      const totalTime = completed.reduce((sum, p) => sum + (p.time_spent_seconds || 0), 0);
+      const completed = (progress || []).filter((p: any) => p.status === "completed");
+      const totalTime = completed.reduce((sum: number, p: any) => sum + (p.time_spent_seconds || 0), 0);
       const avgTime = completed.length ? Math.round(totalTime / completed.length / 60) : 0;
 
-      const subjectMap = new Map<string, number>();
-      completed.forEach(p => {
-        subjectMap.set(p.subject, (subjectMap.get(p.subject) || 0) + 1);
-      });
-
-      const students: StudentDetail[] = uniqueStudentIds
-        .filter(id => id !== user.id)
-        .map(userId => {
-          const profile = profiles?.find(p => p.user_id === userId);
-          const studentProgress = progress?.filter(p => p.user_id === userId) || [];
-          const studentCompleted = studentProgress.filter(p => p.status === "completed");
-          const studentInProgress = studentProgress.filter(p => p.status === "started");
-          const studentTime = studentCompleted.reduce((s, p) => s + (p.time_spent_seconds || 0), 0);
+      const students: StudentDetail[] = studentIds
+        .filter((id: string) => id !== user.id)
+        .map((userId: string) => {
+          const profile = (profiles || []).find((p: any) => p.user_id === userId);
+          const studentProgress = (progress || []).filter((p: any) => p.user_id === userId) || [];
+          const studentCompleted = studentProgress.filter((p: any) => p.status === "completed");
+          const studentInProgress = studentProgress.filter((p: any) => p.status === "started");
+          const studentTime = studentCompleted.reduce((s: number, p: any) => s + (p.time_spent_seconds || 0), 0);
 
           return {
             userId,
@@ -64,7 +77,7 @@ export default function TeacherAnalytics() {
             completedCount: studentCompleted.length,
             inProgressCount: studentInProgress.length,
             totalTime: studentTime,
-            experiments: studentProgress.map(p => ({
+            experiments: studentProgress.map((p: any) => ({
               experiment_id: p.experiment_id,
               subject: p.subject,
               grade: p.grade,
@@ -79,7 +92,6 @@ export default function TeacherAnalytics() {
         totalStudents: students.length,
         totalCompleted: completed.length,
         avgTime,
-        subjectBreakdown: Array.from(subjectMap).map(([subject, count]) => ({ subject, count })),
         students,
       });
       setLoading(false);
@@ -137,25 +149,7 @@ export default function TeacherAnalytics() {
         ))}
       </div>
 
-      {data.subjectBreakdown.length > 0 && (
-        <div className="mt-4 bg-card rounded-2xl border border-border p-5 shadow-card">
-          <h3 className="text-sm font-semibold mb-3">{t("teacherAnalytics.bySubject")}</h3>
-          <div className="space-y-2">
-            {data.subjectBreakdown.map(s => (
-              <div key={s.subject} className="flex items-center gap-3">
-                <span className="text-xs w-20 capitalize text-muted-foreground">{s.subject}</span>
-                <div className="flex-1 bg-muted rounded-full h-2">
-                  <div
-                    className="bg-gradient-hero h-2 rounded-full transition-all"
-                    style={{ width: `${(s.count / Math.max(...data.subjectBreakdown.map(x => x.count))) * 100}%` }}
-                  />
-                </div>
-                <span className="text-xs font-mono font-semibold w-8 text-right">{s.count}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      
 
       {data.students.length > 0 && (
         <motion.div
