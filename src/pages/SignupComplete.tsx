@@ -84,7 +84,7 @@ export default function SignupComplete() {
           {state === "success" && (
             <>
               <CheckCircle2 className="w-12 h-12 mx-auto text-emerald-500" />
-              <h1 className="text-xl font-display font-bold">Welcome to Dovelab!</h1>
+              <h1 className="text-xl font-display font-bold">Welcome to Pigeonlab!</h1>
             </>
           )}
           {state === "pending" && (
