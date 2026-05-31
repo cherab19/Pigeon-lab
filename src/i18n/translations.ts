@@ -808,7 +808,7 @@ export const translations: Record<string, TranslationMap> = {
     "invite.activateBtn": "መለያ አንቃ",
     "invite.activating": "በማንቃት ላይ…",
     "invite.activated": "መለያ ተነቃ",
-    "invite.welcome": "ወደ ኢትዮላብ እንኳን በደህና መጡ!",
+    "invite.welcome": "ወደ ፒጅንላብ እንኳን በደህና መጡ!",
     "invite.failed": "ማንቃት አልተሳካም",
 
     // Dashboard
