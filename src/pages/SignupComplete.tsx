@@ -21,7 +21,13 @@ export default function SignupComplete() {
     const tx_ref =
       params.get("tx_ref") ||
       params.get("trx_ref") ||
-      (() => { try { return sessionStorage.getItem("dovelab.signup.tx_ref"); } catch { return null; } })();
+      (() => {
+        try {
+          return sessionStorage.getItem("pigeonlab.signup.tx_ref") || sessionStorage.getItem("dovelab.signup.tx_ref");
+        } catch {
+          return null;
+        }
+      })();
 
     if (!tx_ref) {
       setState("error");
@@ -48,11 +54,15 @@ export default function SignupComplete() {
           // Account ready — try to fetch the password from sessionStorage to log in
           const email: string = data.email;
           let password: string | null = null;
-          try { password = sessionStorage.getItem(`dovelab.signup.pw.${email}`); } catch {}
+          try { password = sessionStorage.getItem(`pigeonlab.signup.pw.${email}`) || sessionStorage.getItem(`dovelab.signup.pw.${email}`); } catch {}
           // We didn't actually store the password client-side for security, so just send to login.
           try {
+            sessionStorage.removeItem("pigeonlab.signup.tx_ref");
             sessionStorage.removeItem("dovelab.signup.tx_ref");
-            if (password) sessionStorage.removeItem(`dovelab.signup.pw.${email}`);
+            if (password) {
+              sessionStorage.removeItem(`pigeonlab.signup.pw.${email}`);
+              sessionStorage.removeItem(`dovelab.signup.pw.${email}`);
+            }
           } catch {}
           setState("success");
           setMessage("Payment confirmed! Your account has been created. Redirecting you to login…");
