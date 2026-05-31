@@ -148,12 +148,10 @@ export default function Textbooks() {
                       ) : (
                         <Icon className="w-14 h-14 text-primary-foreground opacity-80" />
                       )}
-                      <span className="absolute top-2 right-2 text-xs bg-background/80 backdrop-blur px-2 py-1 rounded font-medium uppercase">{book.language}</span>
                     </div>
                     <div className="p-4">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{t(`subject.${book.subject}`)} · {t("common.grade")} {book.grade}</p>
                       <h3 className="font-display font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">{book.title}</h3>
-                      <p className="text-xs text-muted-foreground">{book.total_pages} {t("textbook.pages")}</p>
                     </div>
                   </Link>
                 </motion.div>
