@@ -94,7 +94,7 @@ export default function Signup() {
         return;
       }
       // Persist tx_ref so /signup/complete can recover it if Chapa drops the query
-      try { sessionStorage.setItem("dovelab.signup.tx_ref", data.tx_ref); } catch {}
+      try { sessionStorage.setItem("pigeonlab.signup.tx_ref", data.tx_ref); } catch {}
       // Redirect to Chapa checkout
       window.location.href = data.checkout_url;
     } finally {
