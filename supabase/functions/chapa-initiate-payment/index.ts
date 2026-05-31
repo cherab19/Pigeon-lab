@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
       });
     }
     const amount = total_seats * PRICE_PER_SEAT;
-    const tx_ref = `dovelab-${profile.school_id.slice(0, 8)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const tx_ref = `pigeonlab-${profile.school_id.slice(0, 8)}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
     const callback_url = `${supabaseUrl}/functions/v1/chapa-webhook`;
 
@@ -93,7 +93,7 @@ Deno.serve(async (req) => {
         callback_url,
         return_url,
         customization: {
-          title: "Dovelab Seats",
+          title: "Pigeonlab Seats",
           description: `${teacher_seats}T + ${student_seats}S`,
         },
       }),
