@@ -35,7 +35,6 @@ const featureKeys = [
 
 const planFeatureKeys = [
   "plan.unlimited", "plan.unlimitedStudents", "plan.advancedAnalytics",
-  "plan.prioritySupport", "plan.labReports", "plan.customBranding",
 ];
 
 export default function LandingPage() {
