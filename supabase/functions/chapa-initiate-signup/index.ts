@@ -77,7 +77,7 @@ Deno.serve(async (req) => {
     } catch (_) { /* getUserByEmail may not exist on this client version */ }
 
     const amount = total_seats * PRICE_PER_SEAT;
-    const tx_ref = `dovelab-signup-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const tx_ref = `pigeonlab-signup-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     const callback_url = `${supabaseUrl}/functions/v1/chapa-webhook`;
 
     console.log(`[chapa-initiate-signup] tx_ref=${tx_ref} email=${email} amount=${amount}`);
