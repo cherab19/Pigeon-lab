@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
 
       try {
         // Always redirect invite links to the production app on Vercel
-        const appBaseUrl = "https://ethiolab.vercel.app";
+        const appBaseUrl = "https://pigeon-lab.vercel.app";
 
         const { data: invitedUser, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
           data: {
