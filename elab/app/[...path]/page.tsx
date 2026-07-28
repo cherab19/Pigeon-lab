@@ -1,0 +1,5 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+const labels: Record<string, string> = { "/login": "Log in to Pigeonlab", "/signup": "Start your school", "/signup/complete": "Complete your Pigeonlab account", "/dashboard": "Dashboard", "/manage-users": "Manage users", "/lab": "Virtual laboratory", "/textbooks": "Textbooks", "/success-guide": "Success guide", "/subscribe": "Subscription", "/reset-password": "Reset password" };
+export default function LegacyRoute() { const path = usePathname(); const label = labels[path] || (path.startsWith("/lab/") ? "Virtual laboratory" : path.startsWith("/textbooks/") ? "Textbook reader" : "Pigeonlab"); return <main className="min-h-screen bg-slate-50"><header className="border-b bg-white px-6 py-4"><Link href="/" className="text-xl font-bold text-emerald-700">Pigeonlab</Link></header><section className="mx-auto max-w-6xl p-8"><h1 className="text-3xl font-bold text-slate-900">{label}</h1><p className="mt-3 text-slate-600">This route is available in the Next.js application.</p></section></main>; }

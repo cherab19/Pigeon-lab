@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+enum AppRole {
+super_admin
+school_admin
+teacher
+student
+}
+
+enum SubscriptionStatus {
+active
+expired
+suspended
+trial
+}
+
+enum BillingCycle {
+monthly
+yearly
+}
+
+model User {
+ id String @id @default(uuid()) @db.Uuid
+ email String @unique
+ passwordHash String? @map("password_hash")
+ emailVerified DateTime? @map("email_verified") @db.Timestamptz(6)
+ image String?
+ profile Profile?
+ roles UserRole[]
+ accounts Account[]
+ sessions Session[]
+ @@map("users")
+}
+model Account {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ type String
+ provider String
+ providerAccountId String @map("provider_account_id")
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ @@unique([provider,providerAccountId])
+ @@map("accounts")
+}
+
+model Session {
+id String @id @default(uuid()) @db.Uuid
+ sessionToken String @unique @map("session_token")
+ userId String @map("user_id") @db.Uuid
+ expires DateTime @db.Timestamptz(6)
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ @@map("sessions")
+}
+
+model School {
+id String @id @default(uuid()) @db.Uuid
+ name String
+ location String?
+ logoUrl String? @map("logo_url")
+ phone String?
+ email String?
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ profiles Profile[]
+ subscription SchoolSubscription?
+ classrooms Classroom[]
+ @@map("schools")
+}
+
+model Profile {
+id String @id @default(uuid()) @db.Uuid
+ userId String @unique @map("user_id") @db.Uuid
+ schoolId String? @map("school_id") @db.Uuid
+ fullName String @map("full_name")
+ avatarUrl String? @map("avatar_url")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ school School? @relation(fields:[schoolId],references:[id],onDelete:SetNull)
+ @@index([schoolId])
+ @@map("profiles")
+}
+
+model UserRole {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ role AppRole
+ user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+ @@unique([userId,role])
+ @@map("user_roles")
+}
+
+model SchoolSubscription {
+id String @id @default(uuid()) @db.Uuid
+ schoolId String @unique @map("school_id") @db.Uuid
+ status SubscriptionStatus @default(trial)
+ studentCount Int @default(0) @map("student_count")
+ pricePerStudent Decimal @default(30) @map("price_per_student")
+ billingCycle BillingCycle @default(monthly) @map("billing_cycle")
+ currentPeriodStart DateTime @default(now()) @map("current_period_start") @db.Timestamptz(6)
+ currentPeriodEnd DateTime @default(dbgenerated("now() + interval '30 days'")) @map("current_period_end") @db.Timestamptz(6)
+ activatedAt DateTime? @default(now()) @map("activated_at") @db.Timestamptz(6)
+ suspendedAt DateTime? @map("suspended_at") @db.Timestamptz(6)
+ notes String?
+ teacherSeats Int @default(0) @map("teacher_seats")
+ studentSeats Int @default(0) @map("student_seats")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ school School @relation(fields:[schoolId],references:[id],onDelete:Cascade)
+ @@map("school_subscriptions")
+}
+
+model Classroom {
+id String @id @default(uuid()) @db.Uuid
+ schoolId String @map("school_id") @db.Uuid
+ teacherId String @map("teacher_id") @db.Uuid
+ subject String
+ grade Int
+ section String @default("A")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ school School @relation(fields:[schoolId],references:[id],onDelete:Cascade)
+ @@unique([schoolId,teacherId,subject,grade,section])
+ @@map("classrooms")
+}
+
+model ClassroomStudent {
+id String @id @default(uuid()) @db.Uuid
+ classroomId String @map("classroom_id") @db.Uuid
+ studentId String @map("student_id") @db.Uuid
+ enrolledAt DateTime @default(now()) @map("enrolled_at") @db.Timestamptz(6)
+ @@unique([classroomId,studentId])
+ @@map("classroom_students")
+}
+
+model Assignment {
+id String @id @default(uuid()) @db.Uuid
+ classroomId String @map("classroom_id") @db.Uuid
+ experimentId String @map("experiment_id")
+ title String
+ description String?
+ dueDate DateTime? @map("due_date") @db.Timestamptz(6)
+ createdBy String @map("created_by") @db.Uuid
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ @@map("assignments")
+}
+
+model Announcement {
+id String @id @default(uuid()) @db.Uuid
+ classroomId String @map("classroom_id") @db.Uuid
+ authorId String @map("author_id") @db.Uuid
+ title String
+ content String
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ @@map("announcements")
+}
+
+model ExperimentProgress {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ experimentId String @map("experiment_id")
+ subject String
+ grade Int
+ status String @default("started")
+ startedAt DateTime @default(now()) @map("started_at") @db.Timestamptz(6)
+ completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+ timeSpentSeconds Int @default(0) @map("time_spent_seconds")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ @@unique([userId,experimentId])
+ @@map("experiment_progress")
+}
+
+model Textbook {
+id String @id @default(uuid()) @db.Uuid
+ title String
+ subject String
+ grade Int
+ language String @default("en")
+ coverUrl String? @map("cover_url")
+ fileUrl String @map("file_url")
+ totalPages Int @default(0) @map("total_pages")
+ description String?
+ createdBy String? @map("created_by") @db.Uuid
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ @@index([grade,subject])
+ @@map("textbooks")
+}
+
+model TextbookChapter {
+id String @id @default(uuid()) @db.Uuid
+ textbookId String @map("textbook_id") @db.Uuid
+ chapterNumber Int @map("chapter_number")
+ title String
+ startPage Int @default(1) @map("start_page")
+ endPage Int @default(1) @map("end_page")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ @@index([textbookId,chapterNumber])
+ @@map("textbook_chapters")
+}
+
+model ReadingProgress {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ textbookId String @map("textbook_id") @db.Uuid
+ lastPage Int @default(1) @map("last_page")
+ lastReadAt DateTime @default(now()) @map("last_read_at") @db.Timestamptz(6)
+ @@unique([userId,textbookId])
+ @@index([userId])
+ @@map("reading_progress")
+}
+
+model StudentReflection {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ weekOf DateTime @map("week_of") @db.Date
+ whatWentWell String? @map("what_went_well")
+ whatToImprove String? @map("what_to_improve")
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ @@unique([userId,weekOf])
+ @@map("student_reflections")
+}
+
+model StudentRoutine {
+id String @id @default(uuid()) @db.Uuid
+ userId String @unique @map("user_id") @db.Uuid
+ schedule Json @default("[]")
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ @@map("student_routines")
+}
+
+model StudentGamification {
+id String @id @default(uuid()) @db.Uuid
+ userId String @unique @map("user_id") @db.Uuid
+ xp Int @default(0)
+ currentStreak Int @default(0) @map("current_streak")
+ longestStreak Int @default(0) @map("longest_streak")
+ lastActiveDate DateTime? @map("last_active_date") @db.Date
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ @@map("student_gamification")
+}
+
+model StudentBadge {
+id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ badgeKey String @map("badge_key")
+ earnedAt DateTime @default(now()) @map("earned_at") @db.Timestamptz(6)
+ @@unique([userId,badgeKey])
+ @@map("student_badges")
+}
+
+model PaymentTransaction {
+id String @id @default(uuid()) @db.Uuid
+ schoolId String @map("school_id") @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ txRef String @unique @map("tx_ref")
+ amount Decimal
+ currency String @default("ETB")
+ teacherSeats Int @default(0) @map("teacher_seats")
+ studentSeats Int @default(0) @map("student_seats")
+ status String @default("pending")
+ chapaResponse Json? @map("chapa_response")
+ appliedAt DateTime? @map("applied_at") @db.Timestamptz(6)
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ @@index([schoolId])
+ @@index([status])
+ @@map("payment_transactions")
+}
+
+model PendingSchoolSignup {
+id String @id @default(uuid()) @db.Uuid
+ txRef String @unique @map("tx_ref")
+ email String
+ password String
+ fullName String @map("full_name")
+ schoolName String @map("school_name")
+ schoolLocation String? @map("school_location")
+ schoolPhone String? @map("school_phone")
+ teacherSeats Int @default(0) @map("teacher_seats")
+ studentSeats Int @default(0) @map("student_seats")
+ amount Decimal
+ status String @default("pending")
+ chapaResponse Json? @map("chapa_response")
+ consumedUserId String? @map("consumed_user_id") @db.Uuid
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+ expiresAt DateTime @default(dbgenerated("now() + interval '24 hours'")) @map("expires_at") @db.Timestamptz(6)
+ @@index([email])
+ @@index([status])
+ @@map("pending_school_signups")
+}

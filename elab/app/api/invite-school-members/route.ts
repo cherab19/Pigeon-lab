@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { AppRole } from "@prisma/client";
+import { requireSchoolAdmin } from "@/lib/auth";
+import { canInvite } from "@/lib/db/rpc";
+import { signInvite } from "@/lib/invites";
+export async function POST(request:Request){try{const user=await requireSchoolAdmin();const {members}=await request.json();if(!Array.isArray(members))throw new Error("members is required");const invites=[];for(const member of members){if(![AppRole.teacher,AppRole.student].includes(member.role))throw new Error("Only teacher or student invitations are allowed");const seat=await canInvite(user.schoolId!,member.role);if(!seat.allowed)throw new Error(`No ${member.role} seats are available`);const token=await signInvite({email:String(member.email).toLowerCase(),fullName:String(member.full_name||""),schoolId:user.schoolId!,role:member.role});invites.push({email:member.email,role:member.role,token,url:`${process.env.NEXT_PUBLIC_APP_URL||"http://localhost:3000"}/signup/complete?token=${encodeURIComponent(token)}`,subject:"You've been invited to Pigeonlab"})}return NextResponse.json({success:true,invites})}catch(error){return NextResponse.json({error:error instanceof Error?error.message:"Unable to create invitations"},{status:400})}}

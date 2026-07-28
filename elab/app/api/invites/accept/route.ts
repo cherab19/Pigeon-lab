@@ -1,0 +1,5 @@
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { verifyInvite } from "@/lib/invites";
+export async function POST(request:Request){try{const {token,password,full_name}=await request.json();if(typeof token!=="string"||typeof password!=="string"||password.length<6)throw new Error("A valid invitation and password are required");const invite=await verifyInvite(token);const email=invite.email.toLowerCase();let user=await prisma.user.findUnique({where:{email}});if(user)throw new Error("This invitation has already been accepted");user=await prisma.user.create({data:{email,passwordHash:await bcrypt.hash(password,12)}});await prisma.profile.create({data:{userId:user.id,schoolId:invite.schoolId,fullName:String(full_name||invite.fullName)}});await prisma.userRole.create({data:{userId:user.id,role:invite.role}});return NextResponse.json({success:true,user_id:user.id})}catch(error){return NextResponse.json({error:error instanceof Error?error.message:"Unable to accept invitation"},{status:400})}}

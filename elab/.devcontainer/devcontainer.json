@@ -1,0 +1,1 @@
+{"name":"Pigeonlab","dockerComposeFile":"../docker-compose.yml","service":"web","workspaceFolder":"/app","forwardPorts":[3000,5432],"postCreateCommand":"pnpm install && pnpm prisma:migrate && pnpm prisma:seed"}
