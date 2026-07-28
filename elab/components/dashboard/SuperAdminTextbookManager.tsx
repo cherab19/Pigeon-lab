@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { dataClient } from "@/lib/data-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { Card } from "@/components/ui/card";
 import { Plus, Trash2, BookOpen, Loader2, Upload, ListTree } from "lucide-react";
 import { toast } from "sonner";
-import { getSafeUser } from "@/lib/safeAuth";
+import { getSafeUser } from "@/lib/session-client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Textbook {
@@ -37,7 +37,7 @@ export default function SuperAdminTextbookManager() {
   const [newCh, setNewCh] = useState({ chapter_number: 1, title: "", start_page: 1, end_page: 1 });
 
   const loadBooks = async () => {
-    const { data } = await supabase.from("textbooks").select("*").order("grade").order("subject");
+    const { data } = await dataClient.from("textbooks").select("*").order("grade").order("subject");
     setBooks((data || []) as Textbook[]);
     setLoading(false);
   };
@@ -45,7 +45,7 @@ export default function SuperAdminTextbookManager() {
   useEffect(() => { loadBooks(); }, []);
 
   const loadChapters = async (textbookId: string) => {
-    const { data } = await supabase.from("textbook_chapters").select("*").eq("textbook_id", textbookId).order("chapter_number");
+    const { data } = await dataClient.from("textbook_chapters").select("*").eq("textbook_id", textbookId).order("chapter_number");
     setChapters((data || []) as Chapter[]);
   };
 
@@ -58,18 +58,18 @@ export default function SuperAdminTextbookManager() {
 
       const ts = Date.now();
       const pdfPath = `${form.subject}/grade${form.grade}/${ts}-${file.name}`;
-      const { error: pdfErr } = await supabase.storage.from("textbooks").upload(pdfPath, file, { contentType: "application/pdf", upsert: false });
+      const { error: pdfErr } = await dataClient.storage.from("textbooks").upload(pdfPath, file, { contentType: "application/pdf", upsert: false });
       if (pdfErr) throw pdfErr;
-      const { data: { publicUrl: fileUrl } } = supabase.storage.from("textbooks").getPublicUrl(pdfPath);
+      const { data: { publicUrl: fileUrl } } = dataClient.storage.from("textbooks").getPublicUrl(pdfPath);
 
       let coverUrl: string | null = null;
       if (coverFile) {
         const coverPath = `${form.subject}/grade${form.grade}/cover-${ts}-${coverFile.name}`;
-        const { error: ce } = await supabase.storage.from("textbooks").upload(coverPath, coverFile, { upsert: false });
-        if (!ce) coverUrl = supabase.storage.from("textbooks").getPublicUrl(coverPath).data.publicUrl;
+        const { error: ce } = await dataClient.storage.from("textbooks").upload(coverPath, coverFile, { upsert: false });
+        if (!ce) coverUrl = dataClient.storage.from("textbooks").getPublicUrl(coverPath).data.publicUrl;
       }
 
-      const { error: insErr } = await supabase.from("textbooks").insert({
+      const { error: insErr } = await dataClient.from("textbooks").insert({
         title: form.title, subject: form.subject, grade: Number(form.grade), language: form.language,
         description: form.description || null, total_pages: Number(form.total_pages) || 0,
         file_url: fileUrl, cover_url: coverUrl, created_by: user.id,
@@ -89,7 +89,7 @@ export default function SuperAdminTextbookManager() {
 
   const deleteBook = async (b: Textbook) => {
     if (!confirm(`Delete "${b.title}"?`)) return;
-    const { error } = await supabase.from("textbooks").delete().eq("id", b.id);
+    const { error } = await dataClient.from("textbooks").delete().eq("id", b.id);
     if (error) { toast.error("Delete failed"); return; }
     toast.success("Deleted");
     await loadBooks();
@@ -97,7 +97,7 @@ export default function SuperAdminTextbookManager() {
 
   const addChapter = async () => {
     if (!openChapters || !newCh.title.trim()) return;
-    const { error } = await supabase.from("textbook_chapters").insert({
+    const { error } = await dataClient.from("textbook_chapters").insert({
       textbook_id: openChapters.id, chapter_number: newCh.chapter_number,
       title: newCh.title, start_page: newCh.start_page, end_page: newCh.end_page,
     });
@@ -107,7 +107,7 @@ export default function SuperAdminTextbookManager() {
   };
 
   const deleteChapter = async (id: string) => {
-    await supabase.from("textbook_chapters").delete().eq("id", id);
+    await dataClient.from("textbook_chapters").delete().eq("id", id);
     if (openChapters) await loadChapters(openChapters.id);
   };
 

@@ -157,7 +157,7 @@
   .shadow-glow-gold {
     box-shadow: var(--shadow-glow-gold);
   }
-    #lovable-badge {
+    #legacy-platform-badge {
   display: none !important;
 }
 }

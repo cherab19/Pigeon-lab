@@ -19,8 +19,8 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -68,7 +68,7 @@ export default function SuperAdminUserManager() {
     const user = await getSafeUser();
     if (user) setCurrentUserId(user.id);
 
-    const { data } = await supabase.rpc("get_super_admin_all_users");
+    const { data } = await dataClient.rpc("get_super_admin_all_users");
     if (data) setUsers(data as unknown as UserRow[]);
     setLoading(false);
   };
@@ -85,7 +85,7 @@ export default function SuperAdminUserManager() {
   const handleUpdateRole = async () => {
     if (!editingUser) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("super-admin-manage", {
+    const { data, error } = await dataClient.functions.invoke("super-admin-manage", {
       body: { action: "update_user_role", user_id: editingUser.user_id, new_role: editRole },
     });
     setSaving(false);
@@ -101,7 +101,7 @@ export default function SuperAdminUserManager() {
   const handleRemoveUser = async () => {
     if (!removingUser) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("super-admin-manage", {
+    const { data, error } = await dataClient.functions.invoke("super-admin-manage", {
       body: { action: "remove_user", user_id: removingUser.user_id },
     });
     setSaving(false);

@@ -18,8 +18,8 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -70,20 +70,20 @@ export default function AdminClassroomManager() {
     if (!user) return;
 
     // Load classrooms
-    const { data: cls } = await supabase.from("classrooms").select("*").order("grade").order("subject");
+    const { data: cls } = await dataClient.from("classrooms").select("*").order("grade").order("subject");
     if (cls) setClassrooms(cls as Classroom[]);
 
     // Load school members (need profiles + roles)
-    const { data: profile } = await supabase.from("profiles").select("school_id").eq("user_id", user.id).single();
+    const { data: profile } = await dataClient.from("profiles").select("school_id").eq("user_id", user.id).single();
     if (!profile?.school_id) return;
 
-    const { data: membersData } = await supabase.rpc("get_school_members_with_roles");
+    const { data: membersData } = await dataClient.rpc("get_school_members_with_roles");
     if (membersData && Array.isArray(membersData)) {
       setMembers(membersData as unknown as MemberRow[]);
     }
 
     // Load enrolled students for all classrooms
-    const { data: enrollments } = await supabase.from("classroom_students").select("classroom_id, student_id");
+    const { data: enrollments } = await dataClient.from("classroom_students").select("classroom_id, student_id");
     if (enrollments) {
       const map: Record<string, string[]> = {};
       for (const e of enrollments) {
@@ -104,7 +104,7 @@ export default function AdminClassroomManager() {
       return;
     }
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("manage-classroom", {
+    const { data, error } = await dataClient.functions.invoke("manage-classroom", {
       body: { action: "create_classroom", teacher_id: formTeacher, subject: formSubject, grade: parseInt(formGrade), section: formSection },
     });
     setSaving(false);
@@ -121,7 +121,7 @@ export default function AdminClassroomManager() {
   const handleDelete = async () => {
     if (!deletingClassroom) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("manage-classroom", {
+    const { data, error } = await dataClient.functions.invoke("manage-classroom", {
       body: { action: "delete_classroom", classroom_id: deletingClassroom.id },
     });
     setSaving(false);
@@ -137,7 +137,7 @@ export default function AdminClassroomManager() {
   const handleEnroll = async () => {
     if (!enrollingClassroom || selectedStudents.length === 0) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("manage-classroom", {
+    const { data, error } = await dataClient.functions.invoke("manage-classroom", {
       body: { action: "enroll_students", classroom_id: enrollingClassroom.id, student_ids: selectedStudents },
     });
     setSaving(false);
@@ -152,7 +152,7 @@ export default function AdminClassroomManager() {
   };
 
   const handleUnenroll = async (classroomId: string, studentId: string) => {
-    const { data, error } = await supabase.functions.invoke("manage-classroom", {
+    const { data, error } = await dataClient.functions.invoke("manage-classroom", {
       body: { action: "unenroll_student", classroom_id: classroomId, student_id: studentId },
     });
     if (error || !data?.success) {

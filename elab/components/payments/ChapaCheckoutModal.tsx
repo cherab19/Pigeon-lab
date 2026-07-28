@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -51,15 +50,14 @@ export default function ChapaCheckoutModal({
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("chapa-initiate-payment", {
-        body: {
+      const response = await fetch("/api/chapa/initiate-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
           teacher_seats: teacherSeats,
           student_seats: studentSeats,
           return_url: `${window.location.origin}/subscribe`,
-        },
-      });
-      if (error || !data?.checkout_url) {
-        toast.error(data?.error || error?.message || "Failed to start payment");
+        }) });
+      const data = await response.json();
+      if (!response.ok || !data?.checkout_url) {
+        toast.error(data?.error || "Failed to start payment");
         return;
       }
       setPendingTxRef(data.tx_ref);
@@ -77,7 +75,8 @@ export default function ChapaCheckoutModal({
     const TIMEOUT = 5 * 60 * 1000; // 5 minutes
     while (Date.now() - start < TIMEOUT) {
       await new Promise(r => setTimeout(r, 4000));
-      const { data } = await supabase.functions.invoke("chapa-verify-payment", { body: { tx_ref } });
+      const response = await fetch("/api/chapa/verify-payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tx_ref }) });
+      const data = await response.json();
       if (data?.status === "success") {
         toast.success(t("pay.success") || "Payment confirmed — seats added!");
         setPolling(false);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BarChart3, TrendingUp, PieChart } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { dataClient } from "@/lib/data-client";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart as RechartsPie, Pie, Cell, Legend
@@ -22,7 +22,7 @@ export default function SuperAdminAnalyticsCharts() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: result } = await supabase.rpc("get_super_admin_analytics");
+      const { data: result } = await dataClient.rpc("get_super_admin_analytics");
       if (result) setData(result as unknown as AnalyticsData);
       setLoading(false);
     };

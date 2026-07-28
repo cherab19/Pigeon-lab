@@ -13,7 +13,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { supabase } from "@/integrations/supabase/client";
+import { dataClient } from "@/lib/data-client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -69,7 +69,7 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
   const handleCreate = async () => {
     if (!formName.trim()) { toast.error(t("superSchools.nameRequired")); return; }
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("super-admin-manage", {
+    const { data, error } = await dataClient.functions.invoke("super-admin-manage", {
       body: { action: "create_school", name: formName, location: formLocation, email: formEmail, phone: formPhone },
     });
     setSaving(false);
@@ -85,7 +85,7 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
   const handleUpdate = async () => {
     if (!editingSchool || !formName.trim()) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("super-admin-manage", {
+    const { data, error } = await dataClient.functions.invoke("super-admin-manage", {
       body: { action: "update_school", school_id: editingSchool.school_id, name: formName, location: formLocation, email: formEmail, phone: formPhone },
     });
     setSaving(false);
@@ -101,7 +101,7 @@ export default function SuperAdminSchoolManager({ subscriptions, onRefresh }: Pr
   const handleDelete = async () => {
     if (!deletingSchool) return;
     setSaving(true);
-    const { data, error } = await supabase.functions.invoke("super-admin-manage", {
+    const { data, error } = await dataClient.functions.invoke("super-admin-manage", {
       body: { action: "delete_school", school_id: deletingSchool.school_id },
     });
     setSaving(false);

@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import Link from "next/link";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Classroom {
@@ -52,12 +52,12 @@ export default function StudentClassroomView() {
       if (!user) return;
 
       // Get classrooms via classroom_students
-      const { data: enrollments } = await supabase.from("classroom_students")
+      const { data: enrollments } = await dataClient.from("classroom_students")
         .select("classroom_id").eq("student_id", user.id);
 
       if (enrollments && enrollments.length > 0) {
-        const classroomIds = enrollments.map(e => e.classroom_id);
-        const { data: cls } = await supabase.from("classrooms")
+        const classroomIds = enrollments.map((e: any) => e.classroom_id);
+        const { data: cls } = await dataClient.from("classrooms")
           .select("id, name, subject, grade, section")
           .in("id", classroomIds)
           .order("grade");
@@ -69,9 +69,9 @@ export default function StudentClassroomView() {
       }
 
       // Get completed experiments
-      const { data: progress } = await supabase.from("experiment_progress")
+      const { data: progress } = await dataClient.from("experiment_progress")
         .select("experiment_id").eq("user_id", user.id).eq("status", "completed");
-      if (progress) setCompletedExps(progress.map(p => p.experiment_id));
+      if (progress) setCompletedExps(progress.map((p: any) => p.experiment_id));
 
       setLoading(false);
     };
@@ -82,13 +82,13 @@ export default function StudentClassroomView() {
     if (!selectedClassroom) return;
 
     const loadData = async () => {
-      const { data: assigns } = await supabase.from("assignments")
+      const { data: assigns } = await dataClient.from("assignments")
         .select("id, experiment_id, title, description, due_date, created_at")
         .eq("classroom_id", selectedClassroom)
         .order("created_at", { ascending: false });
       if (assigns) setAssignments(assigns as Assignment[]);
 
-      const { data: anns } = await supabase.from("announcements")
+      const { data: anns } = await dataClient.from("announcements")
         .select("id, title, content, created_at")
         .eq("classroom_id", selectedClassroom)
         .order("created_at", { ascending: false });
@@ -150,7 +150,7 @@ export default function StudentClassroomView() {
                   )}
                 </div>
                 <Button size="sm" asChild>
-                  <Link to={`/lab/${currentClassroom?.subject}`}>{t("studentClassroom.startLab")}</Link>
+                  <Link href={`/lab/${currentClassroom?.subject}`}>{t("studentClassroom.startLab")}</Link>
                 </Button>
               </div>
             ))}

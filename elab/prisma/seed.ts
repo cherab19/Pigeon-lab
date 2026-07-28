@@ -16,5 +16,20 @@ async function main() {
     { email: "student3@pigeonlab.et", name: "Hana Demo", role: AppRole.student },
   ];
   for (const member of members) { const user = await prisma.user.upsert({ where: { email: member.email }, update: {}, create: { email: member.email, passwordHash } }); await prisma.profile.upsert({ where: { userId: user.id }, update: { schoolId: school.id }, create: { userId: user.id, schoolId: school.id, fullName: member.name } }); await prisma.userRole.upsert({ where: { userId_role: { userId: user.id, role: member.role } }, update: {}, create: { userId: user.id, role: member.role } }); }
+  const teacher = await prisma.user.findUniqueOrThrow({ where: { email: "teacher@pigeonlab.et" } });
+  const classroom = await prisma.classroom.upsert({
+    where: { schoolId_teacherId_subject_grade_section: { schoolId: school.id, teacherId: teacher.id, subject: "physics", grade: 9, section: "A" } },
+    update: {}, create: { schoolId: school.id, teacherId: teacher.id, subject: "physics", grade: 9, section: "A" },
+  });
+  for (const email of ["student1@pigeonlab.et", "student2@pigeonlab.et", "student3@pigeonlab.et"]) {
+    const student = await prisma.user.findUniqueOrThrow({ where: { email } });
+    await prisma.classroomStudent.upsert({ where: { classroomId_studentId: { classroomId: classroom.id, studentId: student.id } }, update: {}, create: { classroomId: classroom.id, studentId: student.id } });
+    await prisma.studentGamification.upsert({ where: { userId: student.id }, update: {}, create: { userId: student.id } });
+  }
+  const textbook = await prisma.textbook.upsert({
+    where: { id: "00000000-0000-0000-0000-000000000002" }, update: {},
+    create: { id: "00000000-0000-0000-0000-000000000002", title: "Grade 9 Physics", subject: "physics", grade: 9, language: "en", fileUrl: "/textbooks/grade-9-physics.pdf", totalPages: 1, description: "Pigeonlab demonstration textbook", createdBy: admin.id },
+  });
+  await prisma.textbookChapter.upsert({ where: { id: "00000000-0000-0000-0000-000000000003" }, update: {}, create: { id: "00000000-0000-0000-0000-000000000003", textbookId: textbook.id, chapterNumber: 1, title: "Introduction to Physics", startPage: 1, endPage: 1 } });
 }
 main().finally(() => prisma.$disconnect());

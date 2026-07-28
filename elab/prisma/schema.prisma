@@ -121,6 +121,7 @@ id String @id @default(uuid()) @db.Uuid
  subject String
  grade Int
  section String @default("A")
+ name String @default(dbgenerated())
  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
  school School @relation(fields:[schoolId],references:[id],onDelete:Cascade)
@@ -200,6 +201,8 @@ id String @id @default(uuid()) @db.Uuid
  startPage Int @default(1) @map("start_page")
  endPage Int @default(1) @map("end_page")
  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ quiz ChapterQuiz?
+ quizResults ChapterQuizResult[]
  @@index([textbookId,chapterNumber])
  @@map("textbook_chapters")
 }
@@ -294,4 +297,38 @@ id String @id @default(uuid()) @db.Uuid
  @@index([email])
  @@index([status])
  @@map("pending_school_signups")
+}
+
+model PasswordResetToken {
+ id String @id @default(uuid()) @db.Uuid
+ userId String @map("user_id") @db.Uuid
+ tokenHash String @unique @map("token_hash")
+ expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+ usedAt DateTime? @map("used_at") @db.Timestamptz(6)
+ createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+ @@index([userId])
+ @@map("password_reset_tokens")
+}
+
+model ChapterQuiz {
+  id            String   @id @default(uuid()) @db.Uuid
+  chapterId     String   @unique @map("chapter_id") @db.Uuid
+  questions     Json     @default("[]")
+  generatedByAi Boolean  @default(true) @map("generated_by_ai")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chapter       TextbookChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  @@map("chapter_quizzes")
+}
+
+model ChapterQuizResult {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  chapterId      String   @map("chapter_id") @db.Uuid
+  score          Int
+  totalQuestions Int      @map("total_questions")
+  answers        Json     @default("[]")
+  completedAt    DateTime @default(now()) @map("completed_at") @db.Timestamptz(6)
+  chapter        TextbookChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  @@map("chapter_quiz_results")
 }

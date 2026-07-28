@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Beaker, Atom, FlaskConical, Microscope, Users, ChevronRight, AlertTriangle, CheckCircle2, ShieldAlert } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { totalExperiments, subjectCounts } from "./SharedDashboard";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { Badge } from "@/components/ui/badge";
 import AdminClassroomManager from "./AdminClassroomManager";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -30,9 +30,9 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
     const load = async () => {
       const user = await getSafeUser();
       if (!user) return;
-      const { data: profile } = await supabase.from("profiles").select("school_id").eq("user_id", user.id).single();
+      const { data: profile } = await dataClient.from("profiles").select("school_id").eq("user_id", user.id).single();
       if (!profile?.school_id) return;
-      const { data } = await supabase.from("school_subscriptions").select("status, student_count, current_period_end, price_per_student").eq("school_id", profile.school_id).single();
+      const { data } = await dataClient.from("school_subscriptions").select("status, student_count, current_period_end, price_per_student").eq("school_id", profile.school_id).single();
       if (data) setSub(data as any);
     };
     load();
@@ -104,7 +104,7 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
         <h2 className="text-lg font-display font-semibold mb-4">{t("admin.quickActions")}</h2>
-        <Link to="/manage-users" className="block bg-card rounded-2xl border border-border shadow-card hover:shadow-elevated transition-all p-6 group">
+        <Link href="/manage-users" className="block bg-card rounded-2xl border border-border shadow-card hover:shadow-elevated transition-all p-6 group">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Users className="w-6 h-6 text-primary" />

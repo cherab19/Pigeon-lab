@@ -5,7 +5,7 @@ import {
   MapPin, Mail, Phone, CreditCard, DollarSign, AlertTriangle,
   CheckCircle, Clock, Pause, Edit2, ChevronDown, ChevronUp, BarChart3
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { dataClient } from "@/lib/data-client";
 import { totalExperiments } from "./SharedDashboard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -83,8 +83,8 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
 
   const loadData = async () => {
     const [statsRes, subRes] = await Promise.all([
-      supabase.rpc("get_super_admin_stats"),
-      supabase.rpc("get_subscription_stats"),
+      dataClient.rpc("get_super_admin_stats"),
+      dataClient.rpc("get_subscription_stats"),
     ]);
     if (statsRes.data) setPlatformStats(statsRes.data as unknown as PlatformStats);
     if (subRes.data) setSubStats(subRes.data as unknown as SubStats);
@@ -103,7 +103,7 @@ export default function SuperAdminDashboardView({ fullName }: Props) {
   const handleSave = async () => {
     if (!editingSchool) return;
     setSaving(true);
-    const { error } = await supabase.rpc("update_school_subscription", {
+    const { error } = await dataClient.rpc("update_school_subscription", {
       _school_id: editingSchool.school_id,
       _status: editStatus,
       _student_count: parseInt(editStudentCount) || 0,

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Beaker, Atom, FlaskConical, Microscope, BookOpen, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { labData } from "@/data/labActivities";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -45,7 +45,7 @@ export function SubjectCards() {
         const grades = Object.keys(labData[subject] || {}).sort();
         return (
           <motion.div key={subject} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }}>
-            <Link to={`/lab/${subject}`} className="block group">
+            <Link href={`/lab/${subject}`} className="block group">
               <div className={`${gradientMap[subject]} rounded-2xl p-6 text-primary-foreground transition-transform duration-300 group-hover:scale-[1.02]`}>
                 <Icon className="w-8 h-8 mb-3 opacity-90" />
                 <h3 className="text-xl font-display font-bold mb-1">{t(`subject.${subject}`)}</h3>
@@ -69,7 +69,7 @@ export function ExperimentGrid({ count = 6 }: { count?: number }) {
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-display font-semibold">{t("shared.availableExperiments")}</h2>
         <Button variant="outline" size="sm" asChild>
-          <Link to="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("shared.browseAll")}</Link>
+          <Link href="/lab"><BookOpen className="w-4 h-4 mr-1" /> {t("shared.browseAll")}</Link>
         </Button>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -77,7 +77,7 @@ export function ExperimentGrid({ count = 6 }: { count?: number }) {
           const Icon = subjectIcon(exp.subject);
           return (
             <motion.div key={exp.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08 }}>
-              <Link to={`/lab/${exp.subject}`} className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all duration-300 overflow-hidden group">
+              <Link href={`/lab/${exp.subject}`} className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all duration-300 overflow-hidden group">
                 <div className={`${exp.gradient} h-2`} />
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">

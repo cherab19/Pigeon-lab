@@ -16,8 +16,8 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { toast } from "sonner";
 import { labData, LabActivity } from "@/data/labActivities";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -83,7 +83,7 @@ export default function TeacherClassroomView() {
       const user = await getSafeUser();
       if (!user) return;
 
-      const { data: cls } = await supabase.from("classrooms")
+      const { data: cls } = await dataClient.from("classrooms")
         .select("id, name, subject, grade, section")
         .eq("teacher_id", user.id)
         .order("grade");
@@ -106,36 +106,36 @@ export default function TeacherClassroomView() {
       if (!user) return;
 
       // Assignments
-      const { data: assigns } = await supabase.from("assignments")
+      const { data: assigns } = await dataClient.from("assignments")
         .select("*").eq("classroom_id", selectedClassroom).order("created_at", { ascending: false });
       if (assigns) setAssignments(assigns as Assignment[]);
 
       // Announcements
-      const { data: anns } = await supabase.from("announcements")
+      const { data: anns } = await dataClient.from("announcements")
         .select("*").eq("classroom_id", selectedClassroom).order("created_at", { ascending: false });
       if (anns) setAnnouncements(anns as Announcement[]);
 
       // Student progress
-      const { data: enrolled } = await supabase.from("classroom_students")
+      const { data: enrolled } = await dataClient.from("classroom_students")
         .select("student_id").eq("classroom_id", selectedClassroom);
       if (enrolled && enrolled.length > 0) {
-        const studentIds = enrolled.map(e => e.student_id);
+        const studentIds = enrolled.map((e: any) => e.student_id);
         const cls = classrooms.find(c => c.id === selectedClassroom);
 
         // Get profiles
-        const { data: profiles } = await supabase.from("profiles")
+        const { data: profiles } = await dataClient.from("profiles")
           .select("user_id, full_name").in("user_id", studentIds);
 
         // Get experiment progress for these students
-        const { data: progress } = await supabase.from("experiment_progress")
+        const { data: progress } = await dataClient.from("experiment_progress")
           .select("user_id, status, time_spent_seconds")
           .in("user_id", studentIds)
           .eq("subject", cls?.subject || "");
 
-        const progressMap: StudentProgress[] = (profiles || []).map(p => {
-          const userProgress = (progress || []).filter(ep => ep.user_id === p.user_id);
-          const completed = userProgress.filter(ep => ep.status === "completed").length;
-          const totalTime = userProgress.reduce((sum, ep) => sum + (ep.time_spent_seconds || 0), 0);
+        const progressMap: StudentProgress[] = (profiles || []).map((p: any) => {
+          const userProgress = (progress || []).filter((ep: any) => ep.user_id === p.user_id);
+          const completed = userProgress.filter((ep: any) => ep.status === "completed").length;
+          const totalTime = userProgress.reduce((sum: number, ep: any) => sum + (ep.time_spent_seconds || 0), 0);
 
           return { student_id: p.user_id, full_name: p.full_name, experiments_completed: completed, avg_score: 0, total_time: totalTime };
         });
@@ -162,7 +162,7 @@ export default function TeacherClassroomView() {
     const user = await getSafeUser();
     if (!user) return;
 
-    const { error } = await supabase.from("assignments").insert({
+    const { error } = await dataClient.from("assignments").insert({
       classroom_id: selectedClassroom,
       experiment_id: assignExpId,
       title: assignTitle,
@@ -176,13 +176,13 @@ export default function TeacherClassroomView() {
     setShowAssignment(false);
     setAssignExpId(""); setAssignTitle(""); setAssignDesc(""); setAssignDue("");
     // Reload
-    const { data: assigns } = await supabase.from("assignments")
+    const { data: assigns } = await dataClient.from("assignments")
       .select("*").eq("classroom_id", selectedClassroom).order("created_at", { ascending: false });
     if (assigns) setAssignments(assigns as Assignment[]);
   };
 
   const handleDeleteAssignment = async (id: string) => {
-    await supabase.from("assignments").delete().eq("id", id);
+    await dataClient.from("assignments").delete().eq("id", id);
     setAssignments(prev => prev.filter(a => a.id !== id));
     toast.success("Assignment deleted");
   };
@@ -193,7 +193,7 @@ export default function TeacherClassroomView() {
     const user = await getSafeUser();
     if (!user) return;
 
-    const { error } = await supabase.from("announcements").insert({
+    const { error } = await dataClient.from("announcements").insert({
       classroom_id: selectedClassroom,
       author_id: user.id,
       title: annTitle,
@@ -204,13 +204,13 @@ export default function TeacherClassroomView() {
     toast.success("Announcement posted");
     setShowAnnouncement(false);
     setAnnTitle(""); setAnnContent("");
-    const { data: anns } = await supabase.from("announcements")
+    const { data: anns } = await dataClient.from("announcements")
       .select("*").eq("classroom_id", selectedClassroom).order("created_at", { ascending: false });
     if (anns) setAnnouncements(anns as Announcement[]);
   };
 
   const handleDeleteAnnouncement = async (id: string) => {
-    await supabase.from("announcements").delete().eq("id", id);
+    await dataClient.from("announcements").delete().eq("id", id);
     setAnnouncements(prev => prev.filter(a => a.id !== id));
     toast.success("Announcement deleted");
   };

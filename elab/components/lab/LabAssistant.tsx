@@ -28,7 +28,7 @@ interface LabAssistantProps {
   mode?: "lab" | "textbook";
 }
 
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/lab-assistant`;
+const CHAT_URL = "/api/lab-assistant";
 
 const LAB_COPY = {
   welcomeTitle: "Hi! I'm SciBot 🔬",
@@ -82,7 +82,6 @@ export default function LabAssistant({ context, mode = "lab" }: LabAssistantProp
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
         body: JSON.stringify({ messages: allMessages, context }),
       });

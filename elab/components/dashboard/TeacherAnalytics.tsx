@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { BarChart3, Users, CheckCircle, Clock, ChevronDown, ChevronUp, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
@@ -33,7 +33,7 @@ export default function TeacherAnalytics() {
       const user = await getSafeUser();
       if (!user) return;
       // Get classrooms for this teacher
-      const { data: cls } = await supabase.from("classrooms").select("id").eq("teacher_id", user.id);
+      const { data: cls } = await dataClient.from("classrooms").select("id").eq("teacher_id", user.id);
       const classroomIds = (cls || []).map((c: any) => c.id);
 
       if (classroomIds.length === 0) {
@@ -43,8 +43,8 @@ export default function TeacherAnalytics() {
       }
 
       // Get students enrolled in these classrooms
-      const { data: enrolled } = await supabase.from("classroom_students").select("student_id").in("classroom_id", classroomIds);
-      const studentIds = [...new Set((enrolled || []).map((e: any) => e.student_id))];
+      const { data: enrolled } = await dataClient.from("classroom_students").select("student_id").in("classroom_id", classroomIds);
+      const studentIds = [...new Set((enrolled || []).map((e: any) => e.student_id))] as string[];
 
       if (studentIds.length === 0) {
         setData({ totalStudents: 0, totalCompleted: 0, avgTime: 0, students: [] });
@@ -54,8 +54,8 @@ export default function TeacherAnalytics() {
 
       // Get progress and profiles only for these students
       const [{ data: progress }, { data: profiles }] = await Promise.all([
-        supabase.from("experiment_progress").select("*").in("user_id", studentIds),
-        supabase.from("profiles").select("user_id, full_name").in("user_id", studentIds),
+        dataClient.from("experiment_progress").select("*").in("user_id", studentIds),
+        dataClient.from("profiles").select("user_id, full_name").in("user_id", studentIds),
       ]);
 
       const completed = (progress || []).filter((p: any) => p.status === "completed");

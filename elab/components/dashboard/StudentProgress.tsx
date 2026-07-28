@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { CheckCircle, Clock, Beaker, Trophy, Award, Star, Flame, Target, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { allExperiments } from "./SharedDashboard";
@@ -34,7 +34,7 @@ export default function StudentProgress() {
       const user = await getSafeUser();
       if (!user) { setLoading(false); return; }
 
-      const { data: prog } = await supabase
+      const { data: prog } = await dataClient
         .from("experiment_progress")
         .select("experiment_id, subject, grade, status, time_spent_seconds, completed_at")
         .eq("user_id", user.id)

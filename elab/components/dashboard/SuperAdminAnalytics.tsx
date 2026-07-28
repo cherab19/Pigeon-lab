@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { School, Users, GraduationCap, BookOpen, Trophy, Clock, TrendingUp } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { dataClient } from "@/lib/data-client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SchoolDetail {
@@ -32,7 +32,7 @@ export default function SuperAdminAnalytics() {
 
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await supabase.rpc("get_super_admin_stats");
+      const { data } = await dataClient.rpc("get_super_admin_stats");
       if (data) setStats(data as unknown as Stats);
       setLoading(false);
     };

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, PlayCircle, BookOpen, Beaker, Library, Trophy } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { SubjectCards, totalExperiments, allExperiments } from "./SharedDashboard";
 import StudentProgress from "./StudentProgress";
 import StudentClassroomView from "./StudentClassroomView";
-import { supabase } from "@/integrations/supabase/client";
-import { getSafeUser } from "@/lib/safeAuth";
+import { dataClient } from "@/lib/data-client";
+import { getSafeUser } from "@/lib/session-client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Props {
@@ -30,19 +30,17 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
     const load = async () => {
       const user = await getSafeUser();
       if (!user) return;
-      const { data } = await supabase
+      const { data } = await dataClient
         .from("experiment_progress")
         .select("experiment_id, subject, grade")
         .eq("user_id", user.id)
         .eq("status", "started")
         .order("created_at", { ascending: false })
         .limit(3);
-      if (data) {
-        setInProgress(data.map(d => ({
+        setInProgress((data as any[] || []).map((d: any) => ({
           ...d,
           title: allExperiments.find(e => e.id === d.experiment_id)?.title || d.experiment_id,
         })));
-      }
     };
     load();
   }, []);
@@ -68,14 +66,14 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
 
       {/* Quick access: Library + Success Guide */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="grid md:grid-cols-2 gap-4 mb-8">
-        <Link to="/textbooks" className="group bg-card border border-border rounded-xl p-5 shadow-card hover:shadow-elevated transition-all flex items-center gap-4">
+        <Link href="/textbooks" className="group bg-card border border-border rounded-xl p-5 shadow-card hover:shadow-elevated transition-all flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0"><Library className="w-6 h-6 text-primary" /></div>
           <div className="min-w-0 flex-1">
             <p className="font-display font-semibold group-hover:text-primary transition-colors">{t("student.libraryQuick")}</p>
             <p className="text-xs text-muted-foreground">{t("student.libraryQuickDesc")}</p>
           </div>
         </Link>
-        <Link to="/success-guide" className="group bg-card border border-border rounded-xl p-5 shadow-card hover:shadow-elevated transition-all flex items-center gap-4">
+        <Link href="/success-guide" className="group bg-card border border-border rounded-xl p-5 shadow-card hover:shadow-elevated transition-all flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0"><Trophy className="w-6 h-6 text-secondary" /></div>
           <div className="min-w-0 flex-1">
             <p className="font-display font-semibold group-hover:text-secondary transition-colors">{t("student.guideQuick")}</p>
@@ -91,7 +89,7 @@ export default function StudentDashboardView({ fullName, schoolName }: Props) {
           </h2>
           <div className="grid md:grid-cols-3 gap-3">
             {inProgress.map((exp) => (
-              <Link key={exp.experiment_id} to={`/lab/${exp.subject}`} className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-4 group">
+              <Link key={exp.experiment_id} href={`/lab/${exp.subject}`} className="block bg-card rounded-xl border border-border shadow-card hover:shadow-elevated transition-all p-4 group">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Beaker className="w-4 h-4 text-primary" />
