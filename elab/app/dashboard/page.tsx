@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { dataClient } from "@/lib/data-client";
 import SuperAdminDashboardView from "@/components/dashboard/SuperAdminDashboardView";
 import AdminDashboardView from "@/components/dashboard/AdminDashboardView";
@@ -67,7 +68,17 @@ export default function Dashboard() {
     load();
   }, [router]);
 
-  const handleLogout = async () => { await dataClient.auth.signOut(); router.push("/login"); };
+  const handleLogout = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (error) {
+      // Keep the UI usable if a transient network error interrupts sign-out.
+      console.error("Sign out failed:", error);
+    } finally {
+      router.replace("/login");
+      router.refresh();
+    }
+  };
   const isAdmin = userRole === "school_admin" || userRole === "super_admin";
 
   if (loading) {
