@@ -34,18 +34,40 @@ export async function POST(request: Request) {
 
     const results: Array<{ email: string; success: boolean; error?: string }> = [];
 
-    // Optional email transporter
-    let transporter: any = null;
-    if (process.env.SMTP_HOST) {
-      transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: Number(process.env.SMTP_PORT) === 465,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    const emailFrom = process.env.EMAIL_FROM;
+    if (!smtpHost || !smtpUser || !smtpPass || !emailFrom) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Email delivery is not configured. Set SMTP_HOST, SMTP_USER, SMTP_PASS, and EMAIL_FROM before sending invitations.",
         },
-      });
+        { status: 503 },
+      );
+    }
+
+    const smtpPort = Number(process.env.SMTP_PORT || 587);
+    if (!Number.isInteger(smtpPort) || smtpPort < 1 || smtpPort > 65535) {
+      return NextResponse.json({ success: false, message: "SMTP_PORT is invalid." }, { status: 503 });
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: { user: smtpUser, pass: smtpPass },
+    });
+
+    try {
+      await transporter.verify();
+    } catch (error) {
+      console.error("SMTP verification failed:", error);
+      return NextResponse.json(
+        { success: false, message: "Email delivery could not connect to the configured SMTP server. Check your SMTP settings." },
+        { status: 503 },
+      );
     }
 
     for (const member of members) {
@@ -72,18 +94,14 @@ export async function POST(request: Request) {
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
         const inviteUrl = `${appUrl}/signup/complete?token=${encodeURIComponent(token)}`;
 
-        if (transporter) {
-          await transporter.sendMail({
-            from: process.env.EMAIL_FROM || '"Pigeonlab" <no-reply@pigeon-lab.vercel.app>',
-            to: email,
-            subject: "You've been invited to Pigeonlab",
-            html: `<p>Hello ${full_name},</p>
-                   <p>You have been invited to join Pigeonlab as a ${role}.</p>
-                   <p><a href="${inviteUrl}">Click here to accept the invitation and set up your account.</a></p>`,
-          });
-        } else {
-          console.log(`[INVITE EMAIL TO ${email}]: ${inviteUrl}`);
-        }
+        await transporter.sendMail({
+          from: emailFrom,
+          to: email,
+          subject: "You've been invited to Pigeonlab",
+          html: `<p>Hello ${full_name},</p>
+                 <p>You have been invited to join Pigeonlab as a ${role}.</p>
+                 <p><a href="${inviteUrl}">Click here to accept the invitation and set up your account.</a></p>`,
+        });
 
         results.push({ email, success: true });
       } catch (err: any) {
