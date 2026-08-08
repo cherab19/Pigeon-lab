@@ -18,7 +18,7 @@ type SubStatus = "active" | "expired" | "suspended";
 
 export default function AdminDashboardView({ fullName, schoolName }: Props) {
   const { t } = useLanguage();
-  const [sub, setSub] = useState<{ status: SubStatus; student_count: number; current_period_end: string; price_per_student: number } | null>(null);
+  const [sub, setSub] = useState<{ status: SubStatus; student_count: number; teacher_seats?: number; student_seats?: number; current_period_end: string; price_per_student: number } | null>(null);
 
   const statusConfig: Record<SubStatus, { icon: typeof CheckCircle2; label: string; color: string; bg: string; description: string }> = {
     active: { icon: CheckCircle2, label: t("admin.active"), color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800", description: t("admin.activeDesc") },
@@ -32,13 +32,20 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
       if (!user) return;
       const { data: profile } = await dataClient.from("profiles").select("school_id").eq("user_id", user.id).single();
       if (!profile?.school_id) return;
-      const { data } = await dataClient.from("school_subscriptions").select("status, student_count, current_period_end, price_per_student").eq("school_id", profile.school_id).single();
+      const { data } = await dataClient.from("school_subscriptions").select("status, student_count, teacher_seats, student_seats, current_period_end, price_per_student").eq("school_id", profile.school_id).single();
       if (data) setSub(data as any);
     };
     load();
   }, []);
 
   const cfg = sub ? statusConfig[sub.status] || statusConfig.active : null;
+  const studentCount = Number.isFinite(Number(sub?.student_count)) ? Number(sub?.student_count) : 0;
+  const teacherSeats = Number.isFinite(Number(sub?.teacher_seats)) ? Number(sub?.teacher_seats) : 0;
+  const studentSeats = Number.isFinite(Number(sub?.student_seats)) ? Number(sub?.student_seats) : 0;
+  const billableSeats = teacherSeats + studentSeats || studentCount;
+  const pricePerStudent = Number.isFinite(Number(sub?.price_per_student)) ? Number(sub?.price_per_student) : 0;
+  const renewalDate = sub?.current_period_end ? new Date(sub.current_period_end) : null;
+  const hasValidRenewalDate = !!renewalDate && !Number.isNaN(renewalDate.getTime());
 
   return (
     <>
@@ -69,9 +76,8 @@ export default function AdminDashboardView({ fullName, schoolName }: Props) {
               </div>
             </div>
             <div className="flex items-center gap-4 text-xs text-muted-foreground pl-8 sm:pl-0">
-              {sub.student_count > 0 && <span><strong className="text-foreground">{sub.student_count}</strong> {t("common.students")}</span>}
-              {sub.status === "active" && <span>Renews {new Date(sub.current_period_end).toLocaleDateString()}</span>}
-              {sub.status === "active" && <span className="font-semibold text-foreground">{sub.student_count * sub.price_per_student} ETB/mo</span>}
+              {sub.status === "active" && hasValidRenewalDate && <span>{t("admin.renews")} {renewalDate.toLocaleDateString()}</span>}
+              {sub.status === "active" && pricePerStudent > 0 && billableSeats > 0 && <span className="font-semibold text-foreground">{billableSeats * pricePerStudent} {t("admin.etbPerMonth")}</span>}
             </div>
           </div>
         </motion.div>

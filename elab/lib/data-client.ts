@@ -213,6 +213,14 @@ function remapItem(item: any) {
     endPage: "end_page",
     fullName: "full_name",
     avatarUrl: "avatar_url",
+    studentCount: "student_count",
+    pricePerStudent: "price_per_student",
+    currentPeriodStart: "current_period_start",
+    currentPeriodEnd: "current_period_end",
+    activatedAt: "activated_at",
+    suspendedAt: "suspended_at",
+    teacherSeats: "teacher_seats",
+    studentSeats: "student_seats",
   };
   for (const [camel, snake] of Object.entries(mappings)) {
     if (remapped[camel] !== undefined) {
