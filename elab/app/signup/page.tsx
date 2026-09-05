@@ -8,7 +8,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const seatPrice = 30;
 
 function displayError(value: unknown): string {
-  if (typeof value === "string" && value.trim()) return value;
+  if (typeof value === "string" && value.trim()) {
+    if (value.includes("validation.email")) {
+      return "Chapa could not validate this email address. Please use a real, reachable email address.";
+    }
+    return value;
+  }
   if (Array.isArray(value)) return value.map(displayError).filter(Boolean).join("; ");
   if (value && typeof value === "object") {
     return Object.entries(value as Record<string, unknown>)
