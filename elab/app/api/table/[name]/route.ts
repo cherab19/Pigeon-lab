@@ -25,6 +25,22 @@ function mergeWhere(scope: Record<string, unknown>, requested?: Record<string, u
   return requested && Object.keys(requested).length ? { AND: [scope, requested] } : scope;
 }
 
+function toPrismaFields(value: any): any {
+  if (Array.isArray(value)) return value.map(toPrismaFields);
+  if (!value || typeof value !== "object" || value instanceof Date) return value;
+  const fields: Record<string, string> = {
+    user_id: "userId", school_id: "schoolId", classroom_id: "classroomId",
+    student_id: "studentId", teacher_id: "teacherId", textbook_id: "textbookId",
+    experiment_id: "experimentId", created_by: "createdBy", author_id: "authorId",
+    due_date: "dueDate", cover_url: "coverUrl", file_url: "fileUrl",
+    total_pages: "totalPages", chapter_number: "chapterNumber", start_page: "startPage",
+    end_page: "endPage", full_name: "fullName", avatar_url: "avatarUrl",
+    time_spent_seconds: "timeSpentSeconds", created_at: "createdAt",
+    updated_at: "updatedAt", completed_at: "completedAt",
+  };
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [fields[key] || key, toPrismaFields(item)]));
+}
+
 async function classroomIdsFor(user: Awaited<ReturnType<typeof requireUser>>) {
   if (isPrivileged(user)) return null;
   if (user.roles?.includes("school_admin" as any)) {
@@ -90,7 +106,10 @@ export async function POST(request: Request, { params }: { params: { name: strin
     const body = await request.json();
     const { action, where, data, select, orderBy, take } = body;
     const model = prisma[modelName] as any;
-    const scoped = await scopedWhere(params.name, user, where);
+    const prismaWhere = toPrismaFields(where);
+    const prismaSelect = toPrismaFields(select);
+    const prismaOrderBy = toPrismaFields(orderBy);
+    const scoped = await scopedWhere(params.name, user, prismaWhere);
 
     if (["create", "insert", "update", "delete", "upsert"].includes(action) && !canWrite(params.name, user)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -98,14 +117,15 @@ export async function POST(request: Request, { params }: { params: { name: strin
 
     let result;
     if (action === "findMany") {
-      result = await model.findMany({ where: scoped, select, orderBy, take });
+      result = await model.findMany({ where: scoped, select: prismaSelect, orderBy: prismaOrderBy, take });
     } else if (action === "findFirst" || action === "findUnique") {
-      result = await model.findFirst({ where: scoped, select });
+      result = await model.findFirst({ where: scoped, select: prismaSelect });
     } else if (action === "create" || action === "insert") {
-      const owned = params.name === "experiment_progress" ? { ...data, userId: user.id } : data;
+      const prismaData = toPrismaFields(data);
+      const owned = params.name === "experiment_progress" ? { ...prismaData, userId: user.id } : prismaData;
       result = await model.create({ data: owned });
     } else if (action === "update") {
-      result = await model.updateMany({ where: scoped, data });
+      result = await model.updateMany({ where: scoped, data: toPrismaFields(data) });
     } else if (action === "delete") {
       result = await model.deleteMany({ where: scoped });
     } else if (action === "upsert") {

@@ -209,6 +209,9 @@ function remapItem(item: any) {
     fileUrl: "file_url",
     totalPages: "total_pages",
     chapterNumber: "chapter_number",
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+    completedAt: "completed_at",
     startPage: "start_page",
     endPage: "end_page",
     fullName: "full_name",
@@ -242,6 +245,7 @@ function remapRequest(value: any): any {
     total_pages: "totalPages", chapter_number: "chapterNumber",
     start_page: "startPage", end_page: "endPage", full_name: "fullName",
     avatar_url: "avatarUrl", time_spent_seconds: "timeSpentSeconds",
+    created_at: "createdAt", updated_at: "updatedAt", completed_at: "completedAt",
   };
   return Object.fromEntries(Object.entries(value).map(([key, item]) => [mappings[key] || key, remapRequest(item)]));
 }

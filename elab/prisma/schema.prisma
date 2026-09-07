@@ -91,6 +91,7 @@ id String @id @default(uuid()) @db.Uuid
  role AppRole
  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
  @@unique([userId,role])
+ @@index([role,userId])
  @@map("user_roles")
 }
 

@@ -2,7 +2,7 @@
   "name": "pigeonlab-next",
   "private": true,
   "packageManager": "pnpm@10.32.1",
-  "scripts": {"dev":"next dev","build":"next build","start":"next start","lint":"next lint","typecheck":"tsc --noEmit","prisma:generate":"prisma generate","prisma:migrate":"prisma migrate deploy","prisma:seed":"tsx prisma/seed.ts","prisma:studio":"prisma studio","docker:up":"docker compose up --build","docker:down":"docker compose down","docker:logs":"docker compose logs -f"},
+  "scripts": {"predev":"docker compose up -d db && docker compose exec -T db sh -c 'until pg_isready -U pigeonlab -d pigeonlab; do sleep 1; done' && prisma migrate deploy","dev":"next dev","build":"next build","start":"next start","lint":"next lint","typecheck":"tsc --noEmit","prisma:generate":"prisma generate","prisma:migrate":"prisma migrate deploy","prisma:seed":"tsx prisma/seed.ts","prisma:studio":"prisma studio","docker:up":"docker compose up --build","docker:down":"docker compose down","docker:logs":"docker compose logs -f"},
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
     "@hookform/resolvers": "^3.10.0",
