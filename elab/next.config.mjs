@@ -4,6 +4,10 @@ const nextConfig = {
   output: "standalone",
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
   images: { remotePatterns: [] },
+  webpack(config) {
+    config.resolve.alias["@"] = process.cwd();
+    return config;
+  },
   // CloudLinux shared hosting accounts can impose a very low child-process
   // limit. Keep Next's production build to one worker in that environment.
   experimental: {
