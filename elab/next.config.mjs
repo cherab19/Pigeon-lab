@@ -18,6 +18,7 @@ const nextConfig = {
   // limit. Keep Next's production build to one worker in that environment.
   experimental: {
     cpus: 1,
+    workerThreads: false,
   },
 };
 export default withPWA({
