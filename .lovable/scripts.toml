@@ -1,0 +1,5 @@
+[run]
+"build:dev" = "cd elab && npm run build"
+"build" = "cd elab && npm run build"
+"typecheck" = "cd elab && npx tsc --noEmit"
+"dev" = "cd elab && npm run dev"
