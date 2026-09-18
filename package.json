@@ -1,0 +1,11 @@
+{
+  "name": "pigeonlab-root",
+  "private": true,
+  "scripts": {
+    "dev": "cd elab && npx next dev -p 8080",
+    "build": "cd elab && npx next build",
+    "build:dev": "cd elab && npx next build",
+    "typecheck": "cd elab && npx tsc --noEmit",
+    "postinstall": "cd elab && npm install --no-audit --no-fund"
+  }
+}
